@@ -10,7 +10,7 @@ Emergency sounds:
 1. Air_horn_truck_horn, 2. Car_alarm, 3. Emergency_vehicle, 4. Explosion, 5. Gunshot_gunfire, 6. Siren
 
 ## Pre-trained models
-The pre-trained model can be found in the 'pre-trained' directory.
+The pre-trained models can be found in the 'pre-trained' directory.
 
 ## Run
 Instructions to run or train the system can be found in run.sh.

@@ -9,7 +9,7 @@ WORKSPACE="--dataset_dir=../../../../../storage/leey0204/fsd50k_audioset/audiose
 MODEL_TYPE="Cnn_9layers_Gru_FrameAtt"
 
 # ------ Run pre-trained system ------
-python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --iteration=50000 --cuda
+python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='timeshift_mixup' --batch_size=32 --iteration=50000 --cuda
 
 # ------ Preparation of data for training ------
 # Pack waveforms to hdf5
