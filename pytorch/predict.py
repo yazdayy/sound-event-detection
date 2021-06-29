@@ -356,7 +356,12 @@ def predict(self):
             predict_event_list = frame_prediction_to_event_prediction(output_dict,
             sed_params_dict)
             
-            print('Segment {}: {} s to {} s'.format(num_segment, start, start + sample_duration))
+            if audio_duration < start + sample_duration:
+                end = audio_duration
+            else:
+                end = start + sample_duration
+            
+            print('Segment {}: {} s to {} s'.format(num_segment, start, end))
             print('---------------------------------------------------------------')
             if len(predict_event_list) >= 1:
                 for event in predict_event_list:
@@ -364,7 +369,7 @@ def predict(self):
                     print('onset: {}, offset: {}, event_label: {}\n'.format(event['onset']+start, event['offset']+start, event['event_label']))
             else:
                 print('Others\n')
-                xml_string += '\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, start+sample_duration)
+                xml_string += '\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, end-start)
                 #print(output_dict['clipwise_output'])
             start += sample_duration
             num_segment += 1
