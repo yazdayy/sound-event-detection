@@ -14,6 +14,7 @@ import config
 from glob import glob
 import soundfile as sf
 from random import randint
+from dicttoxml import dicttoxml
 import matplotlib.pyplot as plt
 
 import torch
@@ -195,7 +196,7 @@ class Predictor(object):
 
         return output_dict, predict_event_list
 
-class DCASE2017Task4Dataset(object):
+class AudioDataset(object):
    def __init__(self):
        """DCASE 2017 Task 4 dataset."""
        pass
@@ -222,7 +223,7 @@ def append_to_dict(dict, key, value):
     else:
         dict[key] = value
 
-def inference_prob(self):
+def predict(self):
     """Inference test and evaluate data and dump predicted probabilites to 
     pickle files.
 
@@ -235,6 +236,15 @@ def inference_prob(self):
       augmentation: str, e.g., 'mixup'
       batch_size: int
       device: 'cuda' | 'cpu'
+    
+    Returns results in xml format:
+      <AudioDoc name="this-is-the-file-name-of-audio-or-video">
+      <SoundCaptionList>
+      <SoundSegment stime="42.01" dur="3.01">loud noise</SoundSegment>
+      <SoundSegment stime="48.02" dur="3.07">explosion</SoundSegment>
+      <SoundSegment stime="53.03" dur="5.00">Mupliple explosion</SoundSegment>
+      </SoundSegment>
+      </AudioDoc>
     """
     
     # Arugments & parameters
@@ -245,22 +255,21 @@ def inference_prob(self):
     loss_type = args.loss_type
     augmentation = args.augmentation
     batch_size = args.batch_size
-    iteration = args.iteration
     device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     filename = args.filename
 
     num_workers = 8
-    
+    os.makedirs('{}/long_predict_results'.format(workspace), exist_ok=True)
     data_type = 'long_predict'
     
     # Paths
-    predict_hdf5_path = os.path.join(workspace, 'hdf5s', 'long_predict.h5')
+    #predict_hdf5_path = os.path.join(workspace, 'hdf5s', 'long_predict.h5')
 
     checkpoint_path = os.path.join(workspace, 'checkpoints', 
         filename, 'holdout_fold={}'.format(holdout_fold),
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        '{}_iterations.pth'.format(iteration))
+        'best.pth')
 
     predictions_dir = os.path.join(workspace, 'predictions', 
         filename, 'holdout_fold={}'.format(holdout_fold),
@@ -294,25 +303,28 @@ def inference_prob(self):
         model.to(device)
 
     # Dataset
-    dataset = DCASE2017Task4Dataset()
+    dataset = AudioDataset()
     
     # Predictor
     predictor = Predictor(model=model)
     
     sed_params_dict = {
-    'audio_tagging_threshold': 0.5,
+    'audio_tagging_threshold': 0.099,
     'sed_high_threshold': 0.5,
     'sed_low_threshold': 0.2,
     'n_smooth': 10,
     'n_salt': 10}
     
-    sample_duration = 5
+    sample_duration = 10
     audios_dir = os.path.join(dataset_dir, data_type)
     audio_files = sorted(glob('{}/*.wav'.format(audios_dir)))
     audios_num = len(audio_files)
     audio_samples = sample_rate * sample_duration
     for n in range(audios_num):
         audio_name = audio_files[n]
+        xml_string = ''
+        xml_string += '<AudioDoc name="{}">\n'.format(audio_name.split('/')[-1])
+        xml_string += '\t<SoundCaptionList>\n'
         print('Predicting on {}'.format(audio_name))
         audio_path = os.path.join(audios_dir, audio_name)
         audio_duration = librosa.get_duration(filename=audio_name)
@@ -344,16 +356,25 @@ def inference_prob(self):
             predict_event_list = frame_prediction_to_event_prediction(output_dict,
             sed_params_dict)
             
+            print('Segment {}: {} s to {} s'.format(num_segment, start, start + sample_duration))
+            print('---------------------------------------------------------------')
             if len(predict_event_list) >= 1:
                 for event in predict_event_list:
+                    xml_string += '\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(start+event['onset'], event['offset']-event['onset'], event['event_label'])
                     print('onset: {}, offset: {}, event_label: {}\n'.format(event['onset']+start, event['offset']+start, event['event_label']))
             else:
-                print('Indeterminate\n')
-                
+                print('Others\n')
+                xml_string += '\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, start+sample_duration)
+                #print(output_dict['clipwise_output'])
             start += sample_duration
             num_segment += 1
         end_time = time.time()
-        print('Time taken to process {}: {} s'.format(audio_name, end_time-start_time))
+        print('Time taken to process {}: {} s\n'.format(audio_name, end_time-start_time))
+        
+        xml_string += '\t</SoundCaptionList>\n'
+        xml_string += '</AudioDoc>'
+        xml_file = open("{}/long_predict_results/{}.xml".format(workspace, audio_name.split('/')[-1].split('.wav')[0]), "w")
+        xml_file.write(xml_string)
 
 
 if __name__ == '__main__':
@@ -361,7 +382,7 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers(dest='mode')
 
     # Inference
-    parser_inference_prob = subparsers.add_parser('inference_prob')
+    parser_inference_prob = subparsers.add_parser('predict')
     parser_inference_prob.add_argument('--dataset_dir', type=str, required=True, help='Directory of dataset.')
     parser_inference_prob.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
     parser_inference_prob.add_argument('--filename', type=str, required=True)
@@ -370,15 +391,14 @@ if __name__ == '__main__':
     parser_inference_prob.add_argument('--loss_type', type=str, required=True)
     parser_inference_prob.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_inference_prob.add_argument('--batch_size', type=int, required=True)
-    parser_inference_prob.add_argument('--iteration', type=int, required=True)
     parser_inference_prob.add_argument('--cuda', action='store_true', default=False)
     
     # Parse arguments
     args = parser.parse_args()
     #args.filename = get_filename(__file__)
 
-    if args.mode == 'inference_prob':
-        inference_prob(args)
+    if args.mode == 'predict':
+        predict(args)
 
     else:
         raise Exception('Error argument!')

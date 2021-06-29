@@ -10,8 +10,10 @@ Emergency sounds:
 1. Air_horn_truck_horn, 2. Car_alarm, 3. Emergency_vehicle, 4. Explosion, 5. Gunshot_gunfire, 6. Siren
 
 ## Pre-trained models
-The pre-trained models can be found in the 'pre-trained' directory.
+The pre-trained models can be found in the 'checkpoints' directory.
 
 ## Run
 Instructions to run or train the system can be found in run.sh.
-
+Note:
+- Please use main.py / --filename='main' if you would like to train or run the purely weakly-labelled system, and main_strong.py / --filename='main_strong' if you would like to train or run the combined weakly-labelled and strongly-labelled system. 
+- Please upload the audio clips you would like to predict on in the 'long_predict' folder.

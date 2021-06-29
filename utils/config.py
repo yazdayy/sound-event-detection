@@ -20,7 +20,7 @@ amin = 1e-10
 top_db = None
 
 # ID of classes
-ids = ['/m/028ght', '/m/0lyf6', '/m/07rkbfh', '/m/053hz1', '/m/0ytgt', '/m/0l15bq', '/m/01h8n0', '/m/01b_21', '/m/03qtwd', '/m/0463cq4', '/m/02zsn', '/m/01j3sz', '/m/05zppz', '/m/06h7j', '/m/03qc9zr', '/m/07p6fty', '/m/01hsr_', '/m/07pbtc8', '/m/02rtxlg', '/m/05x_td', '/m/02mfyn', '/m/03j1ly', '/m/014zdl', '/m/032s66', '/m/03kmc9']
+ids = ['/m/028ght', '/m/0lyf6', '/m/07rkbfh', '/m/053hz1', '/m/0ytgt', '/m/0l15bq', '/m/01h8n0', '/m/01b_21', '/m/03qtwd', '/m/0463cq4', '/m/02zsn', '/m/01j3sz', '/m/05zppz', '/m/06h7j', '/m/03qc9zr', '/m/07p6fty', '/m/01hsr_', '/m/07pbtc8', '/m/02rtxlg', '/m/05x_td', '/m/02mfyn', '/m/03j1ly', '/m/014zdl', '/m/032s66','/m/03kmc9']
 
 # Name of classes
 labels = ['Applause', 'Breathing', 'Chatter', 'Cheering', 'Child_speech_kid_speaking', 'Clapping', 'Conversation', 'Cough', 'Crowd', 'Crying_sobbing', 'Female_speech_woman_speaking', 'Laughter', 'Male_speech_man_speaking', 'Run', 'Screaming', 'Shout', 'Sneeze', 'Walk_footsteps', 'Whispering', 'Air_horn_truck_horn', 'Car_alarm', 'Emergency_vehicle', 'Explosion', 'Gunshot_gunfire', 'Siren']

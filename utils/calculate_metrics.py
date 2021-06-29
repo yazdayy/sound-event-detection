@@ -75,7 +75,6 @@ def calculate_metrics(args):
     loss_type = args.loss_type
     augmentation = args.augmentation
     batch_size = args.batch_size
-    iteration = args.iteration
     data_type = args.data_type
     at_thresholds = args.at_thresholds
     sed_thresholds = args.sed_thresholds
@@ -95,7 +94,7 @@ def calculate_metrics(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        '{}_iterations.prediction.{}.pkl'.format(iteration, data_type))
+        'best.prediction.{}.pkl'.format(data_type))
     
     tmp_submission_path = os.path.join(workspace, '_tmp_submission', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
@@ -109,7 +108,7 @@ def calculate_metrics(args):
             '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
             'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
             'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-            '{}_iterations.at.test.pkl'.format(iteration))
+            'best.at.test.pkl')
         at_thresholds = pickle.load(open(at_thresholds_path, 'rb'))
     else:
         at_thresholds = [0.3] * classes_num
@@ -119,13 +118,13 @@ def calculate_metrics(args):
             '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
             'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
             'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-            '{}_iterations.sed.test.pkl'.format(iteration))
+            'best.sed.test.pkl')
         sed_thresholds = pickle.load(open(sed_thresholds_path, 'rb'))
     else:
         sed_thresholds = {
-            'audio_tagging_threshold': 0.5, 
-            'sed_high_threshold': 0.3, 
-            'sed_low_threshold': 0.1, 
+            'audio_tagging_threshold': 0.099,
+            'sed_high_threshold': 0.5,
+            'sed_low_threshold': 0.2, 
             'n_smooth': 10, 
             'n_salt': 10}
 
@@ -182,7 +181,6 @@ if __name__ == '__main__':
     parser_calculate_metrics.add_argument('--loss_type', type=str, required=True)
     parser_calculate_metrics.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_calculate_metrics.add_argument('--batch_size', type=int, required=True)
-    parser_calculate_metrics.add_argument('--iteration', type=int, required=True)
     parser_calculate_metrics.add_argument('--data_type', type=str, choices=['test', 'evaluate'], required=True)
     parser_calculate_metrics.add_argument('--at_thresholds', action='store_true', default=False)
     parser_calculate_metrics.add_argument('--sed_thresholds', action='store_true', default=False)

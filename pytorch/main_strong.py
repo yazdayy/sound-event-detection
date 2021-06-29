@@ -126,7 +126,7 @@ def train(args):
 
     if resume_iteration:
         resume_checkpoint_path = os.path.join(checkpoints_dir, 
-            '{}_iterations.pth'.format(resume_iteration))
+            'best.pth')
         logging.info('Load resume model from {}'.format(resume_checkpoint_path))
         resume_checkpoint = torch.load(resume_checkpoint_path)
         model.load_state_dict(resume_checkpoint['model'])
@@ -192,6 +192,8 @@ def train(args):
     
     error_rates = []
     framewise_maps = []
+    best_error_rate = 10000
+    best_framewise_map = 0
     best_iteration = 0
     # Train on mini batches
     
@@ -220,9 +222,13 @@ def train(args):
                 statistics_container.append(data_type, iteration, statistics)
                 
                 if data_type == 'test':
-                    error_rates.append(statistics['sed_metrics']['overall']['error_rate']['error_rate'])
-                    framewise_maps.append(np.nanmean(statistics['framewise_ap']))
-                    if np.nanmean(statistics['framewise_ap']) == max(framewise_maps) and statistics['sed_metrics']['overall']['error_rate']['error_rate'] == min(error_rates):
+                    if np.nanmean(statistics['framewise_ap']) >= best_framewise_map and statistics['sed_metrics']['overall']['error_rate']['error_rate'] < best_error_rate <= best_error_rate:
+                    
+                        best_framewise_map = np.nanmean(statistics['framewise_ap'])
+                        best_error_rate = statistics['sed_metrics']['overall']['error_rate']['error_rate']
+#                            error_rates.append(statistics['sed_metrics']['overall']['error_rate']['error_rate'])
+#                    framewise_maps.append(np.nanmean(statistics['framewise_ap']))
+#                    if np.nanmean(statistics['framewise_ap']) == max(framewise_maps) and statistics['sed_metrics']['overall']['error_rate']['error_rate'] == min(error_rates):
                         best_iteration = iteration
                         
                         checkpoint = {
@@ -231,12 +237,11 @@ def train(args):
                             'optimizer': optimizer.state_dict()}
 
                         checkpoint_path = os.path.join(
-                            checkpoints_dir, '{}_iterations.pth'.format(iteration))
+                            checkpoints_dir, 'best.pth')
                             
                         torch.save(checkpoint, checkpoint_path)
-                        logging.info('Model saved to {}'.format(checkpoint_path))
+                        logging.info('Model saved to {} for iteration {}'.format(checkpoint_path, iteration))
                     
-                
             statistics_container.dump()
 
             train_time = train_fin_time - train_bgn_time
@@ -326,7 +331,6 @@ def inference_prob(self):
     loss_type = args.loss_type
     augmentation = args.augmentation
     batch_size = args.batch_size
-    iteration = args.iteration
     device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     filename = args.filename
 
@@ -342,7 +346,7 @@ def inference_prob(self):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        '{}_iterations.pth'.format(iteration))
+        'best.pth')
 
     predictions_dir = os.path.join(workspace, 'predictions', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
@@ -396,7 +400,7 @@ def inference_prob(self):
             data_loader, reference_csv_path, tmp_submission_path)
 
         prediction_path = os.path.join(predictions_dir, 
-            '{}_iterations.prediction.{}.pkl'.format(iteration, data_type))
+            'best.prediction.{}.pkl'.format(data_type))
 
         # write_out_prediction(output_dict, prediction_path)
         pickle.dump(output_dict, open(prediction_path, 'wb'))
@@ -431,7 +435,6 @@ if __name__ == '__main__':
     parser_inference_prob.add_argument('--loss_type', type=str, required=True)
     parser_inference_prob.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_inference_prob.add_argument('--batch_size', type=int, required=True)
-    parser_inference_prob.add_argument('--iteration', type=int, required=True)
     parser_inference_prob.add_argument('--cuda', action='store_true', default=False)
     
     # Parse arguments

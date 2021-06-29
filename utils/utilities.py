@@ -109,6 +109,7 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
         for k in range(classes_num):
             if output_dict['clipwise_output'][n, k] \
                 > sed_params_dict['audio_tagging_threshold'][k]:
+                #print('CLASS INDEX:', k)
                 check += 1
                 count1 += 1
                 bgn_fin_pairs = activity_detection(
@@ -127,16 +128,16 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
                         'offset': pair[1] / float(frames_per_second), 
                         'event_label': labels[k]}
                     event_list.append(event)
-        if check == 0:
-            print(output_dict['audio_name'][n])
-            print(output_dict['clipwise_output'][n])
+#        if check == 0:
+#            print(output_dict['audio_name'][n])
+#            print(output_dict['clipwise_output'][n])
     all_filenames = list(set([x['filename'] for x in event_list]))
     
-    print('AUDIO NUM', audios_num)
-    print('COUNT1', count1)
-    print('COUNT2', count2)
-    print('UNIQUE', len(all_filenames))
-    print('TOTAL', len(event_list))
+#    print('AUDIO NUM', audios_num)
+#    print('COUNT1', count1)
+#    print('COUNT2', count2)
+#    print('UNIQUE', len(all_filenames))
+#    print('TOTAL', len(event_list))
     
     return event_list
 
@@ -168,12 +169,12 @@ def official_evaluate(reference_csv_path, prediction_csv_path):
         delimiter=',', csv_header=False,
         fields=['filename','onset','offset','event_label'])
     
-    print('REFERENCE', reference_event_list)
+    #print('REFERENCE', reference_event_list)
     estimated_event_list = sed_eval.io.load_event_list(prediction_csv_path, 
         delimiter='\t', csv_header=False, 
         fields=['filename','onset','offset','event_label'])
     
-    print('ESTIMATED', estimated_event_list)
+    #print('ESTIMATED', estimated_event_list)
     labels = ['Applause', 'Breathing', 'Chatter', 'Cheering', 'Child_speech_kid_speaking', 'Clapping', 'Conversation', 'Cough', 'Crowd', 'Crying_sobbing', 'Female_speech_woman_speaking', 'Laughter', 'Male_speech_man_speaking', 'Run', 'Screaming', 'Shout', 'Sneeze', 'Walk_footsteps', 'Whispering', 'Air_horn_truck_horn', 'Car_alarm', 'Emergency_vehicle', 'Explosion', 'Gunshot_gunfire', 'Siren']
     evaluated_event_labels = labels#reference_event_list.unique_event_labels
     files={}

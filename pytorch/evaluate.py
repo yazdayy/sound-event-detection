@@ -42,7 +42,7 @@ class Evaluator(object):
     
         # Default parameters for SED
         self.sed_params_dict = {
-            'audio_tagging_threshold': 0.099,
+            'audio_tagging_threshold': 0.5,
             'sed_high_threshold': 0.5, 
             'sed_low_threshold': 0.2,
             'n_smooth': 10, 
