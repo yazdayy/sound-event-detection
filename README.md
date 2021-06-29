@@ -18,10 +18,10 @@ Note:
 - Please use main.py / --filename='main' if you would like to train or run the purely weakly-labelled system, and main_strong.py / --filename='main_strong' if you would like to train or run the combined weakly-labelled and strongly-labelled system. 
 - Please upload the audio clips you would like to predict on in the 'long_predict' folder.
 - The prediction output is saved in the long_predict_results directory in the following xml format:
-    <AudioDoc name="audio_filename">
+    '<AudioDoc name="audio_filename">
     <SoundCaptionList>
     <SoundSegment stime="42.01" dur="3.01">Laughter</SoundSegment>
     <SoundSegment stime="48.02" dur="3.07">Crowd</SoundSegment>
     <SoundSegment stime="53.03" dur="5.00">Applause</SoundSegment>
     </SoundSegment>
-    </AudioDoc>
+    </AudioDoc>'
