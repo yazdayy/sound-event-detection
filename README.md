@@ -17,7 +17,7 @@ Instructions to run or train the system can be found in run.sh.
 Note:
 - Please use main.py / --filename='main' if you would like to train or run the purely weakly-labelled system, and main_strong.py / --filename='main_strong' if you would like to train or run the combined weakly-labelled and strongly-labelled system. 
 
-- Please change to --augmentation='mixup' if you would like to train or run the system with mixup applied only.
+- Please change to --augmentation='mixup' if you would like to train or run the system with mixup applied only. Otherwise, --augmentation='timeshift_mixup' is used and both timeshift and mixup are applied.
 
 - Please upload the audio clips you would like to predict on in the 'long_predict' folder.
 
