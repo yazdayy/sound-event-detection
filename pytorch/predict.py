@@ -16,6 +16,7 @@ import soundfile as sf
 from random import randint
 from dicttoxml import dicttoxml
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 import torch
 import torch.nn as nn
@@ -257,6 +258,7 @@ def predict(self):
     batch_size = args.batch_size
     device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     filename = args.filename
+    feature_type = args.feature_type
 
     num_workers = 8
     os.makedirs('{}/long_predict_results'.format(workspace), exist_ok=True)
@@ -288,7 +290,7 @@ def predict(self):
     assert model_type, 'Please specify model_type!'
     start_time = time.time()
     Model = eval(model_type)
-    model = Model(sample_rate, window_size, hop_size, mel_bins, fmin, fmax, classes_num)
+    model = Model(sample_rate, window_size, hop_size, mel_bins, fmin, fmax, classes_num, feature_type)
 
     checkpoint = torch.load(checkpoint_path)
     model.load_state_dict(checkpoint['model'])
@@ -322,9 +324,13 @@ def predict(self):
     audio_samples = sample_rate * sample_duration
     for n in range(audios_num):
         audio_name = audio_files[n]
-        xml_string = ''
-        xml_string += '<AudioDoc name="{}">\n'.format(audio_name.split('/')[-1])
-        xml_string += '\t<SoundCaptionList>\n'
+        xml_string_list = []
+        xml_string_list.append('<AudioDoc name="{}">\n'.format(audio_name.split('/')[-1]))
+        xml_string_list.append('\t<SoundCaptionList>\n')
+        last_onset = 0
+        last_offset = 0
+        last_event = ''
+        tracker_dict = {}
         print('Predicting on {}'.format(audio_name))
         audio_path = os.path.join(audios_dir, audio_name)
         audio_duration = librosa.get_duration(filename=audio_name)
@@ -360,24 +366,45 @@ def predict(self):
                 end = audio_duration
             else:
                 end = start + sample_duration
-            
+
             print('Segment {}: {} s to {} s'.format(num_segment, start, end))
             print('---------------------------------------------------------------')
             if len(predict_event_list) >= 1:
                 for event in predict_event_list:
-                    xml_string += '\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(start+event['onset'], event['offset']-event['onset'], event['event_label'])
-                    print('onset: {}, offset: {}, event_label: {}\n'.format(event['onset']+start, event['offset']+start, event['event_label']))
+                    onset = event['onset']
+                    offset = event['offset']
+                    event_label = event['event_label']
+                    if onset == 0 and (event_label in list(tracker_dict.keys())):
+                        if onset + start == tracker_dict[event_label][1]:
+                            # Remove previous tracked segment from list
+                            xml_string_list.pop(tracker_dict[event_label][3])
+                            current_duration = event['offset']-event['onset']
+                            xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(tracker_dict[event_label][0], tracker_dict[event_label][2] + current_duration, event_label))
+                            for k, v in tracker_dict.items():
+                                if v[-1] - 1 == tracker_dict[event_label][3]:
+                                    v[-1] = tracker_dict[event_label][3]
+                            tracker_dict.pop(event_label)
+                    else:
+                        xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(start+onset, offset-onset, event_label))
+                    last_onset = start + onset
+                    last_offset = start + offset
+                    last_duration = offset - onset
+                    if offset == 10:
+                        tracker_dict[event['event_label']] = [last_onset, last_offset, last_duration, len(xml_string_list)-1]
+                    
+                    print('onset: {}, offset: {}, event_label: {}\n'.format(onset+start, offset+start, event_label))
             else:
                 print('Others\n')
-                xml_string += '\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, end-start)
+                xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, end-start))
                 #print(output_dict['clipwise_output'])
             start += sample_duration
             num_segment += 1
         end_time = time.time()
         print('Time taken to process {}: {} s\n'.format(audio_name, end_time-start_time))
-        
-        xml_string += '\t</SoundCaptionList>\n'
-        xml_string += '</AudioDoc>'
+
+        xml_string_list.append('\t</SoundCaptionList>\n')
+        xml_string_list.append('</AudioDoc>')
+        xml_string = ''.join(xml_string_list)
         xml_file = open("{}/long_predict_results/{}.xml".format(workspace, audio_name.split('/')[-1].split('.wav')[0]), "w")
         xml_file.write(xml_string)
 
@@ -396,6 +423,7 @@ if __name__ == '__main__':
     parser_inference_prob.add_argument('--loss_type', type=str, required=True)
     parser_inference_prob.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_inference_prob.add_argument('--batch_size', type=int, required=True)
+    parser_inference_prob.add_argument('--feature_type', type=str, required=True)
     parser_inference_prob.add_argument('--cuda', action='store_true', default=False)
     
     # Parse arguments
