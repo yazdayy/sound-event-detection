@@ -299,6 +299,7 @@ def optimize_sed_thresholds(args):
     augmentation = args.augmentation
     batch_size = args.batch_size
     iteration = args.iteration
+    feature_type = args.feature_type
     data_type = 'test'
     
     classes_num = config.classes_num
@@ -312,7 +313,7 @@ def optimize_sed_thresholds(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        '{}_iterations.prediction.{}.pkl'.format(iteration, data_type))
+        'best_{}.prediction.{}.pkl'.format(feature_type, data_type))
     
     tmp_submission_path = os.path.join(workspace, '_tmp_submission', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
@@ -324,7 +325,7 @@ def optimize_sed_thresholds(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        '{}_iterations.sed.{}.pkl'.format(iteration, data_type))
+        'best_{}.sed.{}.pkl'.format(feature_type, data_type))
     create_folder(os.path.dirname(opt_thresholds_path))
 
     # Score calculator
@@ -387,7 +388,7 @@ if __name__ == '__main__':
     parser_optimize_sed_thresholds.add_argument('--loss_type', type=str, required=True)
     parser_optimize_sed_thresholds.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_optimize_sed_thresholds.add_argument('--batch_size', type=int, required=True)
-    parser_optimize_sed_thresholds.add_argument('--iteration', type=int, required=True)
+    parser_optimize_sed_thresholds.add_argument('--feature_type', type=str, required=True)
 
     args = parser.parse_args()
 

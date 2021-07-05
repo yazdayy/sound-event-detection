@@ -12,6 +12,7 @@ import re
 import random
 
 import config
+import gammatone.fftweight
 from utilities import create_folder, pad_truncate_sequence, float32_to_int16
 
 
@@ -185,7 +186,12 @@ def pack_audio_files_to_hdf5(args):
     workspace = args.workspace
     data_type = args.data_type
     mini_data = args.mini_data
-
+    feature_type = args.feature_type
+    
+    window_size = config.window_size
+    hop_size = config.hop_size
+    mel_bins = config.mel_bins
+    fmin = config.fmin
     sample_rate = config.sample_rate
     audio_samples = config.audio_samples
     classes_num = config.classes_num
@@ -217,9 +223,11 @@ def pack_audio_files_to_hdf5(args):
     if mini_data:
         packed_hdf5_path = os.path.join(workspace, 'hdf5s', 
             'minidata_{}.h5'.format(data_type))
-    else:
+    elif feature_type == 'logmel':
         packed_hdf5_path = os.path.join(workspace, 'hdf5s', 
             '{}.h5'.format(data_type))
+    elif feature_type == 'gamma':
+        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_{}.h5'.format(data_type, feature_type))
     create_folder(os.path.dirname(packed_hdf5_path))
 
     # Read metadata
@@ -241,11 +249,17 @@ def pack_audio_files_to_hdf5(args):
             name='audio_name', 
             shape=(audios_num,), 
             dtype='S80')
-
-        hf.create_dataset(
-            name='waveform', 
-            shape=(audios_num, audio_samples), 
-            dtype=np.int16)
+        
+        if feature_type == 'logmel':
+            hf.create_dataset(
+                name='waveform',
+                shape=(audios_num, audio_samples),
+                dtype=np.int16)
+        elif feature_type == 'gamma':
+            hf.create_dataset(
+                name='waveform',
+                shape=(audios_num, mel_bins, 994),
+                dtype=np.int16)
 
         hf.create_dataset(
             name='target', 
@@ -273,6 +287,10 @@ def pack_audio_files_to_hdf5(args):
             audio_path = os.path.join(audios_dir, audio_name)
             (audio, fs) = librosa.core.load(audio_path, sr=sample_rate, mono=True)
             audio = pad_truncate_sequence(audio, audio_samples)
+            
+            if feature_type == 'gamma':
+                audio = gammatone.fftweight.fft_gtgram(audio, sample_rate, window_size/sample_rate, hop_size/sample_rate, mel_bins, fmin)
+                audio = librosa.core.power_to_db(audio)
 
             hf['audio_name'][n] = audio_name.encode()
             hf['waveform'][n] = float32_to_int16(audio)
@@ -301,6 +319,7 @@ if __name__ == '__main__':
     parser_pack_audio.add_argument('--dataset_dir', type=str, required=True, help='Directory of dataset.')
     parser_pack_audio.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
     parser_pack_audio.add_argument('--data_type', type=str, choices=['training', 'testing', 'evaluation', 'weak_training', 'strong_training'], required=True, help='Directory of your workspace.')
+    parser_pack_audio.add_argument('--feature_type', type=str, required=True)
     parser_pack_audio.add_argument('--mini_data', action='store_true', default=False, help='Set True for debugging on a small part of data.')
     
     # Parse arguments

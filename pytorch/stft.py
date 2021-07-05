@@ -9,6 +9,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.parameter import Parameter
 
+from gammatone.fftweight import fft_gtgram
+
 
 class DFTBase(nn.Module):
     def __init__(self):
@@ -731,6 +733,137 @@ class LogmelFilterBank(nn.Module):
 
         return log_spec
 
+
+class GammaFilterBank(nn.Module):
+    def __init__(self, sr=22050, n_fft=2048, n_mels=64, fmin=0.0, fmax=None,
+        is_log=True, ref=1.0, amin=1e-10, top_db=80.0, freeze_parameters=True):
+        r"""Calculate logmel spectrogram using pytorch. The mel filter bank is
+        the pytorch implementation of as librosa.filters.mel
+        """
+        super(GammaFilterBank, self).__init__()
+
+        self.is_log = is_log
+        self.ref = ref
+        self.amin = amin
+        self.top_db = top_db
+        if fmax == None:
+            fmax = sr//2
+
+        self.sr = sr
+        self.n_mels = n_mels
+        self.fmin = fmin
+#        self.window_size = n_fft
+#        self.hop_size = n_fft / 2
+        self.window_time = 0.04#n_fft / sr
+        self.hop_time = self.window_time / 2
+        # (n_fft // 2 + 1, mel_bins)
+
+        if freeze_parameters:
+            for param in self.parameters():
+                param.requires_grad = False
+
+    def forward(self, input):
+        r"""Calculate (log) mel spectrogram from spectrogram.
+
+        Args:
+            input: (*, n_fft), spectrogram
+        
+        Returns:
+            output: (*, mel_bins), (log) mel spectrogram
+        """
+
+        # Gammatone spectrogram
+        gammatone = fft_gtgram(input, self.sr, self.window_time, self.hop_time, self.n_mels, self.fmin)
+        # (*, mel_bins)
+
+        # Logmel spectrogram
+        if self.is_log:
+            output = self.power_to_db(gammatone)
+        else:
+            output = gammatone
+
+        return output
+
+
+    def power_to_db(self, input):
+        r"""Power to db, this function is the pytorch implementation of
+        librosa.power_to_lb
+        """
+        ref_value = self.ref
+        log_gamma = 10.0 * torch.log10(torch.clamp(input, min=self.amin, max=np.inf))
+        log_gamma -= 10.0 * np.log10(np.maximum(self.amin, ref_value))
+
+        if self.top_db is not None:
+            if self.top_db < 0:
+                raise librosa.util.exceptions.ParameterError('top_db must be non-negative')
+            log_gamma = torch.clamp(log_gamma, min=log_gamma.max().item() - self.top_db, max=np.inf)
+
+        return log_gamma
+
+
+class CQTFilterBank(nn.Module):
+    def __init__(self, sr=22050, n_bins=80, fmin=0.0, fmax=None,
+        is_log=True, ref=1.0, amin=1e-10, top_db=80.0, freeze_parameters=True):
+        r"""Calculate cqt using pytorch. The cqt filter bank is
+        the pytorch implementation of as librosa.filters.cqt
+        """
+        super(CQTFilterBank, self).__init__()
+
+        self.is_log = is_log
+        self.ref = ref
+        self.amin = amin
+        self.top_db = top_db
+        if fmax == None:
+            fmax = sr//2
+
+        self.cqtW = librosa.filters.constant_q(sr=sr, n_bins=n_bins)
+        print(self.cqtW)
+        # (n_fft // 2 + 1, mel_bins)
+
+        self.cqtW = nn.Parameter(torch.Tensor(self.cqtW))
+
+        if freeze_parameters:
+            for param in self.parameters():
+                param.requires_grad = False
+
+    def forward(self, input):
+        r"""Calculate cqt from spectrogram.
+
+        Args:
+            input: (*, n_fft), spectrogram
+        
+        Returns:
+            output: (*, n_bins), (log) mel spectrogram
+        """
+
+        # Mel spectrogram
+        cqt = torch.matmul(input, self.cqtW)
+        # (*, mel_bins)
+
+        # Logmel spectrogram
+        if self.is_log:
+            output = self.power_to_db(cqt)
+        else:
+            output = cqt
+
+        return output
+
+
+    def power_to_db(self, input):
+        r"""Power to db, this function is the pytorch implementation of
+        librosa.power_to_lb
+        """
+        ref_value = self.ref
+        log_cqt = 10.0 * torch.log10(torch.clamp(input, min=self.amin, max=np.inf))
+        log_cqt -= 10.0 * np.log10(np.maximum(self.amin, ref_value))
+
+        if self.top_db is not None:
+            if self.top_db < 0:
+                raise librosa.util.exceptions.ParameterError('top_db must be non-negative')
+            log_cqt = torch.clamp(cqt, min=log_cqt.max().item() - self.top_db, max=np.inf)
+
+        return log_cqt
+        
 
 class Enframe(nn.Module):
     def __init__(self, frame_length=2048, hop_length=512):

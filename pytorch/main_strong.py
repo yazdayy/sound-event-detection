@@ -60,12 +60,17 @@ def train(args):
     batch_size = args.batch_size
     resume_iteration = args.resume_iteration
     stop_iteration = args.stop_iteration
+    feature_type = args.feature_type
     device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     mini_data = args.mini_data
     filename = args.filename
 
     weak_loss_func = get_loss_func(loss_type)
-    strong_loss_func = get_loss_func('frame_bce')
+    if loss_type == 'clip_bce':
+        strong_loss_func = get_loss_func('frame_bce')
+    elif loss_type == 'clip_bce_logits':
+        strong_loss_func = get_loss_func('frame_bce_logits')
+    
     num_workers = 8
     
     # Paths
@@ -73,15 +78,25 @@ def train(args):
         prefix = 'minidata_'
     else:
         prefix = ''
-
-    weak_train_hdf5_path = os.path.join(workspace, 'hdf5s',
-        '{}weak_training.h5'.format(prefix))
     
-    strong_train_hdf5_path = os.path.join(workspace, 'hdf5s',
-    '{}strong_training.h5'.format(prefix))
+    if feature_type == 'logmel':
+        weak_train_hdf5_path = os.path.join(workspace, 'hdf5s',
+            '{}weak_training.h5'.format(prefix))
+        
+        strong_train_hdf5_path = os.path.join(workspace, 'hdf5s',
+        '{}strong_training.h5'.format(prefix))
 
-    test_hdf5_path = os.path.join(workspace, 'hdf5s', 
-        '{}testing.h5'.format(prefix))
+        test_hdf5_path = os.path.join(workspace, 'hdf5s',
+            '{}testing.h5'.format(prefix))
+    elif feature_type == 'gamma':
+        weak_train_hdf5_path = os.path.join(workspace, 'hdf5s',
+            '{}weak_training_{}.h5'.format(prefix, feature_type))
+        
+        strong_train_hdf5_path = os.path.join(workspace, 'hdf5s',
+        '{}strong_training_{}.h5'.format(prefix, feature_type))
+
+        test_hdf5_path = os.path.join(workspace, 'hdf5s',
+            '{}testing_{}.h5'.format(prefix, feature_type))
 
     test_reference_csv_path = os.path.join(dataset_dir, 'metadata', 
         'groundtruth_strong_label_testing_set.csv')
@@ -122,11 +137,11 @@ def train(args):
     assert model_type, 'Please specify model_type!'
     Model = eval(model_type)
     model = Model(sample_rate, window_size, hop_size, mel_bins, fmin, fmax, 
-        classes_num)
+        classes_num, feature_type)
 
     if resume_iteration:
         resume_checkpoint_path = os.path.join(checkpoints_dir, 
-            'best.pth')
+            'best_{}.pth'.format(feature_type))
         logging.info('Load resume model from {}'.format(resume_checkpoint_path))
         resume_checkpoint = torch.load(resume_checkpoint_path)
         model.load_state_dict(resume_checkpoint['model'])
@@ -237,7 +252,7 @@ def train(args):
                             'optimizer': optimizer.state_dict()}
 
                         checkpoint_path = os.path.join(
-                            checkpoints_dir, 'best.pth')
+                            checkpoints_dir, 'best_{}.pth'.format(feature_type))
                             
                         torch.save(checkpoint, checkpoint_path)
                         logging.info('Model saved to {} for iteration {}'.format(checkpoint_path, iteration))
@@ -331,13 +346,17 @@ def inference_prob(self):
     loss_type = args.loss_type
     augmentation = args.augmentation
     batch_size = args.batch_size
+    feature_type = args.feature_type
     device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     filename = args.filename
 
     num_workers = 8
 
     # Paths
-    test_hdf5_path = os.path.join(workspace, 'hdf5s', 'testing.h5')
+    if feature_type == 'logmel':
+        test_hdf5_path = os.path.join(workspace, 'hdf5s', 'testing.h5')
+    elif feature_type == 'gamma':
+        test_hdf5_path = os.path.join(workspace, 'hdf5s', 'testing_{}.h5'.format(feature_type))
 
     test_reference_csv_path = os.path.join(dataset_dir, 'metadata', 
         'groundtruth_strong_label_testing_set.csv')
@@ -346,7 +365,7 @@ def inference_prob(self):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best.pth')
+        'best_{}.pth'.format(feature_type))
 
     predictions_dir = os.path.join(workspace, 'predictions', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
@@ -365,7 +384,7 @@ def inference_prob(self):
     assert model_type, 'Please specify model_type!'
     Model = eval(model_type)
     model = Model(sample_rate, window_size, hop_size, mel_bins, fmin, fmax, 
-        classes_num)
+        classes_num, feature_type)
 
     checkpoint = torch.load(checkpoint_path)
     model.load_state_dict(checkpoint['model'])
@@ -400,7 +419,7 @@ def inference_prob(self):
             data_loader, reference_csv_path, tmp_submission_path)
 
         prediction_path = os.path.join(predictions_dir, 
-            'best.prediction.{}.pkl'.format(data_type))
+            'best_{}.prediction.{}.pkl'.format(feature_type, data_type))
 
         # write_out_prediction(output_dict, prediction_path)
         pickle.dump(output_dict, open(prediction_path, 'wb'))
@@ -423,6 +442,7 @@ if __name__ == '__main__':
     parser_train.add_argument('--batch_size', type=int, required=True)
     parser_train.add_argument('--resume_iteration', type=int)
     parser_train.add_argument('--stop_iteration', type=int, required=True)
+    parser_train.add_argument('--feature_type', type=str, required=True)
     parser_train.add_argument('--cuda', action='store_true', default=False)
     parser_train.add_argument('--mini_data', action='store_true', default=False)
 
@@ -434,6 +454,7 @@ if __name__ == '__main__':
     parser_inference_prob.add_argument('--model_type', type=str, required=True)
     parser_inference_prob.add_argument('--loss_type', type=str, required=True)
     parser_inference_prob.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
+    parser_inference_prob.add_argument('--feature_type', type=str, required=True)
     parser_inference_prob.add_argument('--batch_size', type=int, required=True)
     parser_inference_prob.add_argument('--cuda', action='store_true', default=False)
     

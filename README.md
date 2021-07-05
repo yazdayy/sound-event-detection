@@ -19,9 +19,11 @@ Note:
 
 - Please change to --augmentation='mixup' if you would like to train or run the system with mixup applied only. Otherwise, --augmentation='timeshift_mixup' is used and both timeshift and mixup are applied.
 
+- If you would like to train or run the system using gammatone features, use --feature_type='gamma' instead of --feature_type='logmel'
+
 - Please upload the audio clips you would like to predict on in the 'long_predict' folder.
 
-- The prediction output is saved in the long_predict_results directory in the following xml format:
+- The prediction output is saved in the 'long_predict_results' directory in the following xml format:
     ![xml_output_example](https://user-images.githubusercontent.com/56859670/123733914-f5955800-d8ce-11eb-8c4b-11dd3c7de29b.png)
 
 

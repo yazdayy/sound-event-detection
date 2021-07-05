@@ -76,6 +76,7 @@ def calculate_metrics(args):
     augmentation = args.augmentation
     batch_size = args.batch_size
     data_type = args.data_type
+    feature_type = args.feature_type
     at_thresholds = args.at_thresholds
     sed_thresholds = args.sed_thresholds
 
@@ -94,7 +95,7 @@ def calculate_metrics(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best.prediction.{}.pkl'.format(data_type))
+        'best_{}.prediction.{}.pkl'.format(feature_type, data_type))
     
     tmp_submission_path = os.path.join(workspace, '_tmp_submission', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
@@ -182,6 +183,7 @@ if __name__ == '__main__':
     parser_calculate_metrics.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_calculate_metrics.add_argument('--batch_size', type=int, required=True)
     parser_calculate_metrics.add_argument('--data_type', type=str, choices=['test', 'evaluate'], required=True)
+    parser_calculate_metrics.add_argument('--feature_type', type=str, required=True)
     parser_calculate_metrics.add_argument('--at_thresholds', action='store_true', default=False)
     parser_calculate_metrics.add_argument('--sed_thresholds', action='store_true', default=False)
 
