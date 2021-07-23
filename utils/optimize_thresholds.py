@@ -19,7 +19,7 @@ from calculate_metrics import calculate_precision_recall_f1, calculate_metrics
 import config
 
 class HyperParamsOptimizer(object):
-    def __init__(self, score_calculator, learning_rate=1e-2, epochs=100,
+    def __init__(self, score_calculator, save_dict, learning_rate=1e-2, epochs=100,
         step=0.01, max_search=5):
         """Hyper parameters optimizer. Parameters are optimized using gradient
         descend methods by using the numerically calculated graident:
@@ -40,6 +40,7 @@ class HyperParamsOptimizer(object):
         self.optimizer.alpha = learning_rate
         self.step = step
         self.max_search = max_search
+        self.save_dict = save_dict
 
     def do_optimize(self, init_params):
         print('Optimizing hyper parameters ...')
@@ -53,10 +54,11 @@ class HyperParamsOptimizer(object):
             (score, grads) = self.calculate_gradients(params)
             grads = [-e for e in grads]
             params = self.optimizer.GetNewParams(params, grads)
+            self.save_dict[i] = {'thresholds': params, 'score': score}
             print('    Hyper parameters: {}, score: {:.4f}'.format([round(param, 4) for param in params], score))
             print('    Epoch: {}, Time: {:.4f} s'.format(i, time.time() - t1))
         
-        return score, params
+        return score, params, self.save_dict
 
     def calculate_gradients(self, params):
         """Calculate gradient of thresholds numerically.
@@ -298,9 +300,8 @@ def optimize_sed_thresholds(args):
     loss_type = args.loss_type
     augmentation = args.augmentation
     batch_size = args.batch_size
-    iteration = args.iteration
-    feature_type = args.feature_type
     data_type = 'test'
+    save_dict = {}
     
     classes_num = config.classes_num
     
@@ -313,7 +314,7 @@ def optimize_sed_thresholds(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best_{}.prediction.{}.pkl'.format(feature_type, data_type))
+        'best.prediction.{}.pkl'.format(data_type))
     
     tmp_submission_path = os.path.join(workspace, '_tmp_submission', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
@@ -325,8 +326,15 @@ def optimize_sed_thresholds(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best_{}.sed.{}.pkl'.format(feature_type, data_type))
+        'best.sed.{}.pkl'.format(data_type))
     create_folder(os.path.dirname(opt_thresholds_path))
+    
+    save_record_path = os.path.join(workspace, 'opt_thresholds',
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold),
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type),
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+        'record.sed.{}.pkl'.format(data_type))
+    create_folder(os.path.dirname(save_record_path))
 
     # Score calculator
     score_calculator = SoundEventDetectionScoreCalculator(
@@ -334,8 +342,8 @@ def optimize_sed_thresholds(args):
         submission_path=tmp_submission_path, classes_num=classes_num)
 
     # Thresholds optimizer
-    hyper_params_opt = HyperParamsOptimizer(score_calculator, 
-        learning_rate=1e-2, epochs=50, step=0.02, max_search=5)
+    hyper_params_opt = HyperParamsOptimizer(score_calculator, save_dict,
+        learning_rate=1e-2, epochs=70, step=0.02, max_search=5)
 
     # Initialize thresholds
     sed_params_dict = {
@@ -347,7 +355,7 @@ def optimize_sed_thresholds(args):
     score_no_opt = score_calculator(init_params)
 
     # Optimize thresholds
-    (opt_score, opt_params) = hyper_params_opt.do_optimize(init_params=init_params)
+    (opt_score, opt_params, save_dict) = hyper_params_opt.do_optimize(init_params=init_params)
     opt_params = score_calculator.params_list_to_params_dict(opt_params)
 
     print('\n------ Optimized thresholds ------')
@@ -362,6 +370,9 @@ def optimize_sed_thresholds(args):
     # Write out optimized thresholds
     pickle.dump(opt_params, open(opt_thresholds_path, 'wb'))
     print('\nSave optimized thresholds to {}'.format(opt_thresholds_path))
+    
+    pickle.dump(save_dict, open(save_record_path, 'wb'))
+    print('\nSave records to {}'.format(save_record_path))
 
 
 if __name__ == '__main__':
@@ -388,7 +399,6 @@ if __name__ == '__main__':
     parser_optimize_sed_thresholds.add_argument('--loss_type', type=str, required=True)
     parser_optimize_sed_thresholds.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
     parser_optimize_sed_thresholds.add_argument('--batch_size', type=int, required=True)
-    parser_optimize_sed_thresholds.add_argument('--feature_type', type=str, required=True)
 
     args = parser.parse_args()
 

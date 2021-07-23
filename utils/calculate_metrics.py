@@ -95,7 +95,7 @@ def calculate_metrics(args):
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best_{}.prediction.{}.pkl'.format(feature_type, data_type))
+        'best.prediction.{}.pkl'.format(data_type))
     
     tmp_submission_path = os.path.join(workspace, '_tmp_submission', 
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 

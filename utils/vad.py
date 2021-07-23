@@ -22,10 +22,13 @@ def activity_detection(x, thres, low_thres=None, n_smooth=1, n_salt=0):
     Return: list of [bgn, fin]
     """
     
+    #print(x, '\n')
     locts = np.where(x > thres)[0]
+    #print(locts, '\n')
     
     # Find pairs of [bgn, fin]
     bgn_fin_pairs = find_bgn_fin_pairs(locts)
+    #print(bgn_fin_pairs, '\n')
     
     # Second threshold
     if low_thres is not None:
@@ -38,8 +41,69 @@ def activity_detection(x, thres, low_thres=None, n_smooth=1, n_salt=0):
     # Remove salt noise
     bgn_fin_pairs = remove_salt_noise(bgn_fin_pairs, n_salt)
     
+    #print(np.array(bgn_fin_pairs).shape)
     return bgn_fin_pairs
 
+def activity_detection_binary(x, overlap_value, sample_duration, thres, low_thres=None, n_smooth=1, n_salt=0):
+    """Activity detection.
+
+    Args:
+      x: array
+      thres:    float, threshold
+      low_thres:float, second lower threshold
+      n_smooth: integar, number of frames to smooth.
+      n_salt:   integar, number of frames equal or shorter this value will be
+                removed. Set this value to 0 means do not use delete_salt_noise.
+
+    Return: list of [bgn, fin]
+    """
+    
+    all_pairs = []
+    overlap_interval = int(100 * overlap_value)
+    interval = (sample_duration * 100) - overlap_interval
+    
+    #print(x, '\n')
+    #print(x.shape, '\n')
+    all_locts = []
+    for i in range(0, x.shape[0]-overlap_interval, overlap_interval):
+        if i < interval:
+            num_overlaps = i//overlap_interval + 1
+        elif i >= x.shape[0] - interval:
+            num_overlaps = ((x.shape[0] - i) // overlap_interval) + 1
+        else:
+            num_overlaps = sample_duration
+        
+        #print(num_overlaps, '\n')
+        #print(x[i:i+overlap_interval], '\n')
+        locts = np.where(x[i:i+overlap_interval] >= (num_overlaps))[0]
+        if len(locts) != 0:
+            print('BEFORE', locts, '\n')
+            locts = [x+i for x in locts]
+            print('AFTER', locts, '\n')
+            all_locts.extend(locts)
+        else:
+            continue
+
+    # Find pairs of [bgn, fin]
+    bgn_fin_pairs = find_bgn_fin_pairs(all_locts)
+    #print(bgn_fin_pairs, '\n')
+
+    # Second threshold
+    if low_thres is not None:
+        bgn_fin_pairs = activity_detection_with_second_thres(
+            x, bgn_fin_pairs, low_thres)
+
+    # Smooth
+    bgn_fin_pairs = smooth(bgn_fin_pairs, n_smooth)
+
+    # Remove salt noise
+    bgn_fin_pairs = remove_salt_noise(bgn_fin_pairs, n_salt)
+    
+    #all_pairs.extend(bgn_fin_pairs)
+    
+    #print(np.array(all_pairs).shape)
+
+    return bgn_fin_pairs
         
 def find_bgn_fin_pairs(locts):
     """Find pairs of [bgn, fin] from loctation array

@@ -9,6 +9,7 @@ import time
 import pickle
 import logging
 import librosa
+import subprocess
 
 import config
 from glob import glob
@@ -29,10 +30,10 @@ from config import (sample_rate, classes_num, mel_bins, fmin, fmax,
     window_size, hop_size, window, pad_mode, center, device, ref, amin, top_db)
 from losses import get_loss_func
 from pytorch_utils import move_data_to_device, do_mixup, do_mixup_timeshift, forward
-from utilities import (create_folder, get_filename, create_logging, 
-    StatisticsContainer, Mixup, frame_prediction_to_event_prediction, write_submission, pad_truncate_sequence, float32_to_int16, int16_to_float32)
-from data_generator import (TrainSampler, TestSampler,
-    collate_fn)
+from utilities import (create_folder, get_filename, frame_prediction_to_event_prediction, create_logging,
+    StatisticsContainer, Mixup, write_submission, pad_truncate_sequence, float32_to_int16, int16_to_float32)
+from vad import activity_detection
+from data_generator import (TrainSampler, TestSampler, collate_fn)
 from models import *
 
 def sample_segment(sample, sample_duration, sample_rate):
@@ -224,6 +225,115 @@ def append_to_dict(dict, key, value):
     else:
         dict[key] = value
 
+def frame_prediction_to_event_prediction_v2(framewise_output, sed_params_dict):
+    """Write output to submission file.
+    
+    Args:
+      output_dict: {
+          'audio_name': (audios_num),
+          'clipwise_output': (audios_num, classes_num),
+          'framewise_output': (audios_num, frames_num, classes_num)}
+      sed_params_dict: {
+          'audio_tagging_threshold': float between 0 and 1,
+          'sed_high_threshold': : float between 0 and 1,
+          'sed_low_threshold': : float between 0 and 1,
+          'n_smooth': int, silence between the same sound event shorter than
+              this number will be filled with the sound event
+          'n_salt': int, sound event shorter than this number will be removed}
+    """
+    (audios_num, frames_num, classes_num) = framewise_output.shape
+    frames_per_second = config.frames_per_second
+    labels = config.labels
+    
+    event_list = []
+    
+    def _float_to_list(x):
+        if 'list' in str(type(x)):
+            return x
+        else:
+            return [x] * classes_num
+
+    sed_params_dict['audio_tagging_threshold'] = _float_to_list(sed_params_dict['audio_tagging_threshold'])
+    sed_params_dict['sed_high_threshold'] = _float_to_list(sed_params_dict['sed_high_threshold'])
+    sed_params_dict['sed_low_threshold'] = _float_to_list(sed_params_dict['sed_low_threshold'])
+    sed_params_dict['n_smooth'] = _float_to_list(sed_params_dict['n_smooth'])
+    sed_params_dict['n_salt'] = _float_to_list(sed_params_dict['n_salt'])
+    
+    count1 = 0
+    count2 = 0
+    for n in range(audios_num):
+        check = 0
+        for k in range(classes_num):
+#            if output_dict['clipwise_output'][n, k] \
+#                > sed_params_dict['audio_tagging_threshold'][k]:
+            check += 1
+            count1 += 1
+            bgn_fin_pairs = activity_detection(
+            x=framewise_output[n, :, k],
+            thres=sed_params_dict['sed_high_threshold'][k],
+            low_thres=sed_params_dict['sed_low_threshold'][k],
+            n_smooth=sed_params_dict['n_smooth'][k],
+            n_salt=sed_params_dict['n_salt'][k])
+            
+            if len(bgn_fin_pairs) >= 1:
+                count2 += 1
+            for pair in bgn_fin_pairs:
+                event = {
+                    'filename': 'test',
+                    'onset': pair[0] / float(frames_per_second),
+                    'offset': pair[1] / float(frames_per_second),
+                    'event_label': labels[k]}
+                event_list.append(event)
+#        if check == 0:
+#            print(output_dict['audio_name'][n])
+#            print(output_dict['clipwise_output'][n])
+    all_filenames = list(set([x['filename'] for x in event_list]))
+    
+    return event_list
+
+def merge(prev, curr, sample_duration, num_segment, overlap_value=1):
+    overlap_interval = int(100 * overlap_value)
+    front_cutoff = (num_segment-1) * overlap_interval
+    back_cutoff = prev.shape[1] - front_cutoff
+    prev_overlap = prev[:, front_cutoff:]
+    curr_overlap = curr[:, :back_cutoff]
+    merged = prev_overlap + curr_overlap
+    add_front = np.concatenate((prev[:, :front_cutoff], merged), axis=1)
+    add_back = np.concatenate((add_front, curr[:, back_cutoff:]), axis=1)
+    
+#    front_cutoff = (num_segment-1) * 100
+#    back_cutoff = prev.shape[1] - front_cutoff
+#    prev_overlap = prev[:, front_cutoff:]
+#    curr_overlap = curr[:, :back_cutoff]
+#    merged = prev_overlap + curr_overlap
+#    add_front = np.concatenate((prev[:, :front_cutoff], merged), axis=1)
+#    add_back = np.concatenate((add_front, curr[:, back_cutoff:]), axis=1)
+
+    return add_back
+    
+def avg_merge(merged, sample_duration, overlap_value=1):
+    overlap_interval = int(100 * overlap_value)
+    interval = (sample_duration * 100) - overlap_interval
+    for i in range(overlap_interval, merged.shape[1]-overlap_interval, overlap_interval):
+        if i < interval:
+            num_overlaps = i//overlap_interval + 1
+        elif i >= merged.shape[1] - interval:
+            num_overlaps = ((merged.shape[1] - i) // overlap_interval) + 1
+        else:
+            num_overlaps = sample_duration
+        merged[:, i:i+overlap_interval] /= num_overlaps
+#    interval = (sample_duration * 100) - 100
+#    for i in range(100, merged.shape[1]-100, 100):
+#        if i < interval:
+#            num_overlaps = i//100 + 1
+#        elif i >= merged.shape[1] - interval:
+#            num_overlaps = ((merged.shape[1] - i) // 100) + 1
+#        else:
+#            num_overlaps = sample_duration
+#        merged[:, i:i+100] /= num_overlaps
+    
+    return merged
+
 def predict(self):
     """Inference test and evaluate data and dump predicted probabilites to 
     pickle files.
@@ -259,10 +369,25 @@ def predict(self):
     device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     filename = args.filename
     feature_type = args.feature_type
+    sed_thresholds = args.sed_thresholds
+    overlap = args.overlap
+    sample_duration = args.sample_duration
+    overlap_value = args.overlap_value
 
     num_workers = 8
     os.makedirs('{}/long_predict_results'.format(workspace), exist_ok=True)
     data_type = 'long_predict'
+    
+#    if filename == 'main_vggish':
+#        print('VGGish')
+#        sample_rate = 16000
+#        audio_samples = sample_rate * 10
+#        window_size = int(0.025 * sample_rate)
+#        hop_size = int(0.015 * sample_rate)
+#        n_fft = 512
+#        mel_bins = 64
+#        fmin = 125
+#        fmax = 7500
     
     # Paths
     #predict_hdf5_path = os.path.join(workspace, 'hdf5s', 'long_predict.h5')
@@ -310,16 +435,24 @@ def predict(self):
     # Predictor
     predictor = Predictor(model=model)
     
-    sed_params_dict = {
-    'audio_tagging_threshold': 0.099,
-    'sed_high_threshold': 0.5,
-    'sed_low_threshold': 0.2,
-    'n_smooth': 10,
-    'n_salt': 10}
+    if sed_thresholds:
+        sed_thresholds_path = os.path.join(workspace, 'opt_thresholds',
+            '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold),
+            'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type),
+            'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+            'best.sed.test.pkl')
+        sed_params_dict = pickle.load(open(sed_thresholds_path, 'rb'))
+    else:
+        sed_params_dict = {
+        'audio_tagging_threshold': 0.099,
+        'sed_high_threshold': 0.5,
+        'sed_low_threshold': 0.3,
+        'n_smooth': 10,
+        'n_salt': 10}
     
-    sample_duration = 10
+    #sample_duration = 3
     audios_dir = os.path.join(dataset_dir, data_type)
-    audio_files = sorted(glob('{}/*.wav'.format(audios_dir)))
+    audio_files = sorted(glob('{}/*'.format(audios_dir)))
     audios_num = len(audio_files)
     audio_samples = sample_rate * sample_duration
     for n in range(audios_num):
@@ -331,22 +464,44 @@ def predict(self):
         last_offset = 0
         last_event = ''
         tracker_dict = {}
+        overlap_dict = defaultdict(list)
+        tree = lambda: defaultdict(tree)
+        voting_dict = tree()
         print('Predicting on {}'.format(audio_name))
-        audio_path = os.path.join(audios_dir, audio_name)
         audio_duration = librosa.get_duration(filename=audio_name)
         print('Total audio duration: {} s'.format(audio_duration))
         num_segment = 1
+        index = 0
         start = 0
+        end = 0
         start_time = time.time()
-        while start < audio_duration:
+        merged = None
+        ext = audio_name.split('/')[-1].split('.')[-1]
+        prefix = audio_name[:-len(ext)]
+        print(ext, prefix)
+        if ext != 'wav':
+            ffmpeg_command = 'ffmpeg -i ' + audio_name + ' {}wav'.format(prefix)
+            call_ffmpeg = subprocess.Popen(ffmpeg_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            f1 = call_ffmpeg.stdout.read()
+            print(f1)
+            f2 = call_ffmpeg.wait()
+            audio_name = '{}wav'.format(prefix)
+        (audio_full, fs) = librosa.core.load(audio_name, sr=sample_rate, mono=True)
+#        while start < audio_duration:
+        while end <= audio_duration:
             
             # Load audio sample
-            (audio, fs) = librosa.core.load(audio_name, sr=sample_rate, offset=start, duration=sample_duration, mono=True)
+#            (audio, fs) = librosa.core.load(audio_name, sr=sample_rate, offset=start, duration=sample_duration, mono=True)
+#            audio = pad_truncate_sequence(audio, audio_samples)
+            start_index = int(start * sample_rate)
+            end_index = int((sample_duration * sample_rate) + start_index)
+            audio = audio_full[start_index:end_index]
             audio = pad_truncate_sequence(audio, audio_samples)
             audio = torch.Tensor(audio)
-            audio = torch.reshape(audio, (1,audio.size()[0])).to(device)
+            audio = torch.reshape(audio, (1, audio.size()[0])).to(device)
 
             output_dict = {}
+            merged_output_dict = {}
             with torch.no_grad():
                 model.eval()
                 batch_output = model(audio)
@@ -359,49 +514,86 @@ def predict(self):
                 append_to_dict(output_dict, 'framewise_output',
                     batch_output['framewise_output'].data.cpu().numpy())
             
-            predict_event_list = frame_prediction_to_event_prediction(output_dict,
-            sed_params_dict)
+            curr_preds = output_dict['framewise_output']
+            if num_segment == 2:
+                merged = merge(prev_preds, curr_preds, sample_duration, num_segment, overlap_value)
+            elif num_segment > 2:
+                merged = merge(merged, curr_preds, sample_duration, num_segment, overlap_value)
+            else:
+                merged = curr_preds
+#            predict_event_list = frame_prediction_to_event_prediction(output_dict,
+#            sed_params_dict)
+            prev_preds = output_dict['framewise_output']
             
-            if audio_duration < start + sample_duration:
-                end = audio_duration
+            if overlap:
+                start += 1
             else:
-                end = start + sample_duration
-
-            print('Segment {}: {} s to {} s'.format(num_segment, start, end))
-            print('---------------------------------------------------------------')
-            if len(predict_event_list) >= 1:
-                for event in predict_event_list:
-                    onset = event['onset']
-                    offset = event['offset']
-                    event_label = event['event_label']
-                    if onset == 0 and (event_label in list(tracker_dict.keys())):
-                        if onset + start == tracker_dict[event_label][1]:
-                            # Remove previous tracked segment from list
-                            xml_string_list.pop(tracker_dict[event_label][3])
-                            current_duration = event['offset']-event['onset']
-                            xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(tracker_dict[event_label][0], tracker_dict[event_label][2] + current_duration, event_label))
-                            for k, v in tracker_dict.items():
-                                if v[-1] - 1 == tracker_dict[event_label][3]:
-                                    v[-1] = tracker_dict[event_label][3]
-                            tracker_dict.pop(event_label)
-                    else:
-                        xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(start+onset, offset-onset, event_label))
-                    last_onset = start + onset
-                    last_offset = start + offset
-                    last_duration = offset - onset
-                    if offset == 10:
-                        tracker_dict[event['event_label']] = [last_onset, last_offset, last_duration, len(xml_string_list)-1]
-                    
-                    print('onset: {}, offset: {}, event_label: {}\n'.format(onset+start, offset+start, event_label))
-            else:
-                print('Others\n')
-                xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, end-start))
-                #print(output_dict['clipwise_output'])
-            start += sample_duration
+                start += sample_duration
+            end = start + sample_duration
             num_segment += 1
+        
+#        for i in range(100, merged.shape[1]-100, 100):
+#            if i < 400:
+#                num_overlaps = i//100 + 1
+#            elif i >= merged.shape[1] - 400:
+#                num_overlaps = ((merged.shape[1] - i) // 100) + 1
+#            else:
+#                num_overlaps = 5
+#            merged[:, i:i+100] /= num_overlaps
+        merged = avg_merge(merged, sample_duration, overlap_value)
+        np.set_printoptions(threshold=sys.maxsize)
+        #print(merged[:, 2450:2600])
+        predict_event_list = frame_prediction_to_event_prediction_v2(merged, sed_params_dict)
+        predict_event_list = sorted(predict_event_list, key=lambda k: k['onset'])
+        
+        if audio_duration < start + sample_duration:
+            end = audio_duration
+        else:
+            end = start + sample_duration
+
+#        print('Segment {}: {} s to {} s'.format(num_segment, start, end))
+#        print('---------------------------------------------------------------')
+        if len(predict_event_list) >= 1:
+            for event in predict_event_list:
+                onset = event['onset']
+                offset = event['offset']
+                event_label = event['event_label']
+#                xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(onset, offset-onset, event_label))
+                xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}" event="{}">{}</SoundSegment>\n'.format(onset, offset-onset, event_label, event_label))
+                
+#                    if onset == 0 and (event_label in list(tracker_dict.keys())):
+#                        if onset + start == tracker_dict[event_label][1]:
+#                            # Remove previous tracked segment from list
+#                            xml_string_list.pop(tracker_dict[event_label][3])
+#                            current_duration = event['offset']-event['onset']
+#                            xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(tracker_dict[event_label][0], tracker_dict[event_label][2] + current_duration, event_label))
+#                            for k, v in tracker_dict.items():
+#                                if v[-1] - 1 == tracker_dict[event_label][3]:
+#                                    v[-1] = tracker_dict[event_label][3]
+#                            tracker_dict.pop(event_label)
+#                    else:
+#                        xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">{}</SoundSegment>\n'.format(start+onset, offset-onset, event_label))
+#                    last_onset = start + onset
+#                    last_offset = start + offset
+#                    last_duration = offset - onset
+#                    if offset == sample_duration:
+#                        tracker_dict[event['event_label']] = [last_onset, last_offset, last_duration, len(xml_string_list)-1]
+                    
+#                    if offset >= 1:
+#                        if overlapped:
+#                            _index = prev[-1]
+#                        else:
+#                            index += 1
+#                            _index = index
+#                        overlap_dict[num_segment].append([start+onset, start+offset, event_label, _index])
+                
+                print('onset: {}, offset: {}, event_label: {}\n'.format(onset, offset, event_label))
+        else:
+            print('Others\n')
+            xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}">Others</SoundSegment>\n'.format(start, end-start))
         end_time = time.time()
         print('Time taken to process {}: {} s\n'.format(audio_name, end_time-start_time))
-
+        
         xml_string_list.append('\t</SoundCaptionList>\n')
         xml_string_list.append('</AudioDoc>')
         xml_string = ''.join(xml_string_list)
@@ -425,6 +617,10 @@ if __name__ == '__main__':
     parser_inference_prob.add_argument('--batch_size', type=int, required=True)
     parser_inference_prob.add_argument('--feature_type', type=str, required=True)
     parser_inference_prob.add_argument('--cuda', action='store_true', default=False)
+    parser_inference_prob.add_argument('--sed_thresholds', action='store_true', default=False)
+    parser_inference_prob.add_argument('--overlap', action='store_true', default=False)
+    parser_inference_prob.add_argument('--sample_duration', type=int, default=10)
+    parser_inference_prob.add_argument('--overlap_value', type=float, default=1.0)
     
     # Parse arguments
     args = parser.parse_args()

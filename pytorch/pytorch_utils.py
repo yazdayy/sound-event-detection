@@ -50,6 +50,7 @@ def forward(model, data_loader, return_input=False, return_target=False):
         
         with torch.no_grad():
             model.eval()
+            print(batch_waveform, batch_waveform.size())
             batch_output = model(batch_waveform)
 
         append_to_dict(output_dict, 'audio_name', batch_data_dict['audio_name'])

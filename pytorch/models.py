@@ -656,6 +656,8 @@ class Cnn_9layers_Gru_FrameAtt(nn.Module):
         # Framewise output
         framewise_output = cla.transpose(1, 2)
         framewise_output = interpolate(framewise_output, interpolate_ratio)
+        if framewise_output.size()[1] != 1000:
+            framewise_output = pad_framewise_output(framewise_output, roundup(framewise_output.size()[1]))
         #framewise_output = pad_framewise_output(framewise_output, 1000)
         
         output_dict = {

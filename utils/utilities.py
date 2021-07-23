@@ -11,7 +11,7 @@ import sed_eval
 import h5py
 
 import config
-from vad import activity_detection
+from vad import activity_detection, activity_detection_binary
 
 
 def create_folder(fd):
@@ -101,7 +101,6 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
     sed_params_dict['n_smooth'] = _float_to_list(sed_params_dict['n_smooth'])
     sed_params_dict['n_salt'] = _float_to_list(sed_params_dict['n_salt'])
     
-    
     count1 = 0
     count2 = 0
     for n in range(audios_num):
@@ -141,6 +140,128 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
     
     return event_list
 
+def frame_prediction_to_event_prediction_v2(framewise_output, audio_name, sed_params_dict):
+    """Write output to submission file.
+    
+    Args:
+      output_dict: {
+          'audio_name': (audios_num),
+          'clipwise_output': (audios_num, classes_num),
+          'framewise_output': (audios_num, frames_num, classes_num)}
+      sed_params_dict: {
+          'audio_tagging_threshold': float between 0 and 1,
+          'sed_high_threshold': : float between 0 and 1,
+          'sed_low_threshold': : float between 0 and 1,
+          'n_smooth': int, silence between the same sound event shorter than
+              this number will be filled with the sound event
+          'n_salt': int, sound event shorter than this number will be removed}
+    """
+    (audios_num, frames_num, classes_num) = framewise_output.shape
+    frames_per_second = config.frames_per_second
+    labels = config.labels
+    
+    event_list = []
+    
+    def _float_to_list(x):
+        if 'list' in str(type(x)):
+            return x
+        else:
+            return [x] * classes_num
+
+    sed_params_dict['audio_tagging_threshold'] = _float_to_list(sed_params_dict['audio_tagging_threshold'])
+    sed_params_dict['sed_high_threshold'] = _float_to_list(sed_params_dict['sed_high_threshold'])
+    sed_params_dict['sed_low_threshold'] = _float_to_list(sed_params_dict['sed_low_threshold'])
+    sed_params_dict['n_smooth'] = _float_to_list(sed_params_dict['n_smooth'])
+    sed_params_dict['n_salt'] = _float_to_list(sed_params_dict['n_salt'])
+    
+    count1 = 0
+    count2 = 0
+    for n in range(audios_num):
+        check = 0
+        for k in range(classes_num):
+            check += 1
+            count1 += 1
+            bgn_fin_pairs = activity_detection(
+            x=framewise_output[n, :, k],
+            thres=sed_params_dict['sed_high_threshold'][k],
+            low_thres=sed_params_dict['sed_low_threshold'][k],
+            n_smooth=sed_params_dict['n_smooth'][k],
+            n_salt=sed_params_dict['n_salt'][k])
+            
+            if len(bgn_fin_pairs) >= 1:
+                count2 += 1
+            for pair in bgn_fin_pairs:
+                event = {
+                    'filename': audio_name,
+                    'onset': pair[0] / float(frames_per_second),
+                    'offset': pair[1] / float(frames_per_second),
+                    'event_label': labels[k]}
+                event_list.append(event)
+    all_filenames = list(set([x['filename'] for x in event_list]))
+    
+    return event_list
+    
+def frame_binary_prediction_to_event_prediction(framewise_output, overlap_value, sample_duration,  audio_name, sed_params_dict):
+    """Write output to submission file.
+
+    Args:
+      output_dict: {
+          'audio_name': (audios_num),
+          'clipwise_output': (audios_num, classes_num),
+          'framewise_output': (audios_num, frames_num, classes_num)}
+      sed_params_dict: {
+          'audio_tagging_threshold': float between 0 and 1,
+          'sed_high_threshold': : float between 0 and 1,
+          'sed_low_threshold': : float between 0 and 1,
+          'n_smooth': int, silence between the same sound event shorter than
+              this number will be filled with the sound event
+          'n_salt': int, sound event shorter than this number will be removed}
+    """
+    (audios_num, frames_num, classes_num) = framewise_output.shape
+    frames_per_second = config.frames_per_second
+    labels = config.labels
+
+    event_list = []
+
+    def _float_to_list(x):
+        if 'list' in str(type(x)):
+            return x
+        else:
+            return [x] * classes_num
+
+    sed_params_dict['audio_tagging_threshold'] = _float_to_list(sed_params_dict['audio_tagging_threshold'])
+    sed_params_dict['sed_high_threshold'] = _float_to_list(sed_params_dict['sed_high_threshold'])
+    sed_params_dict['sed_low_threshold'] = _float_to_list(sed_params_dict['sed_low_threshold'])
+    sed_params_dict['n_smooth'] = _float_to_list(sed_params_dict['n_smooth'])
+    sed_params_dict['n_salt'] = _float_to_list(sed_params_dict['n_salt'])
+
+    count1 = 0
+    count2 = 0
+    for n in range(audios_num):
+        check = 0
+        for k in range(classes_num):
+            check += 1
+            count1 += 1
+            bgn_fin_pairs = activity_detection_binary(
+            x=framewise_output[n, :, k], overlap_value=overlap_value,
+            sample_duration=sample_duration,
+            thres=sed_params_dict['sed_high_threshold'][k],
+            low_thres=sed_params_dict['sed_low_threshold'][k],
+            n_smooth=sed_params_dict['n_smooth'][k],
+            n_salt=sed_params_dict['n_salt'][k])
+            
+            if len(bgn_fin_pairs) >= 1:
+                count2 += 1
+            for pair in bgn_fin_pairs:
+                event = {
+                    'filename': audio_name,
+                    'onset': pair[0] / float(frames_per_second),
+                    'offset': pair[1] / float(frames_per_second),
+                    'event_label': labels[k]}
+                event_list.append(event)
+    all_filenames = list(set([x['filename'] for x in event_list]))
+
+    return event_list
 
 def write_submission(event_list, submission_path):
     """Write prediction event list to submission file for later evaluation.

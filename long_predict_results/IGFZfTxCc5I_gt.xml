@@ -1,23 +1,35 @@
 <AudioDoc name="IGFZfTxCc5I.wav">
 	<SoundCaptionList>
-		<SoundSegment stime="0.4" dur="9.6">Applause</SoundSegment>
-		<SoundSegment stime="10.0" dur="2.08">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="12.32" dur="1.04">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="14.16" dur="4.08">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="18.64" dur="6.56">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="25.92" dur="2.3200000000000003">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="28.72" dur="1.2799999999999994">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="0.4" dur="10.0">Applause</SoundSegment>
+		<SoundSegment stime="10.1" dur="2.08">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="12.4" dur="1.04">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="14.5" dur="0.7">Male_speech_man_speaking</SoundSegment>
+        <SoundSegment stime="16.4" dur="1.4">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="18.7" dur="0.5">Male_speech_man_speaking</SoundSegment>
+        <SoundSegment stime="19.8" dur="0.4">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="20.0008" dur="10.0">Crowd</SoundSegment>
+        <SoundSegment stime="21.11" dur="3.323">Male_speech_man_speaking</SoundSegment>
+        <SoundSegment stime="23.252" dur="2.732">Shout</SoundSegment>
+        <SoundSegment stime="23.283" dur="6.717">Cheering</SoundSegment>
+        <SoundSegment stime="24.323" dur="5.677">Applause</SoundSegment>
+        <SoundSegment stime="24.323" dur="5.677">Clapping</SoundSegment>
+        <SoundSegment stime="26.181" dur="1.945">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="28.898" dur="1.1102">Male_speech_man_speaking</SoundSegment>
 		<SoundSegment stime="30.24" dur="0.64">Male_speech_man_speaking</SoundSegment>
 		<SoundSegment stime="31.36" dur="1.28">Male_speech_man_speaking</SoundSegment>
 		<SoundSegment stime="33.6" dur="3.44">Male_speech_man_speaking</SoundSegment>
+        <SoundSegment stime="37.0" dur="2.8">Applause</SoundSegment>
+        <SoundSegment stime="37.0" dur="2.8">Clapping</SoundSegment>
 		<SoundSegment stime="40.0" dur="10.0">Crowd</SoundSegment>
-		<SoundSegment stime="39.44" dur="2.3200000000000003">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="42.8" dur="0.8000000000000003">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="43.76" dur="0.40000000000000036">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="44.64" dur="2.08">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="49.28" dur="2.6400000000000006">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="52.16" dur="1.2799999999999998">Male_speech_man_speaking</SoundSegment>
-		<SoundSegment stime="53.76" dur="0.5600000000000005">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="39.44" dur="2.06">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="42.8" dur="0.8">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="43.76" dur="0.4">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="44.64" dur="1.4">Male_speech_man_speaking</SoundSegment>
+        <SoundSegment stime="46.0" dur="3.5">Cheering</SoundSegment>
+		<SoundSegment stime="49.28" dur="2.64">Male_speech_man_speaking</SoundSegment>
+        <SoundSegment stime="52.2" dur="0.8">Cheering</SoundSegment>
+		<SoundSegment stime="52.7" dur="0.5">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="53.8" dur="1.2">Cheering</SoundSegment>
 		<SoundSegment stime="54.88" dur="0.96">Male_speech_man_speaking</SoundSegment>
 		<SoundSegment stime="58.16" dur="1.5999999999999996">Male_speech_man_speaking</SoundSegment>
 		<SoundSegment stime="60.16" dur="1.04">Male_speech_man_speaking</SoundSegment>
