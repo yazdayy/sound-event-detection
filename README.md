@@ -22,6 +22,16 @@ checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_
 ### Performance of the Pre-trained Models
 The pre-trained models were trained on both the weakly-labelled and strongly-labelled train sets, and evaluated on the strongly-labelled test set. The table below shows the performance of the models:
 
+| Model | Data Augmentation | Optimised Thresholds | Stride (s) | Segment Length (s) | Segment-based Error Rate | Segment-based F1-score |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Cnn-9 + Gru + Attention | Timeshift + Mixup | No | 0 | 10 | 0.584 | 0.591 |
+| Cnn-9 + Gru + Attention | Mixup | No | 0 | 10 | 0.566 | 0.600 |
+| Cnn-9 + Gru + Attention | Mixup | Yes | 0 | 10 | 0.557 | 0.609 |
+| Cnn-9 + Gru + Attention | Mixup | Yes | 1 | 2 | 0.616 | 0.619 |
+| Cnn-9 + Gru + Attention | Mixup | Yes | 1 | 3 | 0.593 | 0.628 |
+| Cnn-9 + Gru + Attention | Mixup | Yes | 1 | 5 | 0.567 | 0.640 |
+| Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 6 | 0.560 | 0.644 |
+| Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 7 | 0.557 | 0.641 |
 
 ## Predicition System
 Instructions (more details can be found in run.sh):
