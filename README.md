@@ -9,21 +9,85 @@ Human sounds:
 Emergency sounds:
 1. Air_horn_truck_horn, 2. Car_alarm, 3. Emergency_vehicle, 4. Explosion, 5. Gunshot_gunfire, 6. Siren
 
-## Pre-trained models
-The pre-trained models can be found in the 'checkpoints' directory.
+If you are interested in downloading this dataset, please use youtube_dl to download the files indicated in metadata/training_set.csv and metadata/testing_set.csv, and store them in dataset/training and dataset/testing respectively.
 
-## Run
-Instructions to run or train the system can be found in run.sh.
-Note:
-- Please use main.py / --filename='main' if you would like to train or run the purely weakly-labelled system, and main_strong.py / --filename='main_strong' if you would like to train or run the combined weakly-labelled and strongly-labelled system. 
+## Pre-trained Models
+The pre-trained models can be found in the 'checkpoints' directory and stored according to the parameters they were trained on. 
 
-- Please change to --augmentation='mixup' if you would like to train or run the system with mixup applied only. Otherwise, --augmentation='timeshift_mixup' is used and both timeshift and mixup are applied.
+For example, if the pre-trained model was trained with both strongly and weakly-labelled sets on the Cnn-9layers-Gru-FrameAtt model, with clipwise binary crossentropy loss and mixup applied, and with a batch size of 32, it can be found in the checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=mixup/batch_size=32 directory.
 
-- If you would like to train or run the system using gammatone features, use --feature_type='gamma' instead of --feature_type='logmel'
+### Performance of the Pre-trained Models
+The pre-trained models were trained on both the weakly-labelled and strongly-labelled train sets, and evaluated on the strongly-labelled test set. The table below shows the performance of the models:
 
-- Please upload the audio clips you would like to predict on in the 'long_predict' folder.
 
-- The prediction output is saved in the 'long_predict_results' directory in the following xml format:
+## Predicition System
+Instructions (more details can be found in run.sh):
+
+1. Upload the audio clips you would like to process in the 'long_predict' folder
+
+2. Run the following command: 
+    python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda
+    
+3. The prediction output is saved in the 'long_predict_results' directory in the following xml format:
     ![xml_output_example](https://user-images.githubusercontent.com/56859670/123733914-f5955800-d8ce-11eb-8c4b-11dd3c7de29b.png)
 
+Note:
+- Integration with Automatic Speech Recognition (ASR)
+    - If you would like to run the system integrated with DeepSpeech ASR, use predict_asr.py instead of predict.py
+    - In this system, ASR is activated whenever Male_speech_man_speaking, Female_speech_woman_speaking and Child_speech_kid_speaking events are detected.
 
+- Weak vs Combined System
+    - If you would like to run the purely weakly-labelled system, use --filename='main_strong'.
+    - If you would like to run the combined weakly-labelled and strongly-labelled system, use --filename='main'.
+    
+- Data Augmentation Types
+    - If you would like to run the system with only mixup applied, use --augmentation='mixup'.
+    - If you would like to run the system with both timeshift and mixup applied, use --augmentation='timeshift_mixup'.
+
+## Training and Evaluation
+Instructions (more details can be found in run.sh):
+
+1. Prepare data for training by packing the waveforms to hdf5:
+
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='testing'
+    
+    If only doing weak training:
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='training'
+    
+    If doing combined weak and strong training:
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='weak_training'
+    
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='strong_training'
+    
+2. Commence training
+
+    If only doing weak training:
+    python pytorch/main.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda
+    
+    If doing combined weak and strong training:
+    python pytorch/main_strong.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda
+
+3. Inference and dump predicted probabilities:
+
+    python pytorch/main_strong.py inference_prob --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda
+
+4. Optimize thresholds (OPTIONAL)
+
+    python utils/optimize_thresholds.py optimize_sed_thresholds  --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --feature_type='logmel' --batch_size=32
+    
+5. Calculate metrics
+    
+    If not using optimized thresholds:
+    python utils/calculate_metrics.py calculate_metrics --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --data_type='test'
+    
+    If using optimized thresholds:
+    python utils/calculate_metrics.py calculate_metrics --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --data_type='test' --sed_thresholds
+
+Note:
+- Weak vs Combined System
+    - If you would like to train a purely weakly-labelled system, use --filename='main_strong'.
+    - If you would like to train a combined weakly-labelled and strongly-labelled system, use --filename='main'.
+    
+- Data Augmentation Types
+    - If you would like to train a system with only mixup applied, use --augmentation='mixup'.
+    - If you would like to train a system with both timeshift and mixup applied, use --augmentation='timeshift_mixup'.
