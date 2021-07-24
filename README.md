@@ -48,7 +48,11 @@ Instructions (more details can be found in run.sh):
 
 Note:
 - Integration with Automatic Speech Recognition (ASR)
-    - If you would like to run the system integrated with DeepSpeech ASR, use predict_asr.py instead of predict.py
+    - If you would like to run the system integrated with DeepSpeech ASR, use predict_asr.py instead of predict.py and download the pre-trained DeepSpeech ASR using:
+    ```
+    wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
+    wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
+    ```
     - In this system, ASR is activated whenever Male_speech_man_speaking, Female_speech_woman_speaking and Child_speech_kid_speaking events are detected.
 
 - Weak vs Combined System
