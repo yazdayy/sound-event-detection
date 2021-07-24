@@ -33,6 +33,7 @@ The pre-trained models were trained on both the weakly-labelled and strongly-lab
 | Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 6 | 0.560 | 0.644 |
 | Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 7 | 0.557 | 0.641 |
 
+
 If you would like to test the performance of the pre-trained model on the test set yourself, please follow the instructions in the **Dataset** section to download the test set and then run the following commands:
 ```
 python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
@@ -44,11 +45,13 @@ Instructions (more details can be found in run.sh):
 **1. Upload the audio clips you would like to process in the 'long_predict' folder**
 
 **2. Run the following command:**
+
     ```
     python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
     ```
     
 **3. The prediction output is saved in the 'long_predict_results' directory in the following xml format:**
+
     ![xml_output_example](https://user-images.githubusercontent.com/56859670/123733914-f5955800-d8ce-11eb-8c4b-11dd3c7de29b.png)
 
 Note:
@@ -76,6 +79,7 @@ Note:
 Instructions (more details can be found in run.sh):
 
 **1. Prepare data for training by packing the waveforms to hdf5:**
+
     ```
     python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='testing'
     ```
@@ -104,6 +108,7 @@ Instructions (more details can be found in run.sh):
     ```
 
 **3. Optimize thresholds (OPTIONAL)**
+
     ```
     python utils/optimize_thresholds.py optimize_sed_thresholds  --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --feature_type='logmel' --batch_size=32
     ```
