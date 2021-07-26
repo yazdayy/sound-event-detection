@@ -43,6 +43,7 @@ python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR 
 Instructions (more details can be found in run.sh):
 
 1. Upload the audio clips you would like to process in the 'long_predict' folder
+    - If your audio files are not in .wav format, the prediction system will automatically convert them from their current format to .wav
 
 2. Run the following command:
     ```
