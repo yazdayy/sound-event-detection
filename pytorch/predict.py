@@ -57,57 +57,6 @@ def trim_silent(dir_path, folder_name, file_path, non_silent_timestamps, origina
     save_path = '{}/{}/{}'.format(dir_path, folder_name, file_path.split('/')[-1])
     sf.write(save_path, non_silent_sample, sample_rate)
 
-def pack_audio_files_to_hdf5(n, start, sample_duration, dataset_dir, workspace, data_type, audio_name):
-    """Pack waveform to hdf5 file.
-
-    Args:
-      dataset_dir: str, directory of dataset
-      workspace: str, Directory of your workspace
-      data_type: 'training' | 'testing' | 'evaluation'
-    """
-
-    # Arguments & parameters
-    sample_rate = config.sample_rate
-    classes_num = config.classes_num
-    frames_per_second = config.frames_per_second
-    frames_num = frames_per_second * config.audio_duration
-    """The +1 frame comes from the 'center=True' argument when extracting spectrogram."""
-    
-#    # Trim silent segments
-#    dir_path = os.path.dirname(audio_path)
-#    os.makedirs('{}/{}'.format(dir_path, folder_name), exist_ok=True)
-#    non_silent_timestamps = []
-#    original_duration = []
-#    trimmed_duration = []
-#    audio_files = sorted(glob('{}/*.wav'.format(audio_path)))
-#    for file_path in audio_files:
-#        trim_silent(dir_path, folder_name, file_path, non_silent_timestamps, original_duration, trimmed_duration)
-
-    audio_samples = sample_rate * sample_duration
-    packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}.h5'.format(data_type))
-    create_folder(os.path.dirname(packed_hdf5_path))
-
-    # Read metadata
-    
-    audios_num = 1
-    feature_time = time.time()
-    with h5py.File(packed_hdf5_path, 'w') as hf:
-        hf.create_dataset(
-            name='audio_name',
-            shape=(audios_num,),
-            dtype='S80')
-
-        hf.create_dataset(
-            name='waveform',
-            shape=(audios_num, audio_samples),
-            dtype=np.int16)
-
-        (audio, fs) = librosa.core.load(audio_name, sr=sample_rate, offset=start, duration=sample_duration, mono=True)
-        audio = pad_truncate_sequence(audio, audio_samples)
-
-        hf['audio_name'][n] = audio_name.encode()
-        hf['waveform'][n] = float32_to_int16(audio)
-
 class TestSampler(object):
     def __init__(self, hdf5_path, batch_size):
         """Testing data sampler.
@@ -338,7 +287,7 @@ def predict(self):
     pickle files.
 
     Args:
-      dataset_dir: str
+      input_dir: str
       workspace: str
       holdout_fold: '1'
       model_type: str, e.g., 'Cnn_9layers_Gru_FrameAtt'
@@ -358,7 +307,7 @@ def predict(self):
     """
     
     # Arugments & parameters
-    dataset_dir = args.dataset_dir
+    input_dir = args.input_dir
     workspace = args.workspace
     holdout_fold = args.holdout_fold
     model_type = args.model_type
@@ -374,8 +323,8 @@ def predict(self):
     overlap_value = args.overlap_value
 
     num_workers = 8
-    os.makedirs('{}/long_predict_results'.format(workspace), exist_ok=True)
-    data_type = 'long_predict'
+    os.makedirs('{}/predict_results'.format(workspace), exist_ok=True)
+    #data_type = 'long_predict'
     
 #    if filename == 'main_vggish':
 #        print('VGGish')
@@ -450,7 +399,7 @@ def predict(self):
         'n_salt': 10}
     
     #sample_duration = 3
-    audios_dir = os.path.join(dataset_dir, data_type)
+    audios_dir = input_dir #os.path.join(dataset_dir, data_type)
     audio_files = sorted(glob('{}/*'.format(audios_dir)))
     audios_num = len(audio_files)
     audio_samples = sample_rate * sample_duration
@@ -486,12 +435,9 @@ def predict(self):
             f2 = call_ffmpeg.wait()
             audio_name = '{}wav'.format(prefix)
         (audio_full, fs) = librosa.core.load(audio_name, sr=sample_rate, mono=True)
-#        while start < audio_duration:
         while end <= audio_duration:
             
             # Load audio sample
-#            (audio, fs) = librosa.core.load(audio_name, sr=sample_rate, offset=start, duration=sample_duration, mono=True)
-#            audio = pad_truncate_sequence(audio, audio_samples)
             start_index = int(start * sample_rate)
             end_index = int((sample_duration * sample_rate) + start_index)
             audio = audio_full[start_index:end_index]
@@ -531,14 +477,6 @@ def predict(self):
             end = start + sample_duration
             num_segment += 1
         
-#        for i in range(100, merged.shape[1]-100, 100):
-#            if i < 400:
-#                num_overlaps = i//100 + 1
-#            elif i >= merged.shape[1] - 400:
-#                num_overlaps = ((merged.shape[1] - i) // 100) + 1
-#            else:
-#                num_overlaps = 5
-#            merged[:, i:i+100] /= num_overlaps
         merged = avg_merge(merged, sample_duration, overlap_value)
         np.set_printoptions(threshold=sys.maxsize)
         #print(merged[:, 2450:2600])
@@ -596,7 +534,7 @@ def predict(self):
         xml_string_list.append('\t</SoundCaptionList>\n')
         xml_string_list.append('</AudioDoc>')
         xml_string = ''.join(xml_string_list)
-        xml_file = open("{}/long_predict_results/{}.xml".format(workspace, audio_name.split('/')[-1].split('.wav')[0]), "w")
+        xml_file = open("{}/predict_results/{}.xml".format(workspace, audio_name.split('/')[-1].split('.wav')[0]), "w")
         xml_file.write(xml_string)
 
 
@@ -606,7 +544,7 @@ if __name__ == '__main__':
 
     # Inference
     parser_inference_prob = subparsers.add_parser('predict')
-    parser_inference_prob.add_argument('--dataset_dir', type=str, required=True, help='Directory of dataset.')
+    parser_inference_prob.add_argument('--input_dir', type=str, required=True, help='Directory of input set.')
     parser_inference_prob.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
     parser_inference_prob.add_argument('--filename', type=str, required=True)
     parser_inference_prob.add_argument('--holdout_fold', type=str, choices=['1'], required=True)

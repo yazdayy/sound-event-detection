@@ -49,12 +49,13 @@ python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR 
 ## Predicition System
 Instructions (more details can be found in run.sh):
 
-1. Upload the audio clips you would like to process in the 'long_predict' folder
+1. Upload the audio clips you would like to process to a folder
+    - The path to this directory will be your $INPUT_DIR
     - If your audio files are not in .wav format, the prediction system will automatically convert them from their current format to .wav
 
 2. Run the following command:
     ```
-    python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds
+    python pytorch/predict.py predict --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds
     ```
     
 3. The prediction output is saved in the 'long_predict_results' directory in the following xml format:
@@ -63,7 +64,7 @@ Instructions (more details can be found in run.sh):
 
 Note:
 - Integration with Automatic Speech Recognition (ASR)
-    - If you would like to run the system integrated with DeepSpeech ASR, use predict_asr.py instead of predict.py and download the pre-trained DeepSpeech ASR using:
+    - If you would like to run the system integrated with DeepSpeech ASR, please download the pre-trained DeepSpeech ASR using:
     ```
     wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
     wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
@@ -71,6 +72,10 @@ Note:
     and move the files to the following directory:
     ```
     $WORKSPACE/asr/deepspeech/pretrained
+    ```
+    and run the following command:
+    ```
+    python pytorch/predict_asr.py predict --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds
     ```
     - In this system, ASR is activated whenever Male_speech_man_speaking, Female_speech_woman_speaking and Child_speech_kid_speaking events are detected.
 
