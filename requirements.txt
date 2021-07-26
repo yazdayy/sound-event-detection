@@ -2,3 +2,13 @@ sed_eval==0.2.1
 torchlibrosa=0.0.4
 autoth
 youtube_dl
+pandas
+librosa
+numpy
+matplotlib
+h5py
+scikit-learn
+soundfile
+regex
+scipy
+tqdm

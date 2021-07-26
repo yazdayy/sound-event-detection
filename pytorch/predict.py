@@ -15,7 +15,6 @@ import config
 from glob import glob
 import soundfile as sf
 from random import randint
-from dicttoxml import dicttoxml
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
