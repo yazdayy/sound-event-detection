@@ -522,6 +522,7 @@ def inference_prob_overlap(self):
             'n_smooth': 10,
             'n_salt': 10}
     
+    # Testing different segment length and stride combinations
 #    overlap_values = np.arange(0.5,2,0.5)
 #    segment_lengths = np.arange(2,10,0.5)
 #
@@ -530,7 +531,7 @@ def inference_prob_overlap(self):
 #        for length in segment_lengths:
 #            param_combinations.append([value, length])
 
-    param_combinations = [[1,5]]#[[0.5,6], [0.5,7], [1,5], [1,6], [1,7]]
+    param_combinations = [[0.5,6], [0.5,7], [1,5], [1,6], [1,7]]
     
     audios_dir = os.path.join(dataset_dir, data_type)
     gt_csv = pd.read_csv(reference_csv_path, header=None)
@@ -622,7 +623,8 @@ def inference_prob_overlap(self):
         sed_recall = get_metric(results, 'recall')
         sed_f1 = get_metric(results, 'f1')
         sed_er = get_metric(results, 'er')
-
+        
+        print('Segment length: {} s, Stride: {} s'.format(sample_duration, overlap_value))
         print('Micro precision: {:.3f}'.format(sed_precision))
         print('Micro recall: {:.3f}'.format(sed_recall))
         print('Micro F1: {:.3f}'.format(sed_f1))

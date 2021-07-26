@@ -9,7 +9,13 @@ Human sounds:
 Emergency sounds:
 1. Air_horn_truck_horn, 2. Car_alarm, 3. Emergency_vehicle, 4. Explosion, 5. Gunshot_gunfire, 6. Siren
 
-If you are interested in downloading this dataset, please use youtube_dl to download the files indicated in metadata/training_set.csv and metadata/testing_set.csv, and store them in dataset/training and dataset/testing respectively.
+If you are interested in downloading this dataset, please use youtube_dl to download the files indicated in metadata/training_set.csv and metadata/testing_set.csv, and store them in dataset/training and dataset/testing respectively:
+```
+python download_audioset.py --workspace=$WORKSPACE --data_type=training
+```
+```
+python download_audioset.py --workspace=$WORKSPACE --data_type=testing
+```
 
 ## Pre-trained Models
 The pre-trained models can be found in the 'checkpoints' directory and stored according to the parameters they were trained on. 
@@ -34,6 +40,7 @@ The pre-trained models were trained on both the weakly-labelled and strongly-lab
 | Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 7 | 0.557 | 0.641 |
 
 
+
 If you would like to test the performance of the pre-trained model on the test set yourself, please follow the instructions in the **Dataset** section to download the test set and then run the following commands:
 ```
 python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
@@ -47,7 +54,7 @@ Instructions (more details can be found in run.sh):
 
 2. Run the following command:
     ```
-    python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
+    python pytorch/predict.py predict --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds
     ```
     
 3. The prediction output is saved in the 'long_predict_results' directory in the following xml format:
@@ -121,7 +128,7 @@ Instructions (more details can be found in run.sh):
     ```
     If not using optimized thresholds:
     ```
-    python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
+    python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda
     ```
 
 Note:
