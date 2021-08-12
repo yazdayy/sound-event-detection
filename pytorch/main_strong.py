@@ -25,7 +25,7 @@ from pytorch_utils import move_data_to_device, do_mixup, do_mixup_timeshift
 from utilities import (create_folder, frame_prediction_to_event_prediction_v2, get_filename, create_logging, official_evaluate, frame_binary_prediction_to_event_prediction,
     StatisticsContainer, pad_truncate_sequence, write_submission, Mixup)
 from calculate_metrics import get_metric
-from predict_v2 import merge, avg_merge, append_to_dict
+from predict import merge, avg_merge, append_to_dict
 from data_generator import (DCASE2017Task4Dataset, TrainSampler, TestSampler, 
     collate_fn)
 from models import *

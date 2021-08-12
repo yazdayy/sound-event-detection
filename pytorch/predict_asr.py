@@ -58,57 +58,6 @@ def trim_silent(dir_path, folder_name, file_path, non_silent_timestamps, origina
     save_path = '{}/{}/{}'.format(dir_path, folder_name, file_path.split('/')[-1])
     sf.write(save_path, non_silent_sample, sample_rate)
 
-def pack_audio_files_to_hdf5(n, start, sample_duration, dataset_dir, workspace, data_type, audio_name):
-    """Pack waveform to hdf5 file.
-
-    Args:
-      dataset_dir: str, directory of dataset
-      workspace: str, Directory of your workspace
-      data_type: 'training' | 'testing' | 'evaluation'
-    """
-
-    # Arguments & parameters
-    sample_rate = config.sample_rate
-    classes_num = config.classes_num
-    frames_per_second = config.frames_per_second
-    frames_num = frames_per_second * config.audio_duration
-    """The +1 frame comes from the 'center=True' argument when extracting spectrogram."""
-    
-#    # Trim silent segments
-#    dir_path = os.path.dirname(audio_path)
-#    os.makedirs('{}/{}'.format(dir_path, folder_name), exist_ok=True)
-#    non_silent_timestamps = []
-#    original_duration = []
-#    trimmed_duration = []
-#    audio_files = sorted(glob('{}/*.wav'.format(audio_path)))
-#    for file_path in audio_files:
-#        trim_silent(dir_path, folder_name, file_path, non_silent_timestamps, original_duration, trimmed_duration)
-
-    audio_samples = sample_rate * sample_duration
-    packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}.h5'.format(data_type))
-    create_folder(os.path.dirname(packed_hdf5_path))
-
-    # Read metadata
-    
-    audios_num = 1
-    feature_time = time.time()
-    with h5py.File(packed_hdf5_path, 'w') as hf:
-        hf.create_dataset(
-            name='audio_name',
-            shape=(audios_num,),
-            dtype='S80')
-
-        hf.create_dataset(
-            name='waveform',
-            shape=(audios_num, audio_samples),
-            dtype=np.int16)
-
-        (audio, fs) = librosa.core.load(audio_name, sr=sample_rate, offset=start, duration=sample_duration, mono=True)
-        audio = pad_truncate_sequence(audio, audio_samples)
-
-        hf['audio_name'][n] = audio_name.encode()
-        hf['waveform'][n] = float32_to_int16(audio)
-
 class TestSampler(object):
     def __init__(self, hdf5_path, batch_size):
         """Testing data sampler.
@@ -322,7 +271,7 @@ def predict(self):
     pickle files.
 
     Args:
-      dataset_dir: str
+      input_dir: str
       workspace: str
       holdout_fold: '1'
       model_type: str, e.g., 'Cnn_9layers_Gru_FrameAtt'
@@ -342,7 +291,7 @@ def predict(self):
     """
     
     # Arugments & parameters
-    dataset_dir = args.dataset_dir
+    input_dir = args.input_dir
     workspace = args.workspace
     holdout_fold = args.holdout_fold
     model_type = args.model_type
@@ -359,8 +308,8 @@ def predict(self):
     speech_types = ['Male_speech_man_speaking', 'Female_speech_woman_speaking', 'Child_speech_kid_speaking']
 
     num_workers = 8
-    os.makedirs('{}/long_predict_results'.format(workspace), exist_ok=True)
-    data_type = 'long_predict'
+    os.makedirs('{}/predict_results'.format(workspace), exist_ok=True)
+    #data_type = 'long_predict'
     
     # Paths
     #predict_hdf5_path = os.path.join(workspace, 'hdf5s', 'long_predict.h5')
@@ -429,7 +378,7 @@ def predict(self):
         'n_salt': 10}
     
     #sample_duration = 3
-    audios_dir = os.path.join(dataset_dir, data_type)
+    audios_dir = input_dir #os.path.join(dataset_dir, data_type)
     audio_files = sorted(glob('{}/*.wav'.format(audios_dir)))
     audios_num = len(audio_files)
     audio_samples = sample_rate * sample_duration
@@ -580,25 +529,25 @@ def predict(self):
         end_time = time.time()
         print('Time taken to process {}: {} s\n'.format(audio_name, end_time-start_time))
         
-        ffmpeg_command = 'ffmpeg -i ' + audio_name + ' -ar 16000 ' + '{}/temp.wav'.format(asr_temp_path)
-        deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
-        
-        call_ffmpeg = subprocess.Popen(ffmpeg_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        f1 = call_ffmpeg.stdout.read()
-        f2 = call_ffmpeg.wait()
-        
-        call_deepspeech = subprocess.Popen(deepspeech_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        
-        r1 = call_deepspeech.stdout.read()
-        r2 = call_deepspeech.wait()
-        pred_text = r1.split('\n')[-2]
-        print(pred_text)
+#        ffmpeg_command = 'ffmpeg -i ' + audio_name + ' -ar 16000 ' + '{}/temp.wav'.format(asr_temp_path)
+#        deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
+#        
+#        call_ffmpeg = subprocess.Popen(ffmpeg_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#        f1 = call_ffmpeg.stdout.read()
+#        f2 = call_ffmpeg.wait()
+#        
+#        call_deepspeech = subprocess.Popen(deepspeech_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#        
+#        r1 = call_deepspeech.stdout.read()
+#        r2 = call_deepspeech.wait()
+#        pred_text = r1.split('\n')[-2]
+#        print(pred_text)
         os.remove('{}/temp.wav'.format(asr_temp_path))
         
         xml_string_list.append('\t</SoundCaptionList>\n')
         xml_string_list.append('</AudioDoc>')
         xml_string = ''.join(xml_string_list)
-        xml_file = open("{}/long_predict_results/{}.xml".format(workspace, audio_name.split('/')[-1].split('.wav')[0]), "w")
+        xml_file = open("{}/predict_results/{}.xml".format(workspace, audio_name.split('/')[-1].split('.wav')[0]), "w")
         xml_file.write(xml_string)
 
 
@@ -608,7 +557,7 @@ if __name__ == '__main__':
 
     # Inference
     parser_inference_prob = subparsers.add_parser('predict')
-    parser_inference_prob.add_argument('--dataset_dir', type=str, required=True, help='Directory of dataset.')
+    parser_inference_prob.add_argument('--input_dir', type=str, required=True, help='Directory of input audio files.')
     parser_inference_prob.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
     parser_inference_prob.add_argument('--filename', type=str, required=True)
     parser_inference_prob.add_argument('--holdout_fold', type=str, choices=['1'], required=True)
