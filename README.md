@@ -58,7 +58,7 @@ Instructions (more details can be found in run.sh):
     python pytorch/predict.py predict --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds
     ```
     
-3. The prediction output is saved in the 'long_predict_results' directory in the following xml format:
+3. The prediction output is saved in the 'predict_results' directory in the following xml format:
 
     ![xml_output_example](https://user-images.githubusercontent.com/56859670/123733914-f5955800-d8ce-11eb-8c4b-11dd3c7de29b.png)
 
@@ -75,7 +75,7 @@ Note:
     ```
     and run the following command:
     ```
-    python pytorch/predict_asr.py predict --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds
+    python pytorch/predict_asr.py predict --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds --language='eng'
     ```
     - In this system, ASR is activated whenever Male_speech_man_speaking, Female_speech_woman_speaking and Child_speech_kid_speaking events are detected.
 
@@ -119,7 +119,7 @@ Instructions (more details can be found in run.sh):
     python pytorch/main_strong.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda
     ```
 
-3. Optimize thresholds (OPTIONAL)
+3. Optimize thresholds (optional but strongly recommended)
 
     ```
     python utils/optimize_thresholds.py optimize_sed_thresholds  --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --feature_type='logmel' --batch_size=32

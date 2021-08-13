@@ -16,6 +16,7 @@ import config
 from glob import glob
 import soundfile as sf
 from random import randint
+from dicttoxml import dicttoxml
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
@@ -267,6 +268,7 @@ def avg_merge(merged, sample_duration, overlap_value=1):
     return merged
 
 def predict(self):
+    
     """Inference test and evaluate data and dump predicted probabilites to 
     pickle files.
 
@@ -305,6 +307,7 @@ def predict(self):
     overlap = args.overlap
     sample_duration = args.sample_duration
     overlap_value = args.overlap_value
+    language = args.language
     speech_types = ['Male_speech_man_speaking', 'Female_speech_woman_speaking', 'Child_speech_kid_speaking']
 
     num_workers = 8
@@ -384,7 +387,7 @@ def predict(self):
     audio_samples = sample_rate * sample_duration
     for n in range(audios_num):
         audio_name = audio_files[n]
-#        if audio_name.split('/')[-1] == '6acl4t-E0sY.wav':
+        #if audio_name.split('/')[-1] == '6acl4t-E0sY.wav':
         xml_string_list = []
         xml_string_list.append('<AudioDoc name="{}">\n'.format(audio_name.split('/')[-1]))
         xml_string_list.append('\t<SoundCaptionList>\n')
@@ -499,23 +502,30 @@ def predict(self):
                 
                 if event_label in speech_types:
                     event_duration = offset - onset
-                    ffmpeg_command = 'ffmpeg -i ' + audio_name + ' -ss ' + str(onset) + ' -t ' + str(event_duration) + ' -ar 16000 ' + '{}/temp.wav'.format(asr_temp_path)
-                    deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
                     
+                    ffmpeg_command = 'ffmpeg -i ' + audio_name + ' -ss ' + str(onset) + ' -t ' + str(event_duration) + ' -ar 16000 ' + '{}/temp.wav'.format(asr_temp_path)
                     call_ffmpeg = subprocess.Popen(ffmpeg_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                     f1 = call_ffmpeg.stdout.read()
                     f2 = call_ffmpeg.wait()
                     
-                    call_deepspeech = subprocess.Popen(deepspeech_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                    r1 = call_deepspeech.stdout.read()
-                    r2 = call_deepspeech.wait()
-                    pred_text = r1.split('\n')[-2]
+                    if language == 'eng':
+                        deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
+                    elif language == 'chi':
+                        deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models-zh-CN.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models-zh-CN.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
                     
-#                    deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models-zh-CN.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models-zh-CN.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
-#                    call_deepspeech = subprocess.Popen(deepspeech_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='unicode_escape')
+#                    call_deepspeech = subprocess.Popen(deepspeech_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 #                    r1 = call_deepspeech.stdout.read()
 #                    r2 = call_deepspeech.wait()
 #                    pred_text = r1.split('\n')[-2]
+                    
+                    call_deepspeech = subprocess.Popen(deepspeech_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)#, encoding='unicode_escape')
+                    r1 = call_deepspeech.stdout.read()
+                    try:
+                        r1 = r1.decode()
+                    except UnicodeDecodeError:
+                        r1 = r1.decode('unicode_escape')
+                    r2 = call_deepspeech.wait()
+                    pred_text = r1.split('\n')[-2]
                     
                     os.remove('{}/temp.wav'.format(asr_temp_path))
                     xml_string_list.append('\t\t<SoundSegment stime="{}" dur="{}" event="{}" text="{}">{}</SoundSegment>\n'.format(onset, offset-onset, event_label, pred_text, event_label))
@@ -531,18 +541,18 @@ def predict(self):
         
 #        ffmpeg_command = 'ffmpeg -i ' + audio_name + ' -ar 16000 ' + '{}/temp.wav'.format(asr_temp_path)
 #        deepspeech_command = 'deepspeech --model ' + '{}/deepspeech-0.9.3-models.pbmm'.format(asr_checkpoint_path) + ' --scorer ' + '{}/deepspeech-0.9.3-models.scorer'.format(asr_checkpoint_path) + ' --audio ' + '{}/temp.wav'.format(asr_temp_path)
-#        
+#
 #        call_ffmpeg = subprocess.Popen(ffmpeg_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 #        f1 = call_ffmpeg.stdout.read()
 #        f2 = call_ffmpeg.wait()
-#        
+#
 #        call_deepspeech = subprocess.Popen(deepspeech_command, universal_newlines=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-#        
+#
 #        r1 = call_deepspeech.stdout.read()
 #        r2 = call_deepspeech.wait()
 #        pred_text = r1.split('\n')[-2]
 #        print(pred_text)
-        os.remove('{}/temp.wav'.format(asr_temp_path))
+#        os.remove('{}/temp.wav'.format(asr_temp_path))
         
         xml_string_list.append('\t</SoundCaptionList>\n')
         xml_string_list.append('</AudioDoc>')
@@ -557,7 +567,7 @@ if __name__ == '__main__':
 
     # Inference
     parser_inference_prob = subparsers.add_parser('predict')
-    parser_inference_prob.add_argument('--input_dir', type=str, required=True, help='Directory of input audio files.')
+    parser_inference_prob.add_argument('--input_dir', type=str, required=True, help='Directory of dataset.')
     parser_inference_prob.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
     parser_inference_prob.add_argument('--filename', type=str, required=True)
     parser_inference_prob.add_argument('--holdout_fold', type=str, choices=['1'], required=True)
@@ -571,6 +581,7 @@ if __name__ == '__main__':
     parser_inference_prob.add_argument('--overlap', action='store_true', default=False)
     parser_inference_prob.add_argument('--sample_duration', type=int, default=10)
     parser_inference_prob.add_argument('--overlap_value', type=float, default=1.0)
+    parser_inference_prob.add_argument('--language', type=str, choices=['eng', 'chi'], default='eng')
     
     # Parse arguments
     args = parser.parse_args()
