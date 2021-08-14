@@ -120,7 +120,10 @@ Instructions (more details can be found in run.sh):
     ```
 
 3. Optimize thresholds (optional but strongly recommended)
-
+    
+    ```
+   python pytorch/main_strong.py inference_prob --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda
+   ```
     ```
     python utils/optimize_thresholds.py optimize_sed_thresholds  --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --feature_type='logmel' --batch_size=32
     ```
