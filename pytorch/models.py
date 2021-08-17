@@ -547,6 +547,8 @@ class Cnn_9layers_Gru_FrameAvg(nn.Module):
             
         return output_dict
 
+def roundup(x):
+    return x if x % 100 == 0 else x + 100 - x % 100
 
 class Cnn_9layers_Gru_FrameAtt(nn.Module):
     def __init__(self, sample_rate, window_size, hop_size, mel_bins, fmin, 
