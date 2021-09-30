@@ -16,7 +16,8 @@ def sed_average_precision(strong_target, framewise_output, average):
       framewise_output: (N, frames_num, classes_num)
       average: None | 'macro' | 'micro'
     """
-    #print(strong_target.shape, framewise_output.shape)
+    print('TARGET:', strong_target)
+    print('OUTPUT:', framewise_output)
     assert strong_target.shape == framewise_output.shape
     (N, time_steps, classes_num) = strong_target.shape
 
@@ -48,7 +49,7 @@ class Evaluator(object):
             'n_smooth': 10, 
             'n_salt': 10}
 
-    def evaluate(self, data_loader, reference_csv_path, submission_path):
+    def evaluate(self, data_loader, reference_csv_path, submission_path, frames_per_second):
         """Evaluate AT and SED performance.
 
         Args:
@@ -66,9 +67,9 @@ class Evaluator(object):
             return_input=False, 
             return_target=True)
         
-        print(output_dict['audio_name'].shape)
-        print(output_dict['clipwise_output'].shape)
-        print(output_dict['framewise_output'].shape)
+        #print(output_dict['audio_name'].shape)
+        #print(output_dict['clipwise_output'].shape)
+        #print(output_dict['framewise_output'].shape)
         statistics = {}
         
         # Clipwise statistics
@@ -83,7 +84,7 @@ class Evaluator(object):
          
         # Framewise predictions to eventwise predictions
         predict_event_list = frame_prediction_to_event_prediction(output_dict, 
-            self.sed_params_dict)
+            self.sed_params_dict, frames_per_second)
         
         # Write eventwise predictions to submission file
         write_submission(predict_event_list, submission_path)

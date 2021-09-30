@@ -10,6 +10,7 @@ import csv
 import math
 import re
 import random
+from glob import glob
 
 import config
 import gammatone.fftweight
@@ -27,7 +28,7 @@ def get_weak_csv_filename(data_type):
     """
     if data_type in ['training', 'testing']:
         return '{}_set.csv'.format(data_type)
-    elif data_type in ['weak_training', 'strong_training']:
+    elif data_type in ['weak_training', 'strong_training', 'strong_fsd50k', 'strong_validation']:
         return 'strong/{}_set.csv'.format(data_type)
     elif data_type in ['evaluation']:
         return 'groundtruth_weak_label_evaluation_set.csv'
@@ -48,9 +49,9 @@ def read_weak_csv(weak_label_csv_path, data_type):
       meta_list: [{'audio_name': 'a.wav', 'labels': ['Train', 'Bus']},
                   ...]
     """
-    assert data_type in ['training', 'testing', 'evaluation', 'weak_training', 'strong_training']
+    assert data_type in ['training', 'testing', 'evaluation', 'weak_training', 'strong_training', 'strong_validation', 'strong_fsd50k']
     
-    if data_type in ['training', 'testing', 'weak_training', 'strong_training']:
+    if data_type in ['training', 'testing', 'weak_training', 'strong_training', 'strong_validation', 'strong_fsd50k']:
         with open(weak_label_csv_path, 'r') as f:
             reader = csv.reader(f, delimiter=',')
             rows = list(reader)
@@ -63,13 +64,17 @@ def read_weak_csv(weak_label_csv_path, data_type):
     meta_list = []
             
     for row in rows:
-        if data_type in ['training', 'testing', 'weak_training', 'strong_training']:
+        if data_type in ['training', 'testing', 'weak_training', 'strong_training', 'strong_validation']:
             """row: ['-5QrBL6MzLg', '60.000', '70.000', 'Train horn,Train', '/m/0284vy3,/m/07jdr']"""
             meta = {
                 'audio_name': row[0] + '_' + str(int(float(row[1]))) + '.wav',
                 'labels': re.split(',(?! )', row[3])}
             meta_list.append(meta)
-        
+        elif data_type in ['strong_fsd50k']:
+            meta = {
+                'audio_name': row[0] + '.wav',
+                'labels': re.split(',(?! )', row[3])}
+            meta_list.append(meta)
         elif data_type in ['evaluation']:
             """row: ['-JMT0mK0Dbg_30.000_40.000.wav', '30.000', '40.000', 'Train horn']"""
             audio_name = row[0]
@@ -187,6 +192,8 @@ def pack_audio_files_to_hdf5(args):
     data_type = args.data_type
     mini_data = args.mini_data
     feature_type = args.feature_type
+    audio_8k = args.audio_8k
+    audio_16k = args.audio_16k
     
     window_size = config.window_size
     hop_size = config.hop_size
@@ -199,14 +206,52 @@ def pack_audio_files_to_hdf5(args):
     frames_per_second = config.frames_per_second
     frames_num = frames_per_second * config.audio_duration
     """The +1 frame comes from the 'center=True' argument when extracting spectrogram."""
-
-    has_strong_target = data_type in ['testing', 'evaluation', 'strong_training']
+    
+    if audio_8k:
+        quality = '8k'
+        sample_rate = 8000
+        window_size = 256
+        hop_size = 80
+        mel_bins = 64
+        fmin = 12
+        fmax = 3500
+    elif audio_16k:
+        quality = '16k'
+        sample_rate = 16000
+        window_size = 512
+        hop_size = 160
+        mel_bins = 64
+        fmin = 25
+        fmax = 7000
+    else:
+        quality = '32k'
+        sample_rate = 32000
+        window_size = 1024
+        hop_size = 320
+        mel_bins = 64
+        fmin = 50
+        fmax = 14000
+    
+    audio_samples = sample_rate * 10
+        
+    codec_labels = ['amr475', 'ogg450','ogg550','ogg770','g726_1600','g726_2400', 'amr590', 'amr740','amr1020','ogg950','g726_3200','g723_630', 'amr1220','ogg1250','ogg1600','ogg3200','g722']
+    has_strong_target = data_type in ['testing', 'evaluation', 'strong_training', 'strong_validation', 'strong_fsd50k']
 
     # Paths
-    if data_type == 'strong_training' or data_type == 'weak_training':
-        audios_dir = os.path.join(dataset_dir, 'training')
+    if data_type == 'strong_training' or data_type == 'weak_training' or data_type == 'strong_validation':
+        if audio_8k:
+            audios_dir = os.path.join(dataset_dir, 'training', '8k')
+        else:
+            audios_dir = os.path.join(dataset_dir, 'training')
     else:
-        audios_dir = os.path.join(dataset_dir, data_type)
+        if audio_8k:
+            audios_dir = os.path.join(dataset_dir, data_type, '8k')
+        else:
+            audios_dir = os.path.join(dataset_dir, data_type)
+    
+    all_files = glob('{}/*.wav'.format(audios_dir))
+    all_files = [x.split('/')[-1] for x in all_files]
+    
     weak_label_csv_path = os.path.join(dataset_dir, 'metadata', 
         get_weak_csv_filename(data_type))
 
@@ -219,15 +264,30 @@ def pack_audio_files_to_hdf5(args):
     elif data_type == 'strong_training':
         strong_label_csv_path = os.path.join(dataset_dir, 'metadata', 'strong',
         'groundtruth_strong_label_strong_training_set.csv')
+    elif data_type == 'strong_validation':
+        strong_label_csv_path = os.path.join(dataset_dir, 'metadata', 'strong',
+        'groundtruth_strong_label_strong_validation_set.csv')
+    elif data_type == 'strong_fsd50k':
+        strong_label_csv_path = os.path.join(dataset_dir, 'metadata', 'strong',
+        'groundtruth_strong_label_strong_fsd50k_set.csv')
 
     if mini_data:
-        packed_hdf5_path = os.path.join(workspace, 'hdf5s', 
-            'minidata_{}.h5'.format(data_type))
-    elif feature_type == 'logmel':
-        packed_hdf5_path = os.path.join(workspace, 'hdf5s', 
-            '{}.h5'.format(data_type))
-    elif feature_type == 'gamma':
-        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_{}.h5'.format(data_type, feature_type))
+        packed_hdf5_path = os.path.join(workspace, 'hdf5s', 'minidata_{}.h5'.format(data_type))
+        
+    packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_{}_{}.h5'.format(data_type, feature_type, quality))
+    
+#    elif feature_type == 'logmel' and not audio_8k and not audio_16k:
+#        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}.h5'.format(data_type))
+#    elif feature_type == 'logmel' and audio_8k:
+#        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_8k.h5'.format(data_type))
+#    elif feature_type == 'logmel' and audio_16k:
+#        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_16k.h5'.format(data_type))
+#    elif feature_type == 'gamma'  and not audio_8k and not audio_16k:
+#        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_{}.h5'.format(data_type, feature_type))
+#    elif feature_type == 'gamma' and audio_8k:
+#        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_{}_8k.h5'.format(data_type, feature_type))
+#    elif feature_type == 'gamma' and audio_16k:
+#        packed_hdf5_path = os.path.join(workspace, 'hdf5s', '{}_{}_16k.h5'.format(data_type, feature_type))
     create_folder(os.path.dirname(packed_hdf5_path))
 
     # Read metadata
@@ -279,18 +339,32 @@ def pack_audio_files_to_hdf5(args):
                 shape=(0, frames_num, classes_num), 
                 maxshape=(None, frames_num, classes_num), 
                 dtype=np.bool)
-
+        
         for n in range(audios_num):
             print(n)
             weak_meta_dict = weak_meta_list[n]
             audio_name = weak_meta_dict['audio_name']
-            audio_path = os.path.join(audios_dir, audio_name)
-            (audio, fs) = librosa.core.load(audio_path, sr=sample_rate, mono=True)
+            if audio_8k:
+                for filename in all_files:
+                    if audio_name.split('.wav')[0] in filename:
+                        codec_audio_name = filename
+                        audio_path = os.path.join(audios_dir, codec_audio_name)
+                        break
+            else:
+                audio_path = os.path.join(audios_dir, audio_name)
+            try:
+                (audio, fs) = librosa.core.load(audio_path, sr=sample_rate, mono=True)
+            except ValueError:
+                print(audio_path)
             audio = pad_truncate_sequence(audio, audio_samples)
             
             if feature_type == 'gamma':
                 audio = gammatone.fftweight.fft_gtgram(audio, sample_rate, window_size/sample_rate, hop_size/sample_rate, mel_bins, fmin)
                 audio = librosa.core.power_to_db(audio)
+                # print(sample_rate)
+                # print(audio.shape)
+
+            # dasdsa = args.dadsa 
 
             hf['audio_name'][n] = audio_name.encode()
             hf['waveform'][n] = float32_to_int16(audio)
@@ -318,9 +392,11 @@ if __name__ == '__main__':
     parser_pack_audio = subparsers.add_parser('pack_audio_files_to_hdf5')
     parser_pack_audio.add_argument('--dataset_dir', type=str, required=True, help='Directory of dataset.')
     parser_pack_audio.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
-    parser_pack_audio.add_argument('--data_type', type=str, choices=['training', 'testing', 'evaluation', 'weak_training', 'strong_training'], required=True, help='Directory of your workspace.')
+    parser_pack_audio.add_argument('--data_type', type=str, choices=['training', 'testing', 'evaluation', 'weak_training', 'strong_training', 'strong_validation', 'strong_fsd50k'], required=True, help='Directory of your workspace.')
     parser_pack_audio.add_argument('--feature_type', type=str, required=True)
     parser_pack_audio.add_argument('--mini_data', action='store_true', default=False, help='Set True for debugging on a small part of data.')
+    parser_pack_audio.add_argument('--audio_8k', action='store_true', default=False)
+    parser_pack_audio.add_argument('--audio_16k', action='store_true', default=False)
     
     # Parse arguments
     args = parser.parse_args()

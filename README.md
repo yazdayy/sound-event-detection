@@ -1,7 +1,7 @@
 # Sound Event Detection with Human and Emergency Sounds
 
 ## Dataset
-The dataset is a subset of the AudioSet dataset, consisting of human and emergency sounds. There are 25,834 audio clips in the weakly-labelled train set, 2,975 clips in the strongly-labelled set, and 747 clips in the test set. There are a total of 25 classes, as listed below.
+The dataset is a subset of the AudioSet dataset, consisting of human and emergency sounds. There are 25,834 audio clips in the weakly-labelled train set, 2,380 clips in the strongly-labelled train set, 595 clips in the validation set and 747 clips in the test set. There are a total of 25 classes, as listed below.
 
 Human sounds:
 1. Applause, 2. Breathing, 3. Chatter, 4. Child_speech_kid_speaking, 5. Cheering, 6. Clapping, 7. Conversation, 8. Cough, 9. Crowd, 10. Crying_sobbing, 11. Female_speech_woman_speaking, 12. Laughter, 13. Male_speech_man_speaking, 14. Run, 15. Screaming, 16. Shout, 17. Sneeze, 18. Walk_footsteps, 19. Whispering
@@ -25,25 +25,26 @@ For example, if the pre-trained model was trained with both strongly and weakly-
 checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=mixup/batch_size=32
 ```
 
+ The models are named best_<feature_type>_<audio_quality>.pth, where the feature type may either be 'logmel' or 'gammatone', and the audio_quality may be '8k', '16k' or '32k'.
+
 ### Performance of the Pre-trained Models
-The pre-trained models were trained on both the weakly-labelled and strongly-labelled train sets, and evaluated on the strongly-labelled test set. The table below shows the performance of the models:
+The pre-trained models were trained on both the weakly-labelled and strongly-labelled 16k train sets, and evaluated on the strongly-labelled test set. The table below shows the performance of the models:
 
-| Model | Data Augmentation | Optimised Thresholds | Stride (s) | Segment Length (s) | Segment-based Error Rate | Segment-based F1-score |
+| Model | Data Augmentation | Processing Type  | Threshold Type | Segment-based Error Rate | Segment-based F1-score |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Cnn-9 + Gru + Attention | Timeshift + Mixup | No | 0 | 10 | 0.584 | 0.591 |
-| Cnn-9 + Gru + Attention | Mixup | No | 0 | 10 | 0.566 | 0.600 |
-| Cnn-9 + Gru + Attention | Mixup | Yes | 0 | 10 | 0.557 | 0.609 |
-| Cnn-9 + Gru + Attention | Mixup | Yes | 1 | 2 | 0.616 | 0.619 |
-| Cnn-9 + Gru + Attention | Mixup | Yes | 1 | 3 | 0.593 | 0.628 |
-| Cnn-9 + Gru + Attention | Mixup | Yes | 1 | 5 | 0.567 | 0.640 |
-| Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 6 | 0.560 | 0.644 |
-| Cnn-9 + Gru + Attention | Mixup | Yes | 0.5 | 7 | 0.557 | 0.641 |
-
+| Cnn-9 + Gru + Attention | SpecAugment + Mixup | None | Non-optimised | 0.555 | 0.624 |
+| Cnn-9 + Gru + Attention | SpecAugment + Mixup | None | Optimised | 0.601 | 0.635 |
+| Cnn-9 + Gru + Attention | SpecAugment + Mixup | Frame-wise averaging | Non-optimised | 0.557 | 0.618 |
+| Cnn-9 + Gru + Attention | SpecAugment + Mixup | Frame-wise averaging | Optimised | 0.574 | 0.639 |
+| Cnn-9 + Transformer + Attention | SpecAugment + Mixup | None | Non-optimised | 0.552 | 0.628 |
+| Cnn-9 + Transformer + Attention | SpecAugment + Mixup | None | Optimised | 0.561 | 0.648 |
+| Cnn-9 + Transformer + Attention | SpecAugment + Mixup | Frame-wise averaging | Non-optimised | 0.549 | 0.622 |
+| Cnn-9 + Transformer + Attention | SpecAugment + Mixup | Frame-wise averaging | Optimised | **0.550** | **0.647** |
 
 
 If you would like to test the performance of the pre-trained model on the test set yourself, please follow the instructions in the **Dataset** section to download the test set and then run the following commands:
 ```
-python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
+python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds --audio_16k
 ```
 
 ## Predicition System
@@ -64,18 +65,9 @@ Instructions (more details can be found in run.sh):
 
 Note:
 - Integration with Automatic Speech Recognition (ASR)
-    - If you would like to run the system integrated with DeepSpeech ASR, please download the pre-trained DeepSpeech ASR using:
+    - If you would like to run the system integrated with DeepSpeech ASR, please run the following command:
     ```
-    wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
-    wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer
-    ```
-    and move the files to the following directory:
-    ```
-    $WORKSPACE/asr/deepspeech/pretrained
-    ```
-    and run the following command:
-    ```
-    python pytorch/predict_asr.py predict --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold 1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds --language='eng'
+    python pytorch/predict.py predict_asr --input_dir=$INPUT_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sample_duration=5 --overlap --overlap_value=1 --sed_thresholds --language='eng'
     ```
     - In this system, ASR is activated whenever Male_speech_man_speaking, Female_speech_woman_speaking and Child_speech_kid_speaking events are detected.
 
@@ -86,6 +78,8 @@ Note:
 - Data Augmentation Types
     - If you would like to run the system with only mixup applied, use --augmentation='mixup'.
     - If you would like to run the system with both timeshift and mixup applied, use --augmentation='timeshift_mixup'.
+    - The following list indicates the possible augmentation techniques you may apply: 
+    `['none', 'spec_augment', 'timeshift', 'mixup', 'timeshift_mixup', 'specaugment_timeshift_mixup', 'specaugment_mixup', 'specaugment_timeshift']`
 
 ## Training and Evaluation
 Instructions (more details can be found in run.sh):
@@ -93,57 +87,53 @@ Instructions (more details can be found in run.sh):
 1. Prepare data for training by packing the waveforms to hdf5
 
     ```
-    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='testing'
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='testing' --audio_16k
+    ```
+    
+    Do include '--audio_16k' or '--audio_8k' if you would like to train on the 16k or 8k dataset, respectively.
+    No additional tag is needed if you would like to train on the 32k dataset.
+    
+    ```
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='strong_validation' --audio_16k
     ```
     
     If only doing weak training:
     ```
-    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='training'
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='training' --audio_16k
     ```
     If doing combined weak and strong training:
     ```
-    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='weak_training'
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='weak_training' --audio_16k
     ```
     ```
-    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='strong_training'
+    python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='strong_training' --audio_16k
     ```
     
 2. Commence training
 
     If only doing weak training:
     ```
-    python pytorch/main.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda
+    python pytorch/main.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='specaugment_mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda
     ```
     If doing combined weak and strong training:
     ```
-    python pytorch/main_strong.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda
+    python pytorch/main_strong.py train --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='specaugment_mixup' --learning_rate=1e-3 --batch_size=32 --resume_iteration=0 --stop_iteration=50000 --feature_type='logmel' --cuda --audio_16k
     ```
 
 3. Optimize thresholds (optional but strongly recommended)
     
     ```
-   python pytorch/main_strong.py inference_prob --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda
-   ```
-    ```
-    python utils/optimize_thresholds.py optimize_sed_thresholds  --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --feature_type='logmel' --batch_size=32
+    python utils/optimize_thresholds.py optimize_sed_thresholds  --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --filename='main_strong' --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='specaugment_mixup' --feature_type='logmel' --batch_size=32 --audio_16k
     ```
 
 4. Evaluate and Calculate metrics:
 
     If using optimized thresholds:
     ```
-    python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda --sed_thresholds
+    python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='specaugment_mixup' --batch_size=32 --feature_type='logmel' --cuda --audio_16k --sed_thresholds
     ```
     If not using optimized thresholds:
     ```
-    python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='mixup' --batch_size=32 --feature_type='logmel' --cuda
+    python pytorch/main_strong.py inference_prob_overlap --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --holdout_fold=1 --model_type=$MODEL_TYPE --loss_type='clip_bce' --augmentation='specaugment_mixup' --batch_size=32 --feature_type='logmel' --cuda --audio_16k
     ```
 
-Note:
-- Weak vs Combined System
-    - If you would like to train a purely weakly-labelled system, use --filename='main'.
-    - If you would like to train a combined weakly-labelled and strongly-labelled system, use --filename='main_strong'.
-    
-- Data Augmentation Types
-    - If you would like to train a system with only mixup applied, use --augmentation='mixup'.
-    - If you would like to train a system with both timeshift and mixup applied, use --augmentation='timeshift_mixup'.

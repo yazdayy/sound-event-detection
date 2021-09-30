@@ -9,10 +9,22 @@ import numpy as np
 import csv
 import sed_eval
 import h5py
+from prettytable import PrettyTable
 
 import config
 from vad import activity_detection, activity_detection_binary
 
+def count_parameters(model):
+    table = PrettyTable(["Modules", "Parameters"])
+    total_params = 0
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad: continue
+        param = parameter.numel()
+        table.add_row([name, param])
+        total_params+=param
+    print(table)
+    print(f"Total Trainable Params: {total_params}")
+    return total_params
 
 def create_folder(fd):
     if not os.path.exists(fd):
@@ -67,7 +79,7 @@ def int16_to_float32(x):
     return (x / 32767.).astype(np.float32)
 
 
-def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
+def frame_prediction_to_event_prediction(output_dict, sed_params_dict, frames_per_second):
     """Write output to submission file. 
     
     Args:
@@ -84,7 +96,7 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
           'n_salt': int, sound event shorter than this number will be removed}
     """
     (audios_num, frames_num, classes_num) = output_dict['framewise_output'].shape
-    frames_per_second = config.frames_per_second
+    #frames_per_second = config.frames_per_second
     labels = config.labels
     
     event_list = []
@@ -106,8 +118,8 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
     for n in range(audios_num):
         check = 0
         for k in range(classes_num):
-            if output_dict['clipwise_output'][n, k] \
-                > sed_params_dict['audio_tagging_threshold'][k]:
+#            if output_dict['clipwise_output'][n, k] \
+#                > sed_params_dict['audio_tagging_threshold'][k]:
                 #print('CLASS INDEX:', k)
                 check += 1
                 count1 += 1
@@ -140,7 +152,7 @@ def frame_prediction_to_event_prediction(output_dict, sed_params_dict):
     
     return event_list
 
-def frame_prediction_to_event_prediction_v2(framewise_output, audio_name, sed_params_dict):
+def frame_prediction_to_event_prediction_v2(framewise_output, audio_name, sed_params_dict, frames_per_second):
     """Write output to submission file.
     
     Args:
@@ -157,7 +169,7 @@ def frame_prediction_to_event_prediction_v2(framewise_output, audio_name, sed_pa
           'n_salt': int, sound event shorter than this number will be removed}
     """
     (audios_num, frames_num, classes_num) = framewise_output.shape
-    frames_per_second = config.frames_per_second
+    #frames_per_second = config.frames_per_second
     labels = config.labels
     
     event_list = []
@@ -335,7 +347,7 @@ class StatisticsContainer(object):
         self.backup_statistics_path = '{}_{}.pkl'.format(
             os.path.splitext(self.statistics_path)[0], datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
 
-        self.statistics_dict = {'train': [], 'test': [], 'evaluate': []}
+        self.statistics_dict = {'train': [], 'test': [], 'valid': []}
 
     def append(self, data_type, iteration, statistics):
         statistics['iteration'] = iteration
@@ -383,3 +395,52 @@ class Mixup(object):
             mixup_lambdas.append(1. - lam)
 
         return np.array(mixup_lambdas)
+        
+def append_to_dict(dict, key, value):
+    if key in dict.keys():
+        dict[key].append(value)
+    else:
+        dict[key] = value
+
+def merge(prev, curr, sample_duration, num_segment, overlap_value=1):
+    overlap_interval = int(100 * overlap_value)
+    front_cutoff = (num_segment-1) * overlap_interval
+    back_cutoff = prev.shape[1] - front_cutoff
+    prev_overlap = prev[:, front_cutoff:]
+    curr_overlap = curr[:, :back_cutoff]
+    merged = prev_overlap + curr_overlap
+    add_front = np.concatenate((prev[:, :front_cutoff], merged), axis=1)
+    add_back = np.concatenate((add_front, curr[:, back_cutoff:]), axis=1)
+    
+#    front_cutoff = (num_segment-1) * 100
+#    back_cutoff = prev.shape[1] - front_cutoff
+#    prev_overlap = prev[:, front_cutoff:]
+#    curr_overlap = curr[:, :back_cutoff]
+#    merged = prev_overlap + curr_overlap
+#    add_front = np.concatenate((prev[:, :front_cutoff], merged), axis=1)
+#    add_back = np.concatenate((add_front, curr[:, back_cutoff:]), axis=1)
+
+    return add_back
+    
+def avg_merge(merged, sample_duration, overlap_value=1):
+    overlap_interval = int(100 * overlap_value)
+    interval = (sample_duration * 100) - overlap_interval
+    for i in range(overlap_interval, merged.shape[1]-overlap_interval, overlap_interval):
+        if i < interval:
+            num_overlaps = i//overlap_interval + 1
+        elif i >= merged.shape[1] - interval:
+            num_overlaps = ((merged.shape[1] - i) // overlap_interval) + 1
+        else:
+            num_overlaps = sample_duration
+        merged[:, i:i+overlap_interval] /= num_overlaps
+#    interval = (sample_duration * 100) - 100
+#    for i in range(100, merged.shape[1]-100, 100):
+#        if i < interval:
+#            num_overlaps = i//100 + 1
+#        elif i >= merged.shape[1] - interval:
+#            num_overlaps = ((merged.shape[1] - i) // 100) + 1
+#        else:
+#            num_overlaps = sample_duration
+#        merged[:, i:i+100] /= num_overlaps
+    
+    return merged

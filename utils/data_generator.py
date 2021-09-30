@@ -12,7 +12,7 @@ from utilities import int16_to_float32
 import config
 
 
-class DCASE2017Task4Dataset(object):
+class AudiosetDataset(object):
     def __init__(self):
         """DCASE 2017 Task 4 dataset."""
         pass

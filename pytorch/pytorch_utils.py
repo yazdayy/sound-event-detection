@@ -50,7 +50,7 @@ def forward(model, data_loader, return_input=False, return_target=False):
         
         with torch.no_grad():
             model.eval()
-            print(batch_waveform, batch_waveform.size())
+            #print(batch_waveform, batch_waveform.size())
             batch_output = model(batch_waveform)
 
         append_to_dict(output_dict, 'audio_name', batch_data_dict['audio_name'])
@@ -119,16 +119,20 @@ def do_mixup_timeshift(x, mixup_lambda, mean=0, std=90):
     return output
 
 def do_timeshift(x, mean=0, std=90):
-    print('BEFORE', x.size())
     mean = mean
     std = std
     shift = int(np.random.normal(mean, std))
-    data = x#list(x)
-#    for k in range(len(data)):
-#        data[k] = np.roll(data[k], shift, axis=0)
-#    data = tuple(data)
+    output = torch.roll(x, shift, dims=2)
+#    print('BEFORE', x.size())
+#    mean = mean
+#    std = std
+#    shift = int(np.random.normal(mean, std))
+#    data = x#list(x)
+##    for k in range(len(data)):
+##        data[k] = np.roll(data[k], shift, axis=0)
+##    data = tuple(data)
+#
+#    data = torch.roll(data, shift, dims=0)
+#    print('AFTER', data.size())
     
-    data = torch.roll(data, shift, dims=0)
-    print('AFTER', data.size())
-    
-    return data
+    return output

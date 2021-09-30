@@ -77,9 +77,9 @@ def activity_detection_binary(x, overlap_value, sample_duration, thres, low_thre
         #print(x[i:i+overlap_interval], '\n')
         locts = np.where(x[i:i+overlap_interval] >= (num_overlaps))[0]
         if len(locts) != 0:
-            print('BEFORE', locts, '\n')
+            #print('BEFORE', locts, '\n')
             locts = [x+i for x in locts]
-            print('AFTER', locts, '\n')
+            #print('AFTER', locts, '\n')
             all_locts.extend(locts)
         else:
             continue

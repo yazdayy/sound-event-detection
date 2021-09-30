@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.insert(1, os.path.join(sys.path[0], '../utils'))
+sys.path.insert(1, os.path.join(sys.path[0], '../pytorch'))
 import numpy as np
 import argparse
 import h5py
@@ -11,6 +11,16 @@ import sklearn
 import pickle
 from sklearn import metrics
 import matplotlib.pyplot as plt
+
+from evaluate import Evaluator
+from config import (sample_rate, classes_num, mel_bins, fmin, fmax,
+    window_size, hop_size, window, pad_mode, center, device, ref, amin, top_db)
+from losses import get_loss_func
+from pytorch_utils import move_data_to_device, do_mixup, do_mixup_timeshift
+from utilities import (create_folder, frame_prediction_to_event_prediction_v2, get_filename, create_logging, official_evaluate, frame_binary_prediction_to_event_prediction,
+    StatisticsContainer, pad_truncate_sequence, write_submission, Mixup)
+from data_generator import (AudiosetDataset, TrainSampler, TestSampler, collate_fn)
+from models import *
 #from autoth.core import HyperParamsOptimizer
 
 from utilities import (get_filename, create_folder, 
@@ -148,13 +158,14 @@ class AudioTaggingScoreCalculator(object):
 
 
 class SoundEventDetectionScoreCalculator(object):
-    def __init__(self, prediction_path, reference_csv_path, submission_path, classes_num):
+    def __init__(self, prediction_path, reference_csv_path, submission_path, classes_num, frames_per_second):
         """Used to calculate score (such as F1) given prediction, target and hyper parameters. 
         """
         self.output_dict = pickle.load(open(prediction_path, 'rb'))
         self.reference_csv_path = reference_csv_path
         self.submission_path = submission_path
         self.classes_num = classes_num
+        self.frames_per_second= frames_per_second
 
     def params_dict_to_params_list(self, sed_params_dict):
         params = sed_params_dict['audio_tagging_threshold'] + \
@@ -183,7 +194,7 @@ class SoundEventDetectionScoreCalculator(object):
         # params_dict['n_salt'] = 1
 
         predict_event_list = frame_prediction_to_event_prediction(
-            self.output_dict, params_dict)
+            self.output_dict, params_dict, self.frames_per_second)
 
         # Write predicted events to submission file
         write_submission(predict_event_list, self.submission_path)
@@ -300,46 +311,169 @@ def optimize_sed_thresholds(args):
     loss_type = args.loss_type
     augmentation = args.augmentation
     batch_size = args.batch_size
-    data_type = 'test'
+    feature_type = args.feature_type
+    fsd50k = args.fsd50k
+    audio_8k = args.audio_8k
+    audio_16k = args.audio_16k
+    device = 'cuda' if (args.cuda and torch.cuda.is_available()) else 'cpu'
     save_dict = {}
     
     classes_num = config.classes_num
     
+    num_workers = 8
+    data_type = 'valid'
+    
     # Paths
-    if data_type == 'test':
-        reference_csv_path = os.path.join(dataset_dir, 'metadata', 
-            'groundtruth_strong_label_testing_set.csv')
+#    if feature_type == 'logmel' and not audio_8k and not audio_16k:
+#        strong_valid_hdf5_path = os.path.join(workspace, 'hdf5s', 'strong_validation.h5')
+#    elif feature_type == 'logmel' and audio_8k:
+#        strong_valid_hdf5_path = os.path.join(workspace, 'hdf5s', 'strong_validation_8k.h5')
+#    elif feature_type == 'logmel' and audio_16k:
+#        strong_valid_hdf5_path = os.path.join(workspace, 'hdf5s', 'strong_validation_16k.h5')
+#    elif feature_type == 'gamma':
+#        strong_valid_hdf5_path = os.path.join(workspace, 'hdf5s', 'strong_validation_{}.h5'.format(feature_type))
     
-    prediction_path = os.path.join(workspace, 'predictions', 
-        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
-        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
-        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best.prediction.{}.pkl'.format(data_type))
+    if fsd50k:
+        pre_dir = 'fsd50k'
+    else:
+        pre_dir = ''
+        
+    if audio_8k:
+        quality = '8k'
+        sample_rate = 8000
+        window_size = 256
+        hop_size = 80
+        mel_bins = 64
+        fmin = 12
+        fmax = 3500
+    elif audio_16k:
+        quality = '16k'
+        sample_rate = 16000
+        window_size = 512
+        hop_size = 160
+        mel_bins = 64
+        fmin = 25
+        fmax = 7000
+    else:
+        quality = '32k'
+        sample_rate = 32000
+        window_size = 1024
+        hop_size = 320
+        mel_bins = 64
+        fmin = 50
+        fmax = 14000
     
-    tmp_submission_path = os.path.join(workspace, '_tmp_submission', 
-        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
-        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
-        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        '_submission.csv')
-
-    opt_thresholds_path = os.path.join(workspace, 'opt_thresholds', 
-        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
-        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
-        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'best.sed.{}.pkl'.format(data_type))
-    create_folder(os.path.dirname(opt_thresholds_path))
+    audio_samples = sample_rate * 10
+    frames_per_second = sample_rate // hop_size
     
-    save_record_path = os.path.join(workspace, 'opt_thresholds',
+    strong_valid_hdf5_path = os.path.join(workspace, 'hdf5s', 'strong_validation_{}_{}.h5'.format(feature_type, quality))
+    
+    valid_reference_csv_path = os.path.join(dataset_dir, 'metadata', 'strong',
+           'groundtruth_strong_label_strong_validation_set.csv')
+    
+    submission_name = '_submission_{}.csv'.format(quality)
+    checkpoint_name = 'best_{}_{}.pth'.format(feature_type, quality)
+    predict_name = 'best_{}_{}.prediction.{}.pkl'.format(feature_type, quality, data_type)
+    
+    checkpoint_path = os.path.join(workspace, 'checkpoints', pre_dir,
         '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold),
         'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type),
         'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
-        'record.sed.{}.pkl'.format(data_type))
+        checkpoint_name)
+
+    predictions_dir = os.path.join(workspace, 'predictions', pre_dir,
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold),
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type),
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size))
+    create_folder(predictions_dir)
+
+    tmp_submission_path = os.path.join(workspace, '_tmp_submission', pre_dir,
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold),
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type),
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+        submission_name)
+    create_folder(os.path.dirname(tmp_submission_path))
+
+    # Load model
+    assert model_type, 'Please specify model_type!'
+    Model = eval(model_type)
+    model = Model(sample_rate, window_size, hop_size, mel_bins, fmin, fmax,
+        classes_num, feature_type)
+
+    checkpoint = torch.load(checkpoint_path)
+    model.load_state_dict(checkpoint['model'])
+
+    # Parallel
+    print('GPU number: {}'.format(torch.cuda.device_count()))
+    model = torch.nn.DataParallel(model)
+
+    if 'cuda' in device:
+        model.to(device)
+
+    # Dataset
+    dataset = AudiosetDataset()
+
+    # Sampler
+    valid_sampler = TestSampler(hdf5_path=strong_valid_hdf5_path, batch_size=batch_size)
+
+    # Data loader
+    valid_loader = torch.utils.data.DataLoader(dataset=dataset,
+        batch_sampler=valid_sampler, collate_fn=collate_fn,
+        num_workers=num_workers, pin_memory=True)
+
+    # Evaluator
+    evaluator = Evaluator(model=model)
+
+    for (data_type, data_loader, reference_csv_path) in [
+        ('valid', valid_loader, valid_reference_csv_path)]:
+
+        print('Inferencing {} data in about 1 min ...'.format(data_type))
+
+        (statistics, output_dict) = evaluator.evaluate(
+            data_loader, reference_csv_path, tmp_submission_path, frames_per_second)
+
+        prediction_path = os.path.join(predictions_dir,
+            predict_name)
+
+        # write_out_prediction(output_dict, prediction_path)
+        pickle.dump(output_dict, open(prediction_path, 'wb'))
+        print('Write out to {}'.format(prediction_path))
+
+    
+    # Paths
+    reference_csv_path = os.path.join(dataset_dir, 'metadata', 'strong',
+        'groundtruth_strong_label_strong_validation_set.csv')
+    
+    prediction_path = os.path.join(workspace, 'predictions', pre_dir,
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+        predict_name)
+    
+    tmp_submission_path = os.path.join(workspace, '_tmp_submission', pre_dir,
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+        submission_name)
+
+    opt_thresholds_path = os.path.join(workspace, 'opt_thresholds', pre_dir,
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold), 
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type), 
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+        'best_{}_{}.sed.{}.pkl'.format(feature_type, quality, data_type))
+    create_folder(os.path.dirname(opt_thresholds_path))
+    
+    save_record_path = os.path.join(workspace, 'opt_thresholds', pre_dir,
+        '{}'.format(filename), 'holdout_fold={}'.format(holdout_fold),
+        'model_type={}'.format(model_type), 'loss_type={}'.format(loss_type),
+        'augmentation={}'.format(augmentation), 'batch_size={}'.format(batch_size),
+        'record_{}_{}.sed.{}.pkl'.format(feature_type, quality, data_type))
     create_folder(os.path.dirname(save_record_path))
 
     # Score calculator
     score_calculator = SoundEventDetectionScoreCalculator(
         prediction_path=prediction_path, reference_csv_path=reference_csv_path, 
-        submission_path=tmp_submission_path, classes_num=classes_num)
+        submission_path=tmp_submission_path, classes_num=classes_num, frames_per_second=frames_per_second)
 
     # Thresholds optimizer
     hyper_params_opt = HyperParamsOptimizer(score_calculator, save_dict,
@@ -397,8 +531,13 @@ if __name__ == '__main__':
     parser_optimize_sed_thresholds.add_argument('--holdout_fold', type=str, choices=['1', 'none'], required=True)
     parser_optimize_sed_thresholds.add_argument('--model_type', type=str, required=True)
     parser_optimize_sed_thresholds.add_argument('--loss_type', type=str, required=True)
-    parser_optimize_sed_thresholds.add_argument('--augmentation', type=str, choices=['none', 'mixup', 'timeshift_mixup'], required=True)
+    parser_optimize_sed_thresholds.add_argument('--augmentation', type=str, choices=['none', 'spec_augment', 'timeshift', 'mixup', 'timeshift_mixup', 'specaugment_timeshift_mixup', 'specaugment_mixup', 'specaugment_timeshift'], required=True)
     parser_optimize_sed_thresholds.add_argument('--batch_size', type=int, required=True)
+    parser_optimize_sed_thresholds.add_argument('--feature_type', type=str, required=True)
+    parser_optimize_sed_thresholds.add_argument('--fsd50k', action='store_true', default=False)
+    parser_optimize_sed_thresholds.add_argument('--audio_8k', action='store_true', default=False)
+    parser_optimize_sed_thresholds.add_argument('--audio_16k', action='store_true', default=False)
+    parser_optimize_sed_thresholds.add_argument('--cuda', action='store_true', default=False)
 
     args = parser.parse_args()
 
