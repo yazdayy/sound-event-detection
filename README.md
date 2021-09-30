@@ -80,19 +80,24 @@ Note:
     - If you would like to run the system with both timeshift and mixup applied, use --augmentation='timeshift_mixup'.
     - The following list indicates the possible augmentation techniques you may apply: 
     `['none', 'spec_augment', 'timeshift', 'mixup', 'timeshift_mixup', 'specaugment_timeshift_mixup', 'specaugment_mixup', 'specaugment_timeshift']`
+    
+- Audio Quality Selection
+    - If you would like to run the system trained on the 8k or 16k dataset, add a '--audio_8k' or 'audio_16k' tag, respectively.
+    - If you would like to run the system trained on the 32k dataset, no additional tag is required.
 
 ## Training and Evaluation
 Instructions (more details can be found in run.sh):
+- Do include '--audio_16k' or '--audio_8k' if you would like to train on the 16k or 8k dataset, respectively.
+- No additional tag is needed if you would like to train on the 32k dataset.
 
 1. Prepare data for training by packing the waveforms to hdf5
-
+    
+    Pack test set:
     ```
     python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='testing' --audio_16k
     ```
     
-    Do include '--audio_16k' or '--audio_8k' if you would like to train on the 16k or 8k dataset, respectively.
-    No additional tag is needed if you would like to train on the 32k dataset.
-    
+    Pack validation set:
     ```
     python utils/features.py pack_audio_files_to_hdf5 --dataset_dir=$DATASET_DIR --workspace=$WORKSPACE --feature_type='logmel' --data_type='strong_validation' --audio_16k
     ```
