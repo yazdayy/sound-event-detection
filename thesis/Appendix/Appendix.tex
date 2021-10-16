@@ -1,0 +1,175 @@
+%=== APPENDIX TABLES ===
+
+\chapter{Appendix}
+
+% \subsection*{Table A-1}
+
+% Table \ref{tab:sourceinfo} shows the speaker initials (ID), sex, dialect region number (DR), and the sentences used for each of the sources. Sentences that are trimmed are denoted with asterisks. 
+
+% \begin{table}[!htp]
+%     \footnotesize\centering
+%     \begin{tabularx}{\textwidth}{clccLLLL}
+% \toprule
+% Source & Speaker ID & Sex & DR & Sentences\\
+% \midrule
+% 1 & JWT0 & M & 1 & SI1291& SI751& SI1381*\\
+% 2 & AEM0 & F & 2 & SA1& SA2& SI762& SI1392*\\
+% 3 & SLS0 & F & 3 & SI1056& SI1686& SI2316\\
+% 4 & BAS0 & F & 4 & SI1387& SI1472& SI2066*\\
+% 5 & DWH0 & M & 5 & SI1168& SI1925& SX35\\
+% 6 & JRK0 & M & 6 & SI1662& SI2130& SI880& SX160*\\
+% \bottomrule
+% \end{tabularx}
+%     \caption[Speaker information for the evaluation sources]{Speaker information for the evaluation sources\\
+%     \footnotesize{M - male; F - female. DR1 - New England; DR2 - Northern; DR3 - North Midland; DR4 - South Midland; DR5 - Southern; DR6 - New York City.}}
+%     \label{tab:sourceinfo}
+% \end{table}
+
+% \subsection*{Table A-2}
+
+% \begin{table}[!htp]
+%     \footnotesize\centering
+%     \begin{tabularx}{\textwidth}{cL}
+% \toprule
+% Source & Transcript\\
+% \midrule
+% 1 & they should live in modest circumstances avoiding all conspicuous consumption serve in frankfurter buns or as a meat dish but briefly the topping \\
+% 2 & 
+% she had your dark suit in greasy wash water all year
+% don't ask me to carry an oily rag like that
+% fill small hole in bowl with clay 
+% assume for\\
+% 3 & can thermonuclear war be set off by accident it latches when you close it so stay as long as you like Davy Mathews it's disgusting the way you're always eating\\
+% 4 & several factors contributed to this change she greeted her husband's colleagues with smiling politeness offering nothing He saw a pint-sized man\\
+% 5 & it takes a great deal of sophisticated thought to get the impact of this fact so what's this all about help celebrate your brother's success\\
+% 6 & did anyone see my cab See you in about an hour the revolution now under way in materials handling makes this much easier as co-authors we presented our new book\\
+% \bottomrule
+% \end{tabularx}
+%     \caption{Transcript of the evaluation sources}
+%     \label{tab:transcript}
+% \end{table}
+% \newpage %ADD NEW PAGE
+
+% \FloatBarrier
+
+% \subsection{Log-mel Spectrogram Computation}
+
+% The steps for computing log-mel spectrograms are as follows:
+% \begin{enumerate}
+% \item{Sample the input with Hann windows of \(x\) size, making hops of \(y\) size each time to sample the next window. The values of \(x\) and \(y\) are pre-defined.}
+% \item{Map each window from time domain to frequency domain by using the Fast Fourier Transform (FFT) algorithm.}
+% \item{Generate a mel scale by taking the entire frequency spectrum, and separating it into \(z\) bins evenly spaced frequencies. The mel scale values are calculated as follows:
+% \begin{equation}
+%     m = 2595 log_{10}(1 + \frac{f}{100})
+% \end{equation}}
+% \item{Generate the spectrograms by decomposing the magnitude of the signal into its components, corresponding to the frequencies in the Mel scale, for each window. }
+% \item{Apply the logarithmic conversion of the powers at each of the mel scale frequencies.}
+% \end{enumerate}
+
+\subsection{Gammatone Spectrogram Computation}
+% The steps for computing gammatone spectrograms are as follows:
+
+% \begin{enumerate}
+% \item{Sample the input with Hann windows of \(x\) size, making hops of size \(y\) each time to sample the next window. The values of \(x\) and \(y\) are pre-defined.}
+% \item{Compute the Discrete Fourier Transform (DFT) for each window \(a^t\):
+% \begin{equation}
+% A^t_k = \sum^{n−1}_{m=0}a^t_m exp(−2{\pi}i\frac{mk}{n}), \quad k = 0, . . . , n - 1.
+% \end{equation}
+
+% Since the input windows are real-valued, the output of the DFT is Hermetian symmetric. Thus, the negative-frequency terms are redundant and can be discarded. The first bin \(A^t_0\) contains the zero-frequency term of the signal and is also discarded. We are then left with \(\frac{n}{2}\) points \(A^t = [A^t_1, A^t_2, ..., A^t_\frac{n}{2}]^T\) for each window.
+% \item{The square of the absolute value of each window component is then calculated. The resulting vectors are stacked to establish the power spectrogram A:
+% \begin{equation}
+% A = [|A^1|^2, |A^2|^2,  ..., |A^t|^2]
+% \end{equation}}
+% \item{Each bin \(|A^i|^2\) of the power spectrogram is then weighted according to what the magnitude gain of a gammatone filter of the same center frequency would have been for the frequency corresponding to the DFT bin. This can be expressed by the matrix multiplication \(G = W A\). W is computed by transforming the impulse response of m gammatone filters evenly spaced on the ERB scale using an n-point DFT.
+% \begin{equation} W = 
+% \begin{bmatrix}
+% |DFT{g_{f1}(t)|^2\\
+% |DFT{g_{f2}(t)|^2\\
+% \vdots\\
+% |DFT{g_{fm}(t)|^2
+% \end{bmatrix}
+% \end{equation}}
+% \item{Apply the logarithmic conversion of the powers at each of the frequencies.}
+% \end{enumerate}
+
+% \subsection{CNN Specifications}
+% A standard CNN comprises of convolution layers, pooling layers and fully connected layers. 
+% % The input to each convolutional layer is a tensor with a shape (N, C, W, H), where N represents the number of input samples, C is the number of channels, W is the width and H is the height. 
+% Each convolutional layer contains a set of learnable kernels, and its output is a tensor known as a feature map. These kernels are able to learn the local time-frequency patterns in the spectrogram extracted from an audio clip. In audio processing, the low level features \cite{thickstun2017learning} can be the raw wave-forms or spectrograms. The high level features are then extracted by the convolutional layers from these low level features. Following recent CNN architecures, batch normalization \cite{ioffe2015batch} is then applied after the convolutional layers to stabilise and increase the speed of training. After each batch normalization, non-linear activation functions, such as ReLU \cite{relu}, are then applied. For SED tasks, pooling layers are also applied along both time and frequency axes. Finally, the output of the last convolutional layer is fed as input to a time-distributed fully connected layer in order to predict the presence probability of sound events along the time axis. 
+% %Finally, the predicted probabilities are aggregated over the time axis to obtain the clip-wise sound event presence probability. The aggregation can be, for example, maximum or average operations over the time axis. 
+
+% \subsection{Transformer Specifications}
+% A typical transformer may comprise of several encoder and decoder layers. When an input is fed into a transformer, it is transformed into a high level embedding by the encode, which can then be transformed to an output by the decoder. In SED tasks, only the encoder is required, and each encoder is made up several encoder layers. 
+% % For each encoder layer, the input is denoted as a tensor \(x\) of shape \(T \times C\), where \(T\) and \(C\) represent the number of time steps and channels, respectively. These symbols follow those used in \cite{vaswani2017attention}. 
+% The encoder layer contains a query transform matrix \(W^Q\), a key transform matrix \(W^K\) and a value transform matrix \(W^V\). The matrices \(W^Q\) and \(W^K\) have a shape of \(C × d_k\), and \(W^V\) has a shape of \(C \times d_v\), where \(C\) represents the number of channels, and \(d_k\) and \(d_v\) are integers. Then the query \(Q\),  key \(K\) and value \(V\) can be obtained by:
+
+% \begin{align}
+% Q = xW^Q\\
+% K = xW^K\\
+% V = xW^V 
+% \end{align}
+
+% The query Q and key K have a shape of \(T \times d_k\), and the value \(V\) has a shape of \(T \times d_v\), where \(T\) refers to the number of time steps. The output of an encoder layer can be written as: 
+
+% \begin{equation}
+% \label{eqn:trans-4}
+% h = softmax(\frac{QK^T}{\sqrt{d_k}})V ,
+% \end{equation}
+
+% where the output \(h\) has a shape of \(T \times H\). 
+% % Equation \ref{eqn:trans-4} computes the dot product of the query with all keys, then divides each product by \(\sqrt{d_k}\), and finally applies a softmax function to obtain the weights on the values V \cite{vaswani2017attention}. 
+% In equation \ref{eqn:trans-4}, the division of the square root of \(d_k\) is a normalization term \cite{vaswani2017attention}, and the inner product of \(Q\) and \(K^T\) has a shape of \(T \times T\), which represents the feature correlation of different time steps. The softmax function transforms the correlation value to probabilities along the time steps, which indicate how much the value \(V\) in a time step should be attended to.\\
+
+\subsection{Conformer Specifications}
+% The conformer block is made up of three modules, namely a feed-forward module, a multi-head self-attention module, and a convolution module. The feed-forward module comprises of a layer-normalization layer, a linear layer with a Swish activation function \cite{ramachandran2017searching}, which expands the dimensions of the input by four times, and finally another linear layer, which projects the dimensions back to those of the original input. The multi-head self-attention module contains a layer-normalization and multi-head self-attention with relative positional embedding, as used in Transformer-XL \cite{dai-etal-2019-transformer}. The convolution module is made up of a layer normalization layer, a point-wise convolution layer with a gated linear unit (GLU) activation function \cite{dauphin2017language}, and a 1-D depth-wise convolution layer, which is then followed by a batch normalization layer, Swish activation, and finally a point-wise convolution layer. The relation between the input \(X\) and output \(Y\) of the conformer block can thus be modelled as follows:
+
+% \begin{align}
+% X˜ = X + \frac{1}{2}FFN(X),\\
+% X` = X˜ + MHSA(X˜),\\
+% X`` = X` + Conv(X),\\
+% Y = LayerNorm(X`` + \frac{1}{2}FFN(X``)),  
+% \end{align}
+
+% where \(FFN(\cdot)\), \(MHSA(\cdot)\), \(Conv(\cdot)\), and \(LayerNorm(\cdot)\) refer to the feed-forward module, multi-head self-attention module, convolution module, and layer-normalization layer, respectively.\\
+
+\newpage
+
+% \vspace*{-3.9em}\noindent
+% \begin{minipage}{\linewidth}\noindent
+% \begin{multicols}{2}
+% \begin{Figure}
+%     \centering
+%     \includegraphics[width=0.99\linewidth]{fig/2mix1.png}
+%     \captionof{figure}{Configuration 1 for two-source mixture}
+%     \label{fig:2mix1}
+% \end{Figure}
+% \begin{Figure}
+%     \centering
+%     \includegraphics[width=0.99\linewidth]{fig/2mix2.png}
+%     \captionof{figure}{Configuration 2 for two-source mixture}
+%     \label{fig:2mix2}
+% \end{Figure}
+% \begin{Figure}
+%     \centering
+%     \includegraphics[width=0.99\linewidth]{fig/2mix3.png}
+%     \captionof{figure}{Configuration 1 for three-source mixture}
+%     \label{fig:3mix1}
+% \end{Figure}
+% \begin{Figure}
+%     \centering
+%     \includegraphics[width=0.99\linewidth]{fig/3mix1.png}
+%     \captionof{figure}{Configuration 2 for three-source mixture}
+%     \label{fig:3mix2}
+% \end{Figure}
+% \end{multicols}
+% \end{minipage}
+% \vfill
+
+
+
+
+
+
+%=== END OF APPENDIX TABLES AND FIGURES===
+\newpage

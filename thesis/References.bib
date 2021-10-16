@@ -1,0 +1,666 @@
+@inproceedings{DCASE2016,
+    author = "Mesaros, Annamaria and Heittola, Toni and Virtanen, Tuomas",
+    title = "{TUT} Database for Acoustic Scene Classification and Sound Event Detection",
+    abstract = "We introduce TUT Acoustic Scenes 2016 database for environmental sound research, consisting ofbinaural recordings from 15 different acoustic environments. A subset of this database, called TUT Sound Events 2016, contains annotations for individual sound events, specifically created for sound event detection. TUT Sound Events 2016 consists of residential area and home environments, and is manually annotated to mark onset, offset and label of sound events. In this paper we present the recording and annotation procedure, the database content, a recommended cross-validation setup and performance of supervised acoustic scene classification system and event detection baseline system using mel frequency cepstral coefficients and Gaussian mixture models. The database is publicly released to provide support for algorithm development and common ground for comparison of different techniques.",
+    year = "2016",
+    address = "Budapest, Hungary",
+    booktitle = "24th European Signal Processing Conference 2016 (EUSIPCO 2016)"
+}
+
+@inproceedings{DCASE2017,
+    Author = "Mesaros, A. and Heittola, T. and Diment, A. and Elizalde, B. and Shah, A. and Vincent, E. and Raj, B. and Virtanen, T.",
+    title = "{DCASE} 2017 Challenge Setup: Tasks, Datasets and Baseline System",
+    booktitle = "Proceedings of the Detection and Classification of Acoustic Scenes and Events 2017 Workshop (DCASE2017)",
+    year = "2017",
+    month = "November",
+    pages = "85--92",
+    abstract = "DCASE 2017 Challenge consists of four tasks: acoustic scene classification, detection of rare sound events, sound event detection in real-life audio, and large-scale weakly supervised sound event detection for smart cars. This paper presents the setup of these tasks: task definition, dataset, experimental setup, and baseline system results on the development dataset. The baseline systems for all tasks rely on the same implementation using multilayer perceptron and log mel-energies, but differ in the structure of the output layer and the decision making process, as well as the evaluation of system output using task specific metrics.",
+    keywords = "Sound scene analysis, Acoustic scene classification, Sound event detection, Audio tagging, Rare sound events"
+}
+
+@inproceedings{DCASE2018,
+    author = "Serizel, Romain and Turpault, Nicolas and Eghbal-Zadeh, Hamid and Shah, Ankit Parag",
+    title = "Large-scale weakly labeled semi-supervised sound event detection in domestic environments",
+    abstract = "This paper presents DCASE 2018 task 4. The task evaluates systems for the large-scale detection of sound events using weakly labeled data (without time boundaries). The target of the systems is to provide not only the event class but also the event time boundaries given that multiple events can be present in an audio recording. Another challenge of the task is to explore the possibility to exploit a large amount of unbalanced and unlabeled training data together with a small weakly labeled training set to improve system performance. The data are Youtube video excerpts from domestic context which have many applications such as ambient assisted living. The domain was chosen due to the scientific challenges (wide variety of sounds, time-localized events. . . ) and potential applications.",
+    month = "November",
+    pages = "19--23",
+    year = "2018",
+    keywords = "Sound event detection, Large scale, Weakly labeled data, Semi-supervised learning",
+    booktitle = "Proceedings of the Detection and Classification of Acoustic Scenes and Events 2018 Workshop (DCASE2018)",
+    hal_id = "hal-01850270",
+    hal_version = "v1",
+    url = "https://hal.inria.fr/hal-01850270"
+}
+
+@unpublished{DCASE2019,
+    AUTHOR = "Turpault, Nicolas and Serizel, Romain and Parag Shah, Ankit and Salamon, Justin",
+    title = "{Sound event detection in domestic environments with weakly labeled data and soundscape synthesis}",
+    url = "https://hal.inria.fr/hal-02160855",
+    note = "working paper or preprint",
+    year = "2019",
+    month = "June",
+    keywords = "Sound event detection ; Weakly labeled data ; Semi-supervised learning ; Synthetic data",
+    pdf = "https://hal.inria.fr/hal-02160855/file/Sound\_event\_detection\_in\_domestic\_environments\_with\_weakly\_labeled\_data\_and\_soundscape\_synthesis.pdf",
+    hal_id = "hal-02160855",
+    hal_version = "v1"
+}
+
+@inproceedings{Wisdom_InPrep2020,
+    Author = "Wisdom, Scott and Erdogan, Hakan and Ellis, Daniel P. W. and Serizel, Romain and Turpault, Nicolas and Fonseca, Eduardo and Salamon, Justin and Seetharaman, Prem and Hershey, John R.",
+    title = "What's All the FUSS About Free Universal Sound Separation Data?",
+    year = "2020",
+    booktitle = "in preparation"
+}
+
+@inproceedings{audioset,  
+        author={Gemmeke, Jort F. and Ellis, Daniel P. W. and Freedman, Dylan and Jansen, Aren and Lawrence, Wade and Moore, R. Channing and Plakal, Manoj and Ritter, Marvin},  booktitle={2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},   title={Audio Set: An ontology and human-labeled dataset for audio events},   year={2017},  volume={},  number={},  pages={776-780},  doi={10.1109/ICASSP.2017.7952261}}
+        
+@article{Poliner2007,
+    Author = "Poliner, G. and Ellis, D.",
+    title = "A Discriminative Model for Polyphonic Piano Transcription",
+    journal = "EURASIP Journal on Advances in Signal Processing",
+    year = "2007",
+    number = "1",
+    pages = "048317",
+    volume = "2007",
+    abstract = "We present a discriminative model for polyphonic piano transcription. Support vector machines trained on spectral features are used to classify frame-level note instances. The classifier outputs are temporally constrained via hidden Markov models, and the proposed system is used to transcribe both synthesized and real piano recordings. A frame-level transcription accuracy of 68\% was achieved on a newly generated test set, and direct comparisons to previous approaches are provided.",
+    file = "Poliner2007\_art\%3A10.1155\%2F2007\%2F48317.pdf:Poliner2007\_art\%3A10.1155\%2F2007\%2F48317.pdf:PDF",
+    issn = "1687-6180"
+}
+
+@article{specaugment,
+   title={SpecAugment: A Simple Data Augmentation Method for Automatic Speech Recognition},
+   url={http://dx.doi.org/10.21437/Interspeech.2019-2680},
+   DOI={10.21437/interspeech.2019-2680},
+   journal={Interspeech 2019},
+   publisher={ISCA},
+   author={Park, Daniel S. and Chan, William and Zhang, Yu and Chiu, Chung-Cheng and Zoph, Barret and Cubuk, Ekin D. and Le, Quoc V.},
+   year={2019},
+   month={Sep}
+}
+
+@misc{mixup,
+      title={mixup: Beyond Empirical Risk Minimization}, 
+      author={Hongyi Zhang and Moustapha Cisse and Yann N. Dauphin and David Lopez-Paz},
+      year={2018},
+      eprint={1710.09412},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@unknown{mixup_ex,
+author = {Xu, Kele and Feng, Dawei and Mi, Haibo and Zhu, Boqing and Wang, Dezhi and Zhang, Lilun and Cai, Hengxing and Liu, Shuwen},
+year = {2018},
+month = {05},
+pages = {},
+title = {Mixup-Based Acoustic Scene Classification Using Multi-Channel Convolutional Neural Network}
+}
+
+@misc{thulasidasan2020mixup,
+      title={On Mixup Training: Improved Calibration and Predictive Uncertainty for Deep Neural Networks}, 
+      author={Sunil Thulasidasan and Gopinath Chennupati and Jeff Bilmes and Tanmoy Bhattacharya and Sarah Michalak},
+      year={2020},
+      eprint={1905.11001},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML}
+}
+
+@unknown{timeshift,
+    authors={Lionel Delphin-Poulat and Cyril Plapous},
+    title={Mean teacher with data
+    augmentation for DCASE 2019 task 4},
+    year={2019},
+    address={Orange Labs Lannion, France, Tech. Rep.}
+}
+
+@misc{gulati2020conformer,
+      title={Conformer: Convolution-augmented Transformer for Speech Recognition}, 
+      author={Anmol Gulati and James Qin and Chung-Cheng Chiu and Niki Parmar and Yu Zhang and Jiahui Yu and Wei Han and Shibo Wang and Zhengdong Zhang and Yonghui Wu and Ruoming Pang},
+      year={2020},
+      eprint={2005.08100},
+      archivePrefix={arXiv},
+      primaryClass={eess.AS}
+}
+
+@misc{ramachandran2017searching,
+      title={Searching for Activation Functions}, 
+      author={Prajit Ramachandran and Barret Zoph and Quoc V. Le},
+      year={2017},
+      eprint={1710.05941},
+      archivePrefix={arXiv},
+      primaryClass={cs.NE}
+}
+
+@inproceedings{dai-etal-2019-transformer,
+    title = "Transformer-{XL}: Attentive Language Models beyond a Fixed-Length Context",
+    author = "Dai, Zihang  and
+      Yang, Zhilin  and
+      Yang, Yiming  and
+      Carbonell, Jaime  and
+      Le, Quoc  and
+      Salakhutdinov, Ruslan",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1285",
+    doi = "10.18653/v1/P19-1285",
+    pages = "2978--2988",
+    abstract = "Transformers have a potential of learning longer-term dependency, but are limited by a fixed-length context in the setting of language modeling. We propose a novel neural architecture Transformer-XL that enables learning dependency beyond a fixed length without disrupting temporal coherence. It consists of a segment-level recurrence mechanism and a novel positional encoding scheme. Our method not only enables capturing longer-term dependency, but also resolves the context fragmentation problem. As a result, Transformer-XL learns dependency that is 80{\%} longer than RNNs and 450{\%} longer than vanilla Transformers, achieves better performance on both short and long sequences, and is up to 1,800+ times faster than vanilla Transformers during evaluation. Notably, we improve the state-of-the-art results of bpc/perplexity to 0.99 on enwiki8, 1.08 on text8, 18.3 on WikiText-103, 21.8 on One Billion Word, and 54.5 on Penn Treebank (without finetuning). When trained only on WikiText-103, Transformer-XL manages to generate reasonably coherent, novel text articles with thousands of tokens. Our code, pretrained models, and hyperparameters are available in both Tensorflow and PyTorch.",
+}
+
+@misc{dauphin2017language,
+      title={Language Modeling with Gated Convolutional Networks}, 
+      author={Yann N. Dauphin and Angela Fan and Michael Auli and David Grangier},
+      year={2017},
+      eprint={1612.08083},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+@ARTICLE{trans-learn,  author={Pan, Sinno Jialin and Yang, Qiang},  journal={IEEE Transactions on Knowledge and Data Engineering},   title={A Survey on Transfer Learning},   year={2010},  volume={22},  number={10},  pages={1345-1359},  doi={10.1109/TKDE.2009.191}}
+
+@inproceedings{NIPS2012_cnn,
+ author = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {F. Pereira and C. J. C. Burges and L. Bottou and K. Q. Weinberger},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {ImageNet Classification with Deep Convolutional Neural Networks},
+ url = {https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf},
+ volume = {25},
+ year = {2012}
+}
+
+@misc{cnn-at,
+      title={Automatic tagging using deep convolutional neural networks}, 
+      author={Keunwoo Choi and George Fazekas and Mark Sandler},
+      year={2016},
+      eprint={1606.00298},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
+
+@ARTICLE{cnn-asr,  author={Abdel-Hamid, Ossama and Mohamed, Abdel-rahman and Jiang, Hui and Deng, Li and Penn, Gerald and Yu, Dong},  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing},   title={Convolutional Neural Networks for Speech Recognition},   year={2014},  volume={22},  number={10},  pages={1533-1545},  doi={10.1109/TASLP.2014.2339736}}
+
+@misc{ioffe2015batch,
+      title={Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift}, 
+      author={Sergey Ioffe and Christian Szegedy},
+      year={2015},
+      eprint={1502.03167},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@INPROCEEDINGS{relu,  author={Dahl, George E. and Sainath, Tara N. and Hinton, Geoffrey E.},  booktitle={2013 IEEE International Conference on Acoustics, Speech and Signal Processing},   title={Improving deep neural networks for LVCSR using rectified linear units and dropout},   year={2013},  volume={},  number={},  pages={8609-8613},  doi={10.1109/ICASSP.2013.6639346}}
+
+@misc{thickstun2017learning,
+      title={Learning Features of Music from Scratch}, 
+      author={John Thickstun and Zaid Harchaoui and Sham Kakade},
+      year={2017},
+      eprint={1611.09827},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML}
+}
+
+@article{hochreiter1997long,
+  added-at = {2016-11-15T08:49:43.000+0100},
+  author = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  biburl = {https://www.bibsonomy.org/bibtex/2a4a80026d24955b267cae636aa8abe4a/dallmann},
+  interhash = {0692b471c4b9ae65d00affebc09fb467},
+  intrahash = {a4a80026d24955b267cae636aa8abe4a},
+  journal = {Neural computation},
+  keywords = {lstm rnn},
+  number = 8,
+  pages = {1735--1780},
+  publisher = {MIT Press},
+  timestamp = {2016-11-15T08:49:43.000+0100},
+  title = {Long short-term memory},
+  volume = 9,
+  year = 1997
+}
+
+@inproceedings{Mikolov:2010wx,
+  added-at = {2019-05-21T10:10:49.000+0200},
+  author = {Mikolov, Tomas and Karafi{\'a}t, Martin and Burget, Luk{\'a}s and Cernock{\'{y}}, Jan and Khudanpur, Sanjeev},
+  biburl = {https://www.bibsonomy.org/bibtex/278d2617b9b9829b5476450bd4d1200b1/sxkdz},
+  booktitle = {Proceedings of the 11th Annual Conference of the International Speech Communication Association},
+  interhash = {245d1279b03856348523ebefda4cac10},
+  intrahash = {78d2617b9b9829b5476450bd4d1200b1},
+  keywords = {imported},
+  location = {Makuhari, Chiba, Japan},
+  pages = {1045--1048},
+  publisher = {ISCA},
+  series = {INTERSPEECH 2010},
+  timestamp = {2019-05-21T10:10:49.000+0200},
+  title = {{Recurrent Neural Network Based Language Model}},
+  url = {http://www.isca-speech.org/archive/interspeech_2010/i10_1045.html},
+  year = 2010
+}
+
+@misc{cho2014learning,
+      title={Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation}, 
+      author={Kyunghyun Cho and Bart van Merrienboer and Caglar Gulcehre and Dzmitry Bahdanau and Fethi Bougares and Holger Schwenk and Yoshua Bengio},
+      year={2014},
+      eprint={1406.1078},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+@misc{devlin2019bert,
+      title={BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding}, 
+      author={Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
+      year={2019},
+      eprint={1810.04805},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+@incollection{vaswani2017attention,
+  added-at = {2019-11-18T20:55:43.000+0100},
+  author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Łukasz and Polosukhin, Illia},
+  biburl = {https://www.bibsonomy.org/bibtex/2eebc38736c3f890f1f7dcdd94a791f3b/sapo},
+  booktitle = {Advances in Neural Information Processing Systems 30},
+  editor = {Guyon, I. and Luxburg, U. V. and Bengio, S. and Wallach, H. and Fergus, R. and Vishwanathan, S. and Garnett, R.},
+  interhash = {b23d83da70543e00f9240cc009f1fcfa},
+  intrahash = {eebc38736c3f890f1f7dcdd94a791f3b},
+  keywords = {deep_learning},
+  pages = {5998–6008},
+  publisher = {Curran Associates, Inc.},
+  timestamp = {2020-11-04T10:28:15.000+0100},
+  title = {Attention is All you Need},
+  url = {https://papers.nips.cc/paper/7181-attention-is-all-you-need},
+  year = 2017
+}
+
+@article{const_thres,
+author = {Xu, Yong and Kong, Qiuqiang and Plumbley, Mark},
+year = {2017},
+month = {10},
+pages = {},
+title = {Large-scale weakly supervised audio classification using gated convolutional neural network}
+}
+
+@misc{kong2020sound,
+      title={Sound Event Detection of Weakly Labelled Data with CNN-Transformer and Automatic Threshold Optimization}, 
+      author={Qiuqiang Kong and Yong Xu and Wenwu Wang and Mark D. Plumbley},
+      year={2020},
+      eprint={1912.04761},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
+
+@inproceedings{trans-learn-2019,
+author = {Chandrarathne, Gayani and Thanikasalam, Kokul and Pinidiyaarachchi, Amalka},
+year = {2019},
+month = {04},
+pages = {},
+title = {A Comprehensive Study on Deep Image Classification with Small Datasets}
+}
+
+@article{Wei_2020,
+	doi = {10.1088/1742-6596/1453/1/012085},
+	url = {https://doi.org/10.1088/1742-6596/1453/1/012085},
+	year = 2020,
+	month = {jan},
+	publisher = {{IOP} Publishing},
+	volume = {1453},
+	pages = {012085},
+	author = {Shengyun Wei and Shun Zou and Feifan Liao and weimin lang},
+	title = {A Comparison on Data Augmentation Methods Based on Deep Learning for Audio Classification},
+	journal = {Journal of Physics: Conference Series},
+	abstract = {Deep learning focuses on the representation of the input data and generalization of the model. It is well known that data augmentation can combat overfitting and improve the generalization ability of deep neural network. In this paper, we summarize and compare multiple data augmentation methods for audio classification. These strategies include traditional methods on raw audio signal, as well as the current popular augmentation of linear interpolation and nonlinear mixing on the spectrum. We explore the generation of new samples, the transformation of labels, and the combination patterns of samples and labels of each data augmentation method. Finally, inspired by SpecAugment and Mixup, we propose an effective and easy to implement data augmentation method, which we call Mixed frequency Masking data augmentation. This method adopts nonlinear combination method to construct new samples and linear method to construct labels. All methods are verified on the Freesound Dataset Kaggle2018 dataset, and ResNet is adopted as the classifier. The baseline system uses the log-mel spectrogram feature as the input. We use mean Average Precision @3 (mAP@3) as the evaluation metric to evaluate the performance of all data augmentation methods.}
+}
+
+@INPROCEEDINGS{gammatone,
+  author={Pour, Aref Farhadi and Asgari, Mohammad and Hasanabadi, Mohammad Reza},
+  booktitle={2014 4th International Conference on Computer and Knowledge Engineering (ICCKE)}, 
+  title={Gammatonegram based speaker identification}, 
+  year={2014},
+  volume={},
+  number={},
+  pages={52-55},
+  doi={10.1109/ICCKE.2014.6993383}}
+  
+@misc{hershey2017cnn,
+      title={CNN Architectures for Large-Scale Audio Classification}, 
+      author={Shawn Hershey and Sourish Chaudhuri and Daniel P. W. Ellis and Jort F. Gemmeke and Aren Jansen and R. Channing Moore and Manoj Plakal and Devin Platt and Rif A. Saurous and Bryan Seybold and Malcolm Slaney and Ron J. Weiss and Kevin Wilson},
+      year={2017},
+      eprint={1609.09430},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
+
+@inproceedings{spec-2019,
+author = {Phaye, Sai and Benetos, Emmanouil and Wang, Ye},
+year = {2019},
+month = {05},
+pages = {825-829},
+title = {SubSpectralNet – Using Sub-spectrogram Based Convolutional Neural Networks for Acoustic Scene Classification},
+doi = {10.1109/ICASSP.2019.8683288}
+}
+
+@inproceedings{Miyazaki2020CONFORMERBASEDSE,
+  title={CONFORMER-BASED SOUND EVENT DETECTION WITH SEMI-SUPERVISED LEARNING AND DATA AUGMENTATION},
+  author={Koichi Miyazaki and Tatsuya Komatsu and Tomoki Hayashi and Shinji Watanabe and T. Toda and K. Takeda},
+  year={2020}
+}
+
+@misc{xu2017convolutional,
+      title={Convolutional Gated Recurrent Neural Network Incorporating Spatial Features for Audio Tagging}, 
+      author={Yong Xu and Qiuqiang Kong and Qiang Huang and Wenwu Wang and Mark D. Plumbley},
+      year={2017},
+      eprint={1702.07787},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
+
+@misc{hershey2021benefit,
+      title={The Benefit Of Temporally-Strong Labels In Audio Event Classification}, 
+      author={Shawn Hershey and Daniel P W Ellis and Eduardo Fonseca and Aren Jansen and Caroline Liu and R Channing Moore and Manoj Plakal},
+      year={2021},
+      eprint={2105.07031},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
+
+@incollection{NEURIPS2019_9015,
+title = {PyTorch: An Imperative Style, High-Performance Deep Learning Library},
+author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+booktitle = {Advances in Neural Information Processing Systems 32},
+editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+pages = {8024--8035},
+year = {2019},
+publisher = {Curran Associates, Inc.},
+url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+}
+
+@software{brian_mcfee_2021_4792298,
+  author       = {Brian McFee and
+                  Alexandros Metsai and
+                  Matt McVicar and
+                  Stefan Balke and
+                  Carl Thomé and
+                  Colin Raffel and
+                  Frank Zalkow and
+                  Ayoub Malek and
+                  Dana and
+                  Kyungyun Lee and
+                  Oriol Nieto and
+                  Dan Ellis and
+                  Jack Mason and
+                  Eric Battenberg and
+                  Scott Seyfarth and
+                  Ryuichi Yamamoto and
+                  viktorandreevichmorozov and
+                  Keunwoo Choi and
+                  Josh Moore and
+                  Rachel Bittner and
+                  Shunsuke Hidaka and
+                  Ziyao Wei and
+                  nullmightybofo and
+                  Darío Hereñú and
+                  Fabian-Robert Stöter and
+                  Pius Friesch and
+                  Adam Weiss and
+                  Matt Vollrath and
+                  Taewoon Kim and
+                  Thassilo},
+  title        = {librosa/librosa: 0.8.1rc2},
+  month        = may,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {0.8.1rc2},
+  doi          = {10.5281/zenodo.4792298},
+  url          = {https://doi.org/10.5281/zenodo.4792298}
+}
+
+@ARTICLE{torchlibrosa,
+  author={Kong, Qiuqiang and Cao, Yin and Iqbal, Turab and Wang, Yuxuan and Wang, Wenwu and Plumbley, Mark D.},
+  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 
+  title={PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition}, 
+  year={2020},
+  volume={28},
+  number={},
+  pages={2880-2894},
+  doi={10.1109/TASLP.2020.3030497}}
+  
+
+@Article{sed-eval,
+AUTHOR = {Mesaros, Annamaria and Heittola, Toni and Virtanen, Tuomas},
+TITLE = {Metrics for Polyphonic Sound Event Detection},
+JOURNAL = {Applied Sciences},
+VOLUME = {6},
+YEAR = {2016},
+NUMBER = {6},
+ARTICLE-NUMBER = {162},
+URL = {https://www.mdpi.com/2076-3417/6/6/162},
+ISSN = {2076-3417},
+ABSTRACT = {This paper presents and discusses various metrics proposed for evaluation of polyphonic sound event detection systems used in realistic situations where there are typically multiple sound sources active simultaneously. The system output in this case contains overlapping events, marked as multiple sounds detected as being active at the same time. The polyphonic system output requires a suitable procedure for evaluation against a reference. Metrics from neighboring fields such as speech recognition and speaker diarization can be used, but they need to be partially redefined to deal with the overlapping events. We present a review of the most common metrics in the field and the way they are adapted and interpreted in the polyphonic case. We discuss segment-based and event-based definitions of each metric and explain the consequences of instance-based and class-based averaging using a case study. In parallel, we provide a toolbox containing implementations of presented metrics.},
+DOI = {10.3390/app6060162}
+}
+
+@article{tomar2006converting,
+  title={Converting video formats with FFmpeg},
+  author={Tomar, Suramya},
+  journal={Linux Journal},
+  volume={2006},
+  number={146},
+  pages={10},
+  year={2006},
+  publisher={Belltown Media}
+}
+
+@ONLINE{hdf5,
+    author = {{The HDF Group}},
+    title = "{Hierarchical data format version 5}",
+    year = {2000-2010},
+    url = {http://www.hdfgroup.org/HDF5}
+}
+
+@book{python,
+ author = {Van Rossum, Guido and Drake, Fred L.},
+ title = {Python 3 Reference Manual},
+ year = {2009},
+ isbn = {1441412697},
+ publisher = {CreateSpace},
+ address = {Scotts Valley, CA}
+}
+
+@incollection{vggish,
+title	= {CNN Architectures for Large-Scale Audio Classification},
+author	= {Shawn Hershey and Sourish Chaudhuri and Daniel P. W. Ellis and Jort F. Gemmeke and Aren Jansen and Channing Moore and Manoj Plakal and Devin Platt and Rif A. Saurous and Bryan Seybold and Malcolm Slaney and Ron Weiss and Kevin Wilson},
+year	= {2017},
+URL	= {https://arxiv.org/abs/1609.09430},
+booktitle	= {International Conference on Acoustics, Speech and Signal Processing (ICASSP)}
+}
+
+@misc{vgg,
+      title={Very Deep Convolutional Networks for Large-Scale Image Recognition}, 
+      author={Karen Simonyan and Andrew Zisserman},
+      year={2015},
+      eprint={1409.1556},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+@misc{kingma2017adam,
+      title={Adam: A Method for Stochastic Optimization}, 
+      author={Diederik P. Kingma and Jimmy Ba},
+      year={2017},
+      eprint={1412.6980},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@article{ruder2016overview,
+  title={An overview of gradient descent optimization algorithms},
+  author={Ruder, Sebastian},
+  journal={arXiv preprint arXiv:1609.04747},
+  year={2016}
+}
+
+@article{lavalle2004relationship,
+  title={On the relationship between classical grid search and probabilistic roadmaps},
+  author={LaValle, Steven M and Branicky, Michael S and Lindemann, Stephen R},
+  journal={The International Journal of Robotics Research},
+  volume={23},
+  number={7-8},
+  pages={673--692},
+  year={2004},
+  publisher={SAGE Publications}
+}
+
+@article{slaney,
+author="SLANEY, M.",
+title="Auditory Toolbox Ver. 2",
+journal="technical report #1998-010",
+ISSN="",
+publisher="",
+year="",
+month="",
+volume="",
+number="",
+pages="",
+URL="https://ci.nii.ac.jp/naid/10018267379/en/",
+DOI="",
+}
+
+@article{deliang,
+author = {Wang, DeLiang and Brown, Guy},
+year = {2008},
+month = {07},
+pages = {199},
+title = {Computational Auditory Scene Analysis: Principles, Algorithms and Applications},
+volume = {19},
+journal = {IEEE Transactions on Neural Networks},
+doi = {10.1121/1.2920958}
+}
+
+@article{abdulla-gammatone,
+author = {Abdulla, Waleed},
+year = {2002},
+month = {01},
+pages = {231-236},
+title = {Auditory based feature vectors for speech recognition systems},
+journal = {Advances in Communications and Software Technologies}
+}
+
+@ARTICLE{mel-scale,
+       author = {{Stevens}, S.~S.},
+        title = "{A Scale for the Measurement of the Psychological Magnitude Pitch}",
+      journal = {Acoustical Society of America Journal},
+         year = 1937,
+        month = jan,
+       volume = {8},
+       number = {3},
+        pages = {185},
+          doi = {10.1121/1.1915893},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/1937ASAJ....8..185S},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@article{heittola-2013,
+author = {Heittola, Toni and Mesaros, Annamaria and Eronen, Antti and Virtanen, Tuomas},
+year = {2013},
+month = {01},
+pages = {1},
+title = {Context-dependent sound event detection},
+volume = {2013},
+journal = {EURASIP Journal on Audio, Speech, and Music Processing},
+doi = {10.1186/1687-4722-2013-1}
+}
+
+@inproceedings{heittola-2011,
+author = {Heittola, Toni and Mesaros, Annamaria and Virtanen, Tuomas and Eronen, Antti},
+year = {2011},
+month = {01},
+pages = {},
+title = {Sound Event Detection in Multisource Environments Using Source Separation},
+journal = {Workshop on Machine Listening in Multisource Environments, CHiME2011}
+}
+
+@article{Mesaros2016TUTDF,
+  title={TUT database for acoustic scene classification and sound event detection},
+  author={A. Mesaros and Toni Heittola and Tuomas Virtanen},
+  journal={2016 24th European Signal Processing Conference (EUSIPCO)},
+  year={2016},
+  pages={1128-1132}
+}
+
+@misc{chung2014empirical,
+      title={Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling}, 
+      author={Junyoung Chung and Caglar Gulcehre and KyungHyun Cho and Yoshua Bengio},
+      year={2014},
+      eprint={1412.3555},
+      archivePrefix={arXiv},
+      primaryClass={cs.NE}
+}
+
+@misc{fonseca2020fsd50k,
+      title={FSD50K: an Open Dataset of Human-Labeled Sound Events}, 
+      author={Eduardo Fonseca and Xavier Favory and Jordi Pons and Frederic Font and Xavier Serra},
+      year={2020},
+      eprint={2010.00475},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD}
+}
+
+@INPROCEEDINGS{scaper2017,
+  author={Salamon, Justin and MacConnell, Duncan and Cartwright, Mark and Li, Peter and Bello, Juan Pablo},
+  booktitle={2017 IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (WASPAA)}, 
+  title={Scaper: A library for soundscape synthesis and augmentation}, 
+  year={2017},
+  volume={},
+  number={},
+  pages={344-348},
+  doi={10.1109/WASPAA.2017.8170052}}
+  
+  
+ @article{Schmidt_2010,
+	doi = {10.1088/0967-3334/31/4/004},
+	url = {https://doi.org/10.1088/0967-3334/31/4/004},
+	year = 2010,
+	month = {mar},
+	publisher = {{IOP} Publishing},
+	volume = {31},
+	number = {4},
+	pages = {513--529},
+	author = {S E Schmidt and C Holst-Hansen and C Graff and E Toft and J J Struijk},
+	title = {Segmentation of heart sound recordings by a duration-dependent hidden Markov model},
+	journal = {Physiological Measurement},
+	abstract = {Digital stethoscopes offer new opportunities for computerized analysis of heart sounds. Segmentation of heart sound recordings into periods related to the first and second heart sound (S1 and S2) is fundamental in the analysis process. However, segmentation of heart sounds recorded with handheld stethoscopes in clinical environments is often complicated by background noise. A duration-dependent hidden Markov model (DHMM) is proposed for robust segmentation of heart sounds. The DHMM identifies the most likely sequence of physiological heart sounds, based on duration of the events, the amplitude of the signal envelope and a predefined model structure. The DHMM model was developed and tested with heart sounds recorded bedside with a commercially available handheld stethoscope from a population of patients referred for coronary arterioangiography. The DHMM identified 890 S1 and S2 sounds out of 901 which corresponds to 98.8% (CI: 97.8–99.3%) sensitivity in 73 test patients and 13 misplaced sounds out of 903 identified sounds which corresponds to 98.6% (CI: 97.6–99.1%) positive predictivity. These results indicate that the DHMM is an appropriate model of the heart cycle and suitable for segmentation of clinically recorded heart sounds.}
+}
+
+@INPROCEEDINGS{Chien_2007,
+  author={Chien, Jen-Chien and Wu, Huey-Dong and Chong, Fok-Ching and Li, Chung-I},
+  booktitle={2007 29th Annual International Conference of the IEEE Engineering in Medicine and Biology Society}, 
+  title={Wheeze Detection Using Cepstral Analysis in Gaussian Mixture Models}, 
+  year={2007},
+  volume={},
+  number={},
+  pages={3168-3171},
+  doi={10.1109/IEMBS.2007.4353002}}
+  
+ @INPROCEEDINGS{Cakir_2015,
+  author={Cakir, Emre and Heittola, Toni and Huttunen, Heikki and Virtanen, Tuomas},
+  booktitle={2015 International Joint Conference on Neural Networks (IJCNN)}, 
+  title={Polyphonic sound event detection using multi label deep neural networks}, 
+  year={2015},
+  volume={},
+  number={},
+  pages={1-7},
+  doi={10.1109/IJCNN.2015.7280624}}
+  
+@INPROCEEDINGS{Wang_2016,  author={Wang, Yun and Neves, Leonardo and Metze, Florian},  booktitle={2016 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},   title={Audio-based multimedia event detection using deep recurrent neural networks},   year={2016},  volume={},  number={},  pages={2742-2746},  doi={10.1109/ICASSP.2016.7472176}}
+
+@INPROCEEDINGS{Jung_2019,
+  author={Jung, Seokwon and Park, Jungbae and Lee, Sangwan},
+  booktitle={ICASSP 2019 - 2019 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 
+  title={Polyphonic Sound Event Detection Using Convolutional Bidirectional Lstm and Synthetic Data-based Transfer Learning}, 
+  year={2019},
+  volume={},
+  number={},
+  pages={885-889},
+  doi={10.1109/ICASSP.2019.8682909}}

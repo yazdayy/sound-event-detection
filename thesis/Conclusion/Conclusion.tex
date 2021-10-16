@@ -1,0 +1,20 @@
+%=== Conclusion and Recommendations ===
+
+\chapter{Conclusion and Future Work}
+
+\section{Conclusion}
+In this thesis, we experimented with different audio feature types, SED model structures and data augmentation techniques, as well as proposed a pre-prediction and post-prediction processing method. From our experiments, we managed to successfully develop a well-performing SED system for our novel dataset. We found that using the log-mel spectrogram representation, SpecAugment and mixup, CNN-9-Transformer-Attention model, optimised thresholds and averaging frame-wise predictions method in post-processing, produced the best-performing system, in terms of both error rate and F1-score. In fact, the incorporation of our proposed averaging frame-wise prediction method consistently improved the system, proving especially useful for longer audio clips.\\
+
+Additionally, by imparting the knowledge we learnt from our experiments with our novel project dataset, we managed to improve from the previous state-of-the-art model for the DCASE 2017 Task 4 Challenge \cite{kong2020sound}. We found that using the log-mel spectrogram representation, SpecAugment with mixup and time-shift, CNN-9-GRU-Attention model, optimised thresholds and averaging frame-wise predictions method in post-processing, produced the best performing system, in terms of error rate. Specifically, we improved the error rate from 0.680, as reported in the previous state-the-art-system \cite{kong2020sound}, to 0.643.
+
+\section{Future Work}
+This section discusses the direction of the future work of this thesis.
+
+\subsection{Experiment Comprehensiveness}
+Due to the extensiveness of the variables of the system, some variable combinations were not fully examined. In future work, we would like to experiment with all the different combinations of the components of the SED system as this may yield a different outcome to our current best performing system determined from the sequential experimentation technique. Additionally, we would also like to explore the possibility of using other audio feature types, such as constant Q-transform (CQT), and data augmentation techniques, such as pitch change and speed change.
+
+\subsection{Dataset Expansion}
+Although one of the objectives of this thesis is to develop a system with a limited amount of strongly-labelled training data, another possible approach we could explore to develop a well-performing SED system would be to generate more strongly-labelled data for training, which would tackle the root of this problem. This can possibly be done by developing a synthetic strongly-labelled dataset using audio clips from FSD50K, with the help of Scaper \cite{scaper2017}. FSD50K \cite{fonseca2020fsd50k} is a publicly available dataset which contains more than 51,000 audio clips that were manually labelled using 200 classes extracted from the AudioSet Ontology \cite{audioset}. In fact, the DCASE 2019 and DCASE 2020 \cite{DCASE2019} challenges on SED both used synthetic clips generated with Scaper, which employed audio clips from FSD50K as foreground sounds, in their strongly-labelled dataset.
+
+%=== END OF CONCLUSION ===
+\newpage

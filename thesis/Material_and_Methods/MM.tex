@@ -1,0 +1,51 @@
+%=== Materials and Methods ===
+\chapter{2. Material and Methods}
+\section{Data Collection}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacinia urna, eu posuere enim. Donec vulputate finibus molestie. Praesent sit amet lacus orci. Etiam molestie augue a ligula ullamcorper, lacinia lobortis elit semper in Fig \ref{fig:singmap}. %reference to a figure.
+
+%Adding a figure
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{fig/SingaporeMap.png}/
+    \caption[Singapore Map] \\{\footnotesize Adapted from \cite{sapp_2004}}
+    \label{fig:singmap} %use label for figures and tables
+\end{figure}
+
+\section{Maecenas lobortis}
+
+\nomenclature{PCM}{Pulse code modulation} % DEFINE ACRONYM/SYMBOLS USING THIS FUNCTION
+
+The summary of speaker information for the evaluation sources and analyses of \textbf{pulse code modulation (PCM)} used in this report is presented in Table \ref{tab:sourceinfo}. % REF TO TABLES IN APPENDIX. 
+
+
+\subsection{Frequency-domain ipsum dolor}
+The various types of window functions and their properties are reviewed in Harrris et al.\parencite*{harris1978use}. For this project, we use the periodic Hamming window defined by
+
+%ADDING EQUATION
+\begin{equation}
+    w(\tau) = \begin{cases}
+    0.54 - 0.46\cos\left(\dfrac{2\pi\tau}{R}\right)& 0 \le \tau < R,\\
+    0, & \text{otherwise,}
+    \end{cases}
+\end{equation}
+with $75\%$ overlap.
+
+\section{Vestibulum tempus}
+
+A set of $N$ source signals $\bm{s}(\tau) = [s_0(\tau), \dots, s_{N-1}(\tau)]^T \in \R^{N \times T_t}$ over the samples $0\le \tau < T_t$, such that $s_n = [s_n(\tau = 0), s_n(1), \dots, s_n(T_t - 1)]$ for $0 \le n < N$, undergoes mixing whose result is observed by an array of $M$ sensors (in this project's context, microphones). The observed signals are represented by $\bm{x}(\tau) = [x_0(\tau), \dots, x_{M-1}(\tau)]^T$, such that $x_m = [x_m(\tau = 0), x_m(1), \dots, x_m(T_t - 1)] \in \R^{M \times T}$ for $0 \le m < M$. The sources are mixed convolutively such that
+\begin{equation}
+    \bm{x}(\tau) = \sum_{k = 0}^{K - 1} \bm{A}_k \bm{s}(\tau - k)
+\end{equation}
+where $\bm{A}_k \in \R^{M\times N}$ with $K$ often assumed, in practice, to be some finite positive integer. This means that $\bm{x}(\tau)$ can be thought of as the output signal of a finite impulse response filter with input $\bm{s}(\tau)$ and $\bm{A}_k$ representing the coefficients of the $k$th-order filter. 
+
+However, solving a convolutive system in the time domain is difficult and requires significant computational power. To simplify the problem, BSS problems are often transformed into the frequency domain such that
+\begin{equation}
+    \bm{X}(\omega, t) = \bm{A}(\omega) \bm{S}(\omega, t)
+\end{equation}
+where $\bm{X}(\omega, t) \in \C^{M \times T_f}$ and $\bm{S}(\omega, t) \in \C^{N \times T_f}$ are the frequency-domain representation of the observed signals and the source signals respectively \parencite{smaragdis1998blind}.
+
+The configuration of 2 sources used is detailed in Figures \ref{fig:2mix1} to \ref{fig:3mix2}. %ADD REF TO APPENDIX FIGURES
+
+%=== END OF MM ===
+\newpage

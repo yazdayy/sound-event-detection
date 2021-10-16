@@ -1,0 +1,109 @@
+\linespread{1.3}
+\chapter{Implementation}
+This section elaborates on the development process and components of the SED training system.
+
+% \section{Training System}
+% This subsection elaborates on the components of the training system.
+
+\section{Spectrogram Extraction}
+We experimented with log-mel spectrograms and gammatone spectrograms as input features. To begin with, all the audio clips are converted to monophonic and resampled to 8k Hz or 16k Hz, depending on the quality of the development dataset used. The following describes the conversion details for the log-mel spectrograms.\\ 
+
+If the 8k Hz dataset is used, Short Time Fourier Transform (STFT) with a Hanning window of 256 samples and hop size of  80 samples is used to extract a spectrogram which produces 100 frames per second. Next, 64 mel filter banks are applied on the spectrogram, followed by logarithmic operation to compute the log-mel spectrogram. The number 64 is selected as it can be evenly divided by a power of 2 in the down-sampling layers of CNNs. The mel filter banks have a lower cut-off frequency of 12 Hz and a higher cut-off frequency of 3.5 kHz to avoid aliasing caused by resampling.\\
+
+If the 16k Hz dataset is used, STFT with a Hanning window of 512 samples and a hop size of 160 samples is used to extract a spectrogram. Similarly, 64 mel filter banks are applied on the spectrogram, followed by logarithmic operation to generate a log-mel spectrogram. The mel filter banks have a lower cut-off frequency of 25 Hz and a higher cut-off frequency of 7 kHz.
+\
+
+\section{Neural Network Model}
+As mentioned in Section 3.4.4, feature extraction is done with a CNN-based model. Then, a time-distributed fully connected layer with sigmoid non-linearity is applied to predict the presence probability of sound events of each time frame. We experimented with a variety of models, such as CNN-GRU, CNN-Transformer, and CNN-Conformer. Within such models, we also experimented with the number of layers in the CNN component, specifically 9 layers and 14 layers. 
+
+\subsection{9-layer vs 14-layer CNN}
+The 9-layer CNN consists of 4 convolutional blocks, where each convolutional block comprises of 2 convolutional layers with kernel sizes of 3 × 3, with each convolutional layer followed by batch normalization [40] and ReLU non-linearity [50]. The convolutional block consists of 64, 128, 256 and 512 feature maps, respectively. Each convolutional block is followed by a 2 × 2 average pooling to extract high level features. No residual connections is applied in our CNNs as gradient vanishing is not an issue with 8 convolutional layers. Finally, the frequency axis of the output from the last convolutional layer is averaged out. A concise description of the 9-layer CNN can be found in Table \ref{tab:cnn-9}, whereby the number following @ represents the number of feature maps. The second column shows the number of batch size (bs), feature maps, frames and frequency bins. The third column states the number of parameters in each component. 
+% Then, the time-distributed fully connected layer with sigmoid non-linearity is applied to predict the presence probability of sound events of each time frame.\\
+
+\begin{table}[!htp]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Layers}                                                       & \textbf{Output Size} & \textbf{Number of Parameters} \\ \hline
+Input                                                                 & bs x 1 x 640 x 64    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 64 \\ BN, ReLU) x 2\end{tabular}  & bs x 64 x 640 x 64   & 37,696                        \\ \hline
+2 x 2 avg. pooling                                                    & bs x 64 x 320 x 32   & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 128 \\ BN, ReLU) x 2\end{tabular} & bs x 128 x 320 x 32  & 221,696                       \\ \hline
+2 x 2 avg. pooling                                                    & bs x 128 x 160 x 16  & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 256 \\ BN, ReLU) x 2\end{tabular} & bs x 256 x 160 x 16  & 885,760                       \\ \hline
+2 x 2 avg. pooling                                                    & bs x 256 x 80 x 8    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 512 \\ BN, ReLU) x 2\end{tabular} & bs x 512 x 80 x 8    & 3,540,992                     \\ \hline
+Avg. frequency bins                                                   & bs x 512 x 80 x 1    & -                             \\ \hline
+\end{tabular}
+\caption{\label{tab:cnn-9}9-layer CNN architecture}
+\end{table}
+
+The 14-layer CNN consists of 6 convolutional blocks, in which each convolutional block contains 2 convolutional layers, each having 3 × 3 kernel sizes. Batch normalisation and ReLU are applied after each convolutional layer. Additionally, a 2 × 2 average pooling is also applied after each convolutional layer to extract high level features. The 6 convolution blocks consist of 64, 128, 256, 512, 1024 and 2048 feature maps respectively. A concise description of the 14-layer CNN can be found in Table \ref{tab:cnn-14}.
+
+\begin{table}[!htp]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Layers}                                                        & \textbf{Output Size} & \textbf{Number of Parameters} \\ \hline
+Input                                                                  & bs x 1 x 640 x 64    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 64 \\ BN, ReLU) x 2\end{tabular}   & bs x 64 x 640 x 64   & 37,696                        \\ \hline
+2 x 2 avg. pooling                                                     & bs x 64 x 320 x 32   & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 128 \\ BN, ReLU) x 2\end{tabular}  & bs x 128 x 320 x 32  & 221,696                       \\ \hline
+2 x 2 avg. pooling                                                     & bs x 128 x 160 x 16  & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 256 \\ BN, ReLU) x 2\end{tabular}  & bs x 256 x 160 x 16  & 885,760                       \\ \hline
+2 x 2 avg. pooling                                                     & bs x 256 x 80 x 8    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 512 \\ BN, ReLU) x 2\end{tabular}  & bs x 512 x 80 x 8    & 3,540,992                     \\ \hline
+2 x 2 avg. pooling                                                     & bs x 512 x 40 x 4    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 1024 \\ BN, ReLU) x 2\end{tabular} & bs x 1024 x 40 x 4   & 14,159,872                              \\ \hline
+2 x 2 avg. pooling                                                     & bs x 1024 x 20 x 2   & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 2048 \\ BN, ReLU) x 2\end{tabular} & bs x 2048 x 20 x 2   & 56,631,296                              \\ \hline
+Avg. frequency bins                                                    & bs x 2048 x 20 x 1   & -                             \\ \hline
+\end{tabular}
+\caption{\label{tab:cnn-14}14-layer CNN architecture}
+\end{table}
+
+\subsection{CNN-GRU}
+The CNN-GRU is a CNN, either 9 or 14 layers, with a bi-directional GRU. The output features of the CNN are passed into the bi-directional GRU. The bi-directional GRU consists of 1 recurrent layer, with 256 features in the hidden state.
+
+\subsection{CNN-Transformer}
+The CNN-Transformer is a CNN, either 9 or 14 layers, with a transformer block. The output features of the CNN are passed into the transformer. The transformer consists of 8 attention heads and 512 attention units. Additionally, it contains a dropout layer with a dropout rate of 0.1. 
+
+\subsection{CNN-Conformer}
+The CNN-Conformer is a CNN, either 9 or 14 layers, with a conformer block. The output features of the CNN are passed into the conformer. The conformer consists of 4 attention heads and 144 attention units. The conformer block was stacked 4 times and the kernel size of the depthwise convolution is 7. Additionally, it contains a dropout layer with a dropout rate of 0.1.
+
+\subsection {Transfer Learning}
+The VGGish pre-trained model used to conduct transfer learning consists of a series of convolution and activation layers, followed by a max pooling layer. This network contains 17 layers in total, and can be fine-tuned during model training. We removed the last three layers of the original VGGish model and used the output of the last convolutional layer as our input data for the frame-wise classifier. A summary of the architecture of VGGish can be found in Table \ref{tab:vggish}.
+
+\begin{table}[!htp]
+\centering
+\begin{tabular}{|
+>{\columncolor[HTML]{FFFFFF}}c |
+>{\columncolor[HTML]{FFFFFF}}c |
+>{\columncolor[HTML]{FFFFFF}}c |}
+\hline
+{\color[HTML]{333333} \textbf{Layers}}                            & \textbf{Output Size} & \textbf{Number of Parameters} \\ \hline
+Input                                                             & bs x 1 x 640 x 64    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}3 x 3 @ 64 \\ ReLU\end{tabular}        & bs x 64 x 640 x 64   & 640                           \\ \hline
+2 x 2 max pooling                                                 & bs x 64 x 320 x 32   & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}3 x 3 @ 128 \\ ReLU\end{tabular}       & bs x 128 x 320 x 32  & 73,856                        \\ \hline
+2 x 2 max pooling                                                 & bs x 128 x 160 x 16  & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 256 \\ ReLU) x 2\end{tabular} & bs x 256 x 160 x 16  & 885,248                       \\ \hline
+2 x 2 max pooling                                                 & bs x 256 x 80 x 8    & -                             \\ \hline
+\begin{tabular}[c]{@{}c@{}}(3 x 3 @ 512 \\ ReLU) x 2\end{tabular} & bs x 512 x 80 x 8    & 3,539,968                     \\ \hline
+2 x 2 max pooling                                                 & bs x 512 x 40 x 4    & -                             \\ \hline
+\end{tabular}
+\caption{\label{tab:vggish}VGGish architecture}
+\end{table}
+
+\section{Clip-wise Training}
+As mentioned in Section 3.4.5, the aggregation methods we experimented with included an average or attention function over the predictions of all segments of each sound class. The average function uses a simple mean function from PyTorch to obtain the clip-wise output. The attention function uses an additional feed-forward neural network with softmax activation to attend to the most important frames for each class and infer the temporal locations of each occuring sound event class. The number of output feature maps is equivalent to the number of sound event classes present in the development dataset, which is 25.\\
+
+% The attention-based method is done using a feed-forward CNN, which consists of two convolutional layers. The first layer, with sigmoid activation, does classification at each frame, while the second layer, with softmax activation, attends to the most important frames for each class. The number of output feature maps is equivalent to the number of sound event classes present in the development dataset, which is 25.\\
+
+During training, the Adam optimizer \cite{kingma2017adam} with a learning rate of 0.001 is applied. The training is stopped at 50,000 iterations and the performance of the model is evaluated every 1,000 iterations on the strongly-labelled validation set, using the mean average precision (mAP) metric and error rate. mAP is used here as it does not depend on the threshold value. Only the best-performing model, which has the highest mAP score and lowest error rate, is saved. 
+
+\section{Automatic Threshold Optimisation}
+The threshold of each sound event class was optimised using gradient descent iteratively. This process ran for 70 epochs and the output of each epoch was evaluated based on the F1-score. Only the thresholds from the epoch with the highest F1-score are saved. 
+
+%=== END OF PROPOSED APPROACH ===
+\newpage

@@ -1,0 +1,54 @@
+%=== INTRODUCTION ===
+%Introduction provides background information explaining the theory, processes, aims or hypothesis and rationale for conducting the research project. 
+\linespread{1.3}
+\chapter{Introduction}
+\section{Background}
+Sound Event Detection (SED) is the task of recognizing the sound events and their respective onset and offset timestamps in an audio clip recording. SED is an important field of research that has useful implementations in smart homes and autonomous vehicles. For instance, in autonomous vehicles, a SED system can detect ambulance sirens and prompt the vehicle to adjust its route to give way accordingly. The introduction of the Detection and Classification of Acoustic Scenes and Events (DCASE) challenges has attracted the attention of many researchers and led to greater advancements in the performance of SED systems. The development of neural network-based approaches such as convolutional neural networks (CNNs) \cite{kong2020sound}, convolutional recurrent neural networks (CRNNs) \cite{xu2017convolutional}, transformer-based networks \cite{Miyazaki2020CONFORMERBASEDSE} and conformer-based networks \cite{Miyazaki2020CONFORMERBASEDSE}, have also yielded notable improvements in the performance of SED systems.\\ 
+
+% However, a large amount of annotated data is typically required when training these neural networks.
+
+Most SED systems assume that sufficient amounts of strongly-labelled data are available for training, but in reality, the cost of annotating audio data to obtain strong labels is huge, and data collection is difficult. Therefore, the development of model training methods which are effective even when using a limited amount of strongly-labelled data is important. Researchers have proposed various SED models using a limited amount of strongly-labelled data, employing weakly-supervised and semi-supervised learning techniques \cite{Miyazaki2020CONFORMERBASEDSE}, which have yielded improvements in detection performance.
+% , which use weakly-labelled and unlabelled data, respectively. Many approaches have been developed using these frameworks, and they have been reported to improve detection performance, even when using limited amounts of strongly-labelled data. 
+Data augmentation is another powerful technique, which is used to artificially generate new data through data manipulation, resulting in improved generalization performance \cite{Wei_2020}. Additionally, applying optimised thresholds, which are obtained through automatic threshold optimisation, during prediction post-processing have also proven to improve the performance of SED systems \cite{kong2020sound}.\\
+
+However, these existing systems typically analyse audio clips as a whole and have yet to properly explore the impacts of applying rolling segmentation windows on the audio clips prior to analysis. This is despite the fact that doing so may yield potential benefits, especially in real-life applications where there may be a need to analyse long audio clips in real time, making analysis of whole clips unfeasible. Though, just purely dividing the audio clips into non-overlapping segments and sending them for analysis may not produce the best outcome and pose some problems as well. To address this issue, this thesis focused on developing prediction-processing methods that amalgamate the frame-wise predictions of the segments post-analysis.\\
+
+% This thesis focuses on experimenting and modifying existing SED model structures, audio feature types and data augmentation techniques in order to develop a well-performing SED system with a limited amount of strongly-labelled training data, using our project dataset. Additionally, we propose a pre-prediction and post-prediction processing method to improve the performance of the system, especially on long continuous audio clips. The project dataset was curated in accordance to the requirements of the organisation, DSO National Laboratories, we collaborated with on this project.
+
+\section{Project Objective and Overview}
+The primary objective of this thesis is to develop a well-performing SED system with a limited amount of strongly-labelled training data, using our novel project dataset as the development set. The SED system should be able to determine not only the sound event class, but also the onset and offset time of the sound event given the multiple overlapping events that can be present in a long continuous audio recording. The goals of this project are summarised as follows:
+\begin{itemize}
+    \item{\textbf{Dataset curation:} Curate a dataset according to the requirements provided by our collaborator, DSO National Laboratories.}
+    
+    \item{\textbf{Component experimentation:} Explore the impact of different audio feature types, data augmentation techniques, network architectures, and automatic threshold optimisation on the performance of the system.}
+    
+    \item{\textbf{Prediction-processing proposal:} Propose prediction-processing techniques to address the issues stemmed from processing only non-overlapping segments post analysis.}
+    
+    \item{\textbf{Real-life audio analysis transferability:} Create a development dataset with lower audio quality to develop a SED system that performs well with inputs of audio quality we would expect in real-life scenarios.}
+    
+    \item{\textbf{State-of-the-art baseline comparison:} Re-train system with a SED dataset from DCASE and compare performance against state-of-the-art baseline.} %As the dataset used is novel, there is no state-of-the-art baseline available for comparison. As such, the dataset of the DCASE 2017 Task 4 on ‘Weakly supervised sound event detection for smart cars’ \cite{DCASE2017} is used to compare the performance of our best-performing model, which is determined based on the project dataset, with the state-of-the-art performance.}
+    
+    \item{\textbf{Long audio clip analysis:} Demonstrate the impact of our proposed prediction-processing method on longer audio clips.}
+\end{itemize}
+
+% In this thesis, the primary objective is to develop a SED system to determine not only the sound event class, but also the onset and offset time of the sound event given the multiple overlapping events that can be present in a long continuous audio recording. The SED system is trained on a novel dataset we curated especially for this project. The dataset is made up of a subset of the AudioSet dataset \cite{audioset}, focusing specifically on human sounds and emergency sounds. Originally, the entire training set was supposed to be only weakly-labelled. However, in light of the recently released strongly-labelled annotations for a subset of AudioSet \cite{hershey2021benefit}, this project will also incorporate this strongly-labelled subset in training. The project also involves exploring the impact of different audio feature types, data augmentation techniques, network architectures, automatic threshold optimisation and prediction-processing techniques on the performance of the system. As the dataset used is novel, there is no state-of-the-art baseline available for comparison. As such, the dataset of the DCASE 2017 Task 4 on ‘Weakly supervised sound event detection for smart cars’ \cite{DCASE2017} is used to compare the performance of our best performing model, which is determined based on the project dataset, with the state-of-the-art performance. 
+
+\section{Scope}
+The scope of this thesis is restricted to sound event detection tasks. However, it is possible to extend the methods proposed in this thesis to other tasks in the audio domain, such as audio tagging.
+
+\section{Report Organisation}
+This report is divided into six chapters and the overview of each chapter is provided below:
+\begin{itemize}
+
+\item{Chapter 1 provides an introduction to the project and its objective.}
+\item{Chapter 2 discusses the related works which were used as references in the development of our SED systems.}
+\item{Chapter 3 provides an overview of the dataset curation process,  as well as specifications of the components of our proposed system.} 
+\item{Chapter 4 addresses the implementation of the system.}
+\item{Chapter 5 discusses the experiments we conducted in the development process, experiment results and evaluation.}
+\item{Chapter 6 concludes the report with future directions.}
+
+\end{itemize}
+%=== END OF INTRODUCTION ===
+\newpage
+
+
