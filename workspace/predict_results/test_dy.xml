@@ -1,0 +1,33 @@
+<AudioDoc name="test.wav">
+	<SoundCaptionList>
+		<SoundSegment stime="0.24" dur="75.76" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="0.64" dur="0.88" event="Female_speech_woman_speaking" text="frantic woman">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="1.04" dur="2.0" event="Male_speech_man_speaking" text="woman races up to a neighbor's dog">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="3.2" dur="1.3599999999999994" event="Male_speech_man_speaking" text="will someone help her">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="5.2" dur="3.999999999999999" event="Male_speech_man_speaking" text="out of the darkness this guy appears and buy the hair">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="9.12" dur="0.8000000000000007" event="Laughter">Laughter</SoundSegment>
+		<SoundSegment stime="9.12" dur="9.92" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="11.12" dur="2.16" event="Male_speech_man_speaking" text="the woman off the porch">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="13.52" dur="0.9600000000000009" event="Laughter">Laughter</SoundSegment>
+		<SoundSegment stime="14.88" dur="2.880000000000001" event="Male_speech_man_speaking" text="going out as the struggle goes on">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="17.68" dur="0.5599999999999987" event="Laughter">Laughter</SoundSegment>
+		<SoundSegment stime="19.28" dur="0.9599999999999973" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="20.4" dur="3.7600000000000016" event="Male_speech_man_speaking" text="delivers a Grimm Warning">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="24.32" dur="0.3999999999999986" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="25.04" dur="2.240000000000002" event="Female_speech_woman_speaking" text="we looked out the side window here">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="27.44" dur="2.9599999999999973" event="Female_speech_woman_speaking" text="and witnessed him stomping on Hearne">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="30.8" dur="2.400000000000002" event="Female_speech_woman_speaking" text="pulling her by her hair was">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="33.84" dur="0.7199999999999989" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="34.8" dur="6.800000000000004" event="Male_speech_man_speaking" text="California">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="41.76" dur="8.32" event="Male_speech_man_speaking" text="neighborhoods around the corner">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="50.24" dur="8.079999999999998" event="Male_speech_man_speaking" text="police identified the man as Robert Mendez and say he is the victim's estranged boyfriend he was charged with suspicion of attempted murder">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="58.48" dur="2.1600000000000037" event="Male_speech_man_speaking" text="I'm kidnapping he was beating on her">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="60.88" dur="2.3200000000000003" event="Male_speech_man_speaking" text="looks like good even stomped on her">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="63.44" dur="4.960000000000008" event="Male_speech_man_speaking" text="Dragonair she had suffered multiple injuries that enough to require hospitalization">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="67.28" dur="4.079999999999998" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="72.56" dur="3.5999999999999943" event="Female_speech_woman_speaking" text="according to police the woman is expected to make a full recovery">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="76.56" dur="3.8400000000000034" event="Music">Music</SoundSegment>
+		<SoundSegment stime="79.12" dur="1.519999999999996" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="79.52" dur="1.0400000000000063" event="Conversation">Conversation</SoundSegment>
+	</SoundCaptionList>
+</AudioDoc>

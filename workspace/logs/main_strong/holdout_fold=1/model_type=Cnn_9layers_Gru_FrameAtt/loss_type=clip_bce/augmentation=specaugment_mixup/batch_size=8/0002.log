@@ -1,0 +1,450 @@
+Thu, 20 Jan 2022 11:52:46 main_strong.py[line:187] INFO Namespace(mode='train', dataset_dir='dataset', workspace='workspace', holdout_fold='1', model_type='Cnn_9layers_Gru_FrameAtt', loss_type='clip_bce', augmentation='specaugment_mixup', learning_rate=0.001, batch_size=8, resume_iteration=0, stop_iteration=30000, feature_type='logmel', cuda=True, audio_8k=False, audio_16k=True, vggish=False, fsd50k=False, mini_data=False, filename='main_strong')
+Thu, 20 Jan 2022 11:52:46 main_strong.py[line:190] INFO Using GPU.
+Thu, 20 Jan 2022 11:52:50 data_generator.py[line:68] INFO Training audio num: 27397
+Thu, 20 Jan 2022 11:52:50 data_generator.py[line:68] INFO Training audio num: 2233
+Thu, 20 Jan 2022 11:52:50 data_generator.py[line:119] INFO Test audio num: 548
+Thu, 20 Jan 2022 11:52:50 data_generator.py[line:119] INFO Test audio num: 538
+Thu, 20 Jan 2022 11:58:03 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 11:58:03 main_strong.py[line:302] INFO Iteration: 1000
+Thu, 20 Jan 2022 11:58:09 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 11:58:11 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 11:58:11 main_strong.py[line:313] INFO     Clipwise mAP: 0.380
+Thu, 20 Jan 2022 11:58:11 main_strong.py[line:314] INFO     Framewise mAP: 0.271
+Thu, 20 Jan 2022 11:58:11 main_strong.py[line:315] INFO     {'error_rate': 0.7821433600901282, 'substitution_rate': 0.10195747077876355, 'deletion_rate': 0.6331502605266864, 'insertion_rate': 0.047035628784678214}
+Thu, 20 Jan 2022 11:58:11 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 1000
+Thu, 20 Jan 2022 11:58:18 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 11:58:20 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 11:58:20 main_strong.py[line:313] INFO     Clipwise mAP: 0.325
+Thu, 20 Jan 2022 11:58:20 main_strong.py[line:314] INFO     Framewise mAP: 0.275
+Thu, 20 Jan 2022 11:58:20 main_strong.py[line:315] INFO     {'error_rate': 0.8916473034120094, 'substitution_rate': 0.08438302555949614, 'deletion_rate': 0.7680078268313563, 'insertion_rate': 0.0392564510211569}
+Thu, 20 Jan 2022 11:58:20 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 11:58:20 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 11:58:20 main_strong.py[line:341] INFO Train time: 312.768 s, validate time: 16.812 s
+Thu, 20 Jan 2022 12:03:22 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:03:22 main_strong.py[line:302] INFO Iteration: 2000
+Thu, 20 Jan 2022 12:03:30 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:03:32 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:03:32 main_strong.py[line:313] INFO     Clipwise mAP: 0.444
+Thu, 20 Jan 2022 12:03:32 main_strong.py[line:314] INFO     Framewise mAP: 0.360
+Thu, 20 Jan 2022 12:03:32 main_strong.py[line:315] INFO     {'error_rate': 0.6915927334178285, 'substitution_rate': 0.10237994648641037, 'deletion_rate': 0.5245740036614561, 'insertion_rate': 0.06463878326996197}
+Thu, 20 Jan 2022 12:03:32 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 2000
+Thu, 20 Jan 2022 12:03:39 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:03:41 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:03:41 main_strong.py[line:313] INFO     Clipwise mAP: 0.390
+Thu, 20 Jan 2022 12:03:41 main_strong.py[line:314] INFO     Framewise mAP: 0.346
+Thu, 20 Jan 2022 12:03:41 main_strong.py[line:315] INFO     {'error_rate': 0.8380824263177205, 'substitution_rate': 0.11055399290693409, 'deletion_rate': 0.6683380212791977, 'insertion_rate': 0.0591904121315886}
+Thu, 20 Jan 2022 12:03:41 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:03:41 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:03:41 main_strong.py[line:341] INFO Train time: 302.380 s, validate time: 19.497 s
+Thu, 20 Jan 2022 12:08:37 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:08:37 main_strong.py[line:302] INFO Iteration: 3000
+Thu, 20 Jan 2022 12:08:44 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:08:46 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:08:46 main_strong.py[line:313] INFO     Clipwise mAP: 0.479
+Thu, 20 Jan 2022 12:08:46 main_strong.py[line:314] INFO     Framewise mAP: 0.382
+Thu, 20 Jan 2022 12:08:46 main_strong.py[line:315] INFO     {'error_rate': 0.6038586114631742, 'substitution_rate': 0.15096465286579355, 'deletion_rate': 0.34248697366568087, 'insertion_rate': 0.11040698493169976}
+Thu, 20 Jan 2022 12:08:47 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 3000
+Thu, 20 Jan 2022 12:08:54 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:08:56 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:08:56 main_strong.py[line:313] INFO     Clipwise mAP: 0.425
+Thu, 20 Jan 2022 12:08:56 main_strong.py[line:314] INFO     Framewise mAP: 0.376
+Thu, 20 Jan 2022 12:08:56 main_strong.py[line:315] INFO     {'error_rate': 0.7582242876360523, 'substitution_rate': 0.15140026904732787, 'deletion_rate': 0.48599730952672127, 'insertion_rate': 0.12082670906200318}
+Thu, 20 Jan 2022 12:08:56 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:08:56 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:08:56 main_strong.py[line:341] INFO Train time: 295.862 s, validate time: 18.773 s
+Thu, 20 Jan 2022 12:14:00 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:14:00 main_strong.py[line:302] INFO Iteration: 4000
+Thu, 20 Jan 2022 12:14:07 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:14:09 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:14:09 main_strong.py[line:313] INFO     Clipwise mAP: 0.500
+Thu, 20 Jan 2022 12:14:09 main_strong.py[line:314] INFO     Framewise mAP: 0.397
+Thu, 20 Jan 2022 12:14:09 main_strong.py[line:315] INFO     {'error_rate': 0.6007604562737642, 'substitution_rate': 0.1520912547528517, 'deletion_rate': 0.3437544007886213, 'insertion_rate': 0.10491480073229123}
+Thu, 20 Jan 2022 12:14:09 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 4000
+Thu, 20 Jan 2022 12:14:17 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:14:19 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:14:19 main_strong.py[line:313] INFO     Clipwise mAP: 0.456
+Thu, 20 Jan 2022 12:14:19 main_strong.py[line:314] INFO     Framewise mAP: 0.396
+Thu, 20 Jan 2022 12:14:19 main_strong.py[line:315] INFO     {'error_rate': 0.7434266846031552, 'substitution_rate': 0.15775956952427542, 'deletion_rate': 0.4632505808976397, 'insertion_rate': 0.12241653418124006}
+Thu, 20 Jan 2022 12:14:19 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:14:19 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:14:19 main_strong.py[line:341] INFO Train time: 303.806 s, validate time: 18.877 s
+Thu, 20 Jan 2022 12:19:21 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:19:21 main_strong.py[line:302] INFO Iteration: 5000
+Thu, 20 Jan 2022 12:19:29 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:19:31 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:19:31 main_strong.py[line:313] INFO     Clipwise mAP: 0.515
+Thu, 20 Jan 2022 12:19:31 main_strong.py[line:314] INFO     Framewise mAP: 0.420
+Thu, 20 Jan 2022 12:19:31 main_strong.py[line:315] INFO     {'error_rate': 0.5928742430643572, 'substitution_rate': 0.1247711589916913, 'deletion_rate': 0.3298127024362766, 'insertion_rate': 0.13829038163638924}
+Thu, 20 Jan 2022 12:19:31 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 5000
+Thu, 20 Jan 2022 12:19:39 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:19:41 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:19:41 main_strong.py[line:313] INFO     Clipwise mAP: 0.502
+Thu, 20 Jan 2022 12:19:41 main_strong.py[line:314] INFO     Framewise mAP: 0.427
+Thu, 20 Jan 2022 12:19:41 main_strong.py[line:315] INFO     {'error_rate': 0.7099180628592393, 'substitution_rate': 0.13415678121560473, 'deletion_rate': 0.4258285434756023, 'insertion_rate': 0.1499327381680323}
+Thu, 20 Jan 2022 12:19:41 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:19:41 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:19:41 main_strong.py[line:341] INFO Train time: 302.530 s, validate time: 19.440 s
+Thu, 20 Jan 2022 12:24:44 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:24:44 main_strong.py[line:302] INFO Iteration: 6000
+Thu, 20 Jan 2022 12:24:51 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:24:53 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:24:53 main_strong.py[line:313] INFO     Clipwise mAP: 0.528
+Thu, 20 Jan 2022 12:24:53 main_strong.py[line:314] INFO     Framewise mAP: 0.425
+Thu, 20 Jan 2022 12:24:53 main_strong.py[line:315] INFO     {'error_rate': 0.5814673989578932, 'substitution_rate': 0.1082946063934657, 'deletion_rate': 0.38825517532741866, 'insertion_rate': 0.08491761723700887}
+Thu, 20 Jan 2022 12:24:54 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 6000
+Thu, 20 Jan 2022 12:25:01 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:25:03 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:25:03 main_strong.py[line:313] INFO     Clipwise mAP: 0.483
+Thu, 20 Jan 2022 12:25:03 main_strong.py[line:314] INFO     Framewise mAP: 0.427
+Thu, 20 Jan 2022 12:25:03 main_strong.py[line:315] INFO     {'error_rate': 0.74012474012474, 'substitution_rate': 0.12315029962088786, 'deletion_rate': 0.5023847376788553, 'insertion_rate': 0.11458970282499695}
+Thu, 20 Jan 2022 12:25:03 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:25:03 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:25:03 main_strong.py[line:341] INFO Train time: 303.642 s, validate time: 18.884 s
+Thu, 20 Jan 2022 12:30:06 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:30:06 main_strong.py[line:302] INFO Iteration: 7000
+Thu, 20 Jan 2022 12:30:14 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:30:16 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:30:16 main_strong.py[line:313] INFO     Clipwise mAP: 0.546
+Thu, 20 Jan 2022 12:30:16 main_strong.py[line:314] INFO     Framewise mAP: 0.445
+Thu, 20 Jan 2022 12:30:16 main_strong.py[line:315] INFO     {'error_rate': 0.5369666244190958, 'substitution_rate': 0.14209266300521053, 'deletion_rate': 0.27629911280101394, 'insertion_rate': 0.11857484861287143}
+Thu, 20 Jan 2022 12:30:17 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 7000
+Thu, 20 Jan 2022 12:30:25 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:30:27 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:30:27 main_strong.py[line:313] INFO     Clipwise mAP: 0.544
+Thu, 20 Jan 2022 12:30:27 main_strong.py[line:314] INFO     Framewise mAP: 0.466
+Thu, 20 Jan 2022 12:30:27 main_strong.py[line:315] INFO     {'error_rate': 0.6468142350495291, 'substitution_rate': 0.1463862052097346, 'deletion_rate': 0.37911214381802616, 'insertion_rate': 0.12131588602176838}
+Thu, 20 Jan 2022 12:30:27 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:30:27 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:30:27 main_strong.py[line:341] INFO Train time: 302.411 s, validate time: 21.517 s
+Thu, 20 Jan 2022 12:35:31 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:35:31 main_strong.py[line:302] INFO Iteration: 8000
+Thu, 20 Jan 2022 12:35:38 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:35:40 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:35:40 main_strong.py[line:313] INFO     Clipwise mAP: 0.553
+Thu, 20 Jan 2022 12:35:40 main_strong.py[line:314] INFO     Framewise mAP: 0.439
+Thu, 20 Jan 2022 12:35:40 main_strong.py[line:315] INFO     {'error_rate': 0.5645683706520208, 'substitution_rate': 0.12336290663286861, 'deletion_rate': 0.29643712153217855, 'insertion_rate': 0.14476834248697368}
+Thu, 20 Jan 2022 12:35:48 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:35:51 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:35:51 main_strong.py[line:313] INFO     Clipwise mAP: 0.559
+Thu, 20 Jan 2022 12:35:51 main_strong.py[line:314] INFO     Framewise mAP: 0.460
+Thu, 20 Jan 2022 12:35:51 main_strong.py[line:315] INFO     {'error_rate': 0.7118747706983001, 'substitution_rate': 0.14516326281032163, 'deletion_rate': 0.4069952305246423, 'insertion_rate': 0.15971627736333618}
+Thu, 20 Jan 2022 12:35:51 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:35:51 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:35:51 main_strong.py[line:341] INFO Train time: 303.385 s, validate time: 19.972 s
+Thu, 20 Jan 2022 12:40:53 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:40:53 main_strong.py[line:302] INFO Iteration: 9000
+Thu, 20 Jan 2022 12:41:00 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:41:02 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:41:02 main_strong.py[line:313] INFO     Clipwise mAP: 0.564
+Thu, 20 Jan 2022 12:41:02 main_strong.py[line:314] INFO     Framewise mAP: 0.449
+Thu, 20 Jan 2022 12:41:02 main_strong.py[line:315] INFO     {'error_rate': 0.5497817208843825, 'substitution_rate': 0.12308125616110407, 'deletion_rate': 0.3162934797915786, 'insertion_rate': 0.11040698493169976}
+Thu, 20 Jan 2022 12:41:10 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:41:12 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:41:12 main_strong.py[line:313] INFO     Clipwise mAP: 0.580
+Thu, 20 Jan 2022 12:41:12 main_strong.py[line:314] INFO     Framewise mAP: 0.471
+Thu, 20 Jan 2022 12:41:12 main_strong.py[line:315] INFO     {'error_rate': 0.6765317353552648, 'substitution_rate': 0.13611348905466553, 'deletion_rate': 0.42056989115812643, 'insertion_rate': 0.11984835514247279}
+Thu, 20 Jan 2022 12:41:12 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:41:12 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:41:12 main_strong.py[line:341] INFO Train time: 302.283 s, validate time: 18.934 s
+Thu, 20 Jan 2022 12:46:15 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:46:15 main_strong.py[line:302] INFO Iteration: 10000
+Thu, 20 Jan 2022 12:46:22 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:46:25 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:46:25 main_strong.py[line:313] INFO     Clipwise mAP: 0.580
+Thu, 20 Jan 2022 12:46:25 main_strong.py[line:314] INFO     Framewise mAP: 0.448
+Thu, 20 Jan 2022 12:46:25 main_strong.py[line:315] INFO     {'error_rate': 0.5383748767779186, 'substitution_rate': 0.12927756653992395, 'deletion_rate': 0.3023517814392339, 'insertion_rate': 0.10674552879876074}
+Thu, 20 Jan 2022 12:46:33 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:46:35 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:46:35 main_strong.py[line:313] INFO     Clipwise mAP: 0.564
+Thu, 20 Jan 2022 12:46:35 main_strong.py[line:314] INFO     Framewise mAP: 0.475
+Thu, 20 Jan 2022 12:46:35 main_strong.py[line:315] INFO     {'error_rate': 0.6580653051241286, 'substitution_rate': 0.13696954873425463, 'deletion_rate': 0.40931882108352696, 'insertion_rate': 0.11177693530634707}
+Thu, 20 Jan 2022 12:46:35 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:46:35 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:46:35 main_strong.py[line:341] INFO Train time: 303.583 s, validate time: 19.968 s
+Thu, 20 Jan 2022 12:51:39 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:51:39 main_strong.py[line:302] INFO Iteration: 11000
+Thu, 20 Jan 2022 12:51:47 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:51:49 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:51:49 main_strong.py[line:313] INFO     Clipwise mAP: 0.586
+Thu, 20 Jan 2022 12:51:49 main_strong.py[line:314] INFO     Framewise mAP: 0.454
+Thu, 20 Jan 2022 12:51:49 main_strong.py[line:315] INFO     {'error_rate': 0.556822982678496, 'substitution_rate': 0.1568793127728489, 'deletion_rate': 0.21306858188987465, 'insertion_rate': 0.18687508801577243}
+Thu, 20 Jan 2022 12:51:57 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:51:59 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:51:59 main_strong.py[line:313] INFO     Clipwise mAP: 0.586
+Thu, 20 Jan 2022 12:51:59 main_strong.py[line:314] INFO     Framewise mAP: 0.486
+Thu, 20 Jan 2022 12:51:59 main_strong.py[line:315] INFO     {'error_rate': 0.6583098936040113, 'substitution_rate': 0.14870979576861929, 'deletion_rate': 0.3327626268802739, 'insertion_rate': 0.176837470955118}
+Thu, 20 Jan 2022 12:51:59 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:51:59 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:51:59 main_strong.py[line:341] INFO Train time: 303.550 s, validate time: 20.336 s
+Thu, 20 Jan 2022 12:57:02 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 12:57:02 main_strong.py[line:302] INFO Iteration: 12000
+Thu, 20 Jan 2022 12:57:09 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:57:11 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 12:57:11 main_strong.py[line:313] INFO     Clipwise mAP: 0.592
+Thu, 20 Jan 2022 12:57:11 main_strong.py[line:314] INFO     Framewise mAP: 0.438
+Thu, 20 Jan 2022 12:57:11 main_strong.py[line:315] INFO     {'error_rate': 0.5882270102802423, 'substitution_rate': 0.13476975073933248, 'deletion_rate': 0.3489649345162653, 'insertion_rate': 0.10449232502464442}
+Thu, 20 Jan 2022 12:57:18 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 12:57:20 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 12:57:20 main_strong.py[line:313] INFO     Clipwise mAP: 0.575
+Thu, 20 Jan 2022 12:57:20 main_strong.py[line:314] INFO     Framewise mAP: 0.464
+Thu, 20 Jan 2022 12:57:20 main_strong.py[line:315] INFO     {'error_rate': 0.6905955729485141, 'substitution_rate': 0.1193591781827076, 'deletion_rate': 0.4545676898618075, 'insertion_rate': 0.11666870490399903}
+Thu, 20 Jan 2022 12:57:20 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 12:57:20 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 12:57:20 main_strong.py[line:341] INFO Train time: 302.376 s, validate time: 18.873 s
+Thu, 20 Jan 2022 13:02:25 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:02:25 main_strong.py[line:302] INFO Iteration: 13000
+Thu, 20 Jan 2022 13:02:32 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:02:34 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:02:34 main_strong.py[line:313] INFO     Clipwise mAP: 0.585
+Thu, 20 Jan 2022 13:02:34 main_strong.py[line:314] INFO     Framewise mAP: 0.458
+Thu, 20 Jan 2022 13:02:34 main_strong.py[line:315] INFO     {'error_rate': 0.5425996338543867, 'substitution_rate': 0.14279678918462188, 'deletion_rate': 0.24940149274750034, 'insertion_rate': 0.15040135192226448}
+Thu, 20 Jan 2022 13:02:42 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:02:44 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:02:44 main_strong.py[line:313] INFO     Clipwise mAP: 0.590
+Thu, 20 Jan 2022 13:02:44 main_strong.py[line:314] INFO     Framewise mAP: 0.471
+Thu, 20 Jan 2022 13:02:44 main_strong.py[line:315] INFO     {'error_rate': 0.6584321878439525, 'substitution_rate': 0.16081692552280788, 'deletion_rate': 0.33068362480127184, 'insertion_rate': 0.1669316375198728}
+Thu, 20 Jan 2022 13:02:44 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:02:44 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:02:44 main_strong.py[line:341] INFO Train time: 304.043 s, validate time: 19.342 s
+Thu, 20 Jan 2022 13:07:46 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:07:46 main_strong.py[line:302] INFO Iteration: 14000
+Thu, 20 Jan 2022 13:07:54 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:07:56 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:07:56 main_strong.py[line:313] INFO     Clipwise mAP: 0.601
+Thu, 20 Jan 2022 13:07:56 main_strong.py[line:314] INFO     Framewise mAP: 0.448
+Thu, 20 Jan 2022 13:07:56 main_strong.py[line:315] INFO     {'error_rate': 0.5638642444726095, 'substitution_rate': 0.13955780875932966, 'deletion_rate': 0.23714969722574286, 'insertion_rate': 0.18715673848753697}
+Thu, 20 Jan 2022 13:08:04 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:08:06 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:08:06 main_strong.py[line:313] INFO     Clipwise mAP: 0.597
+Thu, 20 Jan 2022 13:08:06 main_strong.py[line:314] INFO     Framewise mAP: 0.478
+Thu, 20 Jan 2022 13:08:06 main_strong.py[line:315] INFO     {'error_rate': 0.6550079491255962, 'substitution_rate': 0.15543597896539074, 'deletion_rate': 0.3183319065672007, 'insertion_rate': 0.18124006359300476}
+Thu, 20 Jan 2022 13:08:06 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:08:06 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:08:06 main_strong.py[line:341] INFO Train time: 302.441 s, validate time: 20.012 s
+Thu, 20 Jan 2022 13:13:10 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:13:10 main_strong.py[line:302] INFO Iteration: 15000
+Thu, 20 Jan 2022 13:13:17 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:13:19 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:13:19 main_strong.py[line:313] INFO     Clipwise mAP: 0.596
+Thu, 20 Jan 2022 13:13:19 main_strong.py[line:314] INFO     Framewise mAP: 0.444
+Thu, 20 Jan 2022 13:13:19 main_strong.py[line:315] INFO     {'error_rate': 0.5437262357414449, 'substitution_rate': 0.13871285734403604, 'deletion_rate': 0.28193212223630476, 'insertion_rate': 0.12308125616110407}
+Thu, 20 Jan 2022 13:13:27 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:13:29 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:13:29 main_strong.py[line:313] INFO     Clipwise mAP: 0.616
+Thu, 20 Jan 2022 13:13:29 main_strong.py[line:314] INFO     Framewise mAP: 0.483
+Thu, 20 Jan 2022 13:13:29 main_strong.py[line:315] INFO     {'error_rate': 0.6482817659288247, 'substitution_rate': 0.1296318943377767, 'deletion_rate': 0.3940320410908646, 'insertion_rate': 0.12461783050018344}
+Thu, 20 Jan 2022 13:13:29 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:13:29 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:13:29 main_strong.py[line:341] INFO Train time: 303.420 s, validate time: 19.189 s
+Thu, 20 Jan 2022 13:18:31 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:18:31 main_strong.py[line:302] INFO Iteration: 16000
+Thu, 20 Jan 2022 13:18:39 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:18:41 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:18:41 main_strong.py[line:313] INFO     Clipwise mAP: 0.613
+Thu, 20 Jan 2022 13:18:41 main_strong.py[line:314] INFO     Framewise mAP: 0.472
+Thu, 20 Jan 2022 13:18:41 main_strong.py[line:315] INFO     {'error_rate': 0.5558372060273201, 'substitution_rate': 0.15856921560343615, 'deletion_rate': 0.19588790311223772, 'insertion_rate': 0.20138008731164625}
+Thu, 20 Jan 2022 13:18:49 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:18:51 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:18:51 main_strong.py[line:313] INFO     Clipwise mAP: 0.620
+Thu, 20 Jan 2022 13:18:51 main_strong.py[line:314] INFO     Framewise mAP: 0.487
+Thu, 20 Jan 2022 13:18:51 main_strong.py[line:315] INFO     {'error_rate': 0.6436345848110554, 'substitution_rate': 0.15775956952427542, 'deletion_rate': 0.29313929313929316, 'insertion_rate': 0.19273572214748685}
+Thu, 20 Jan 2022 13:18:51 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:18:51 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:18:51 main_strong.py[line:341] INFO Train time: 302.313 s, validate time: 19.884 s
+Thu, 20 Jan 2022 13:23:53 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:23:53 main_strong.py[line:302] INFO Iteration: 17000
+Thu, 20 Jan 2022 13:24:01 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:24:03 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:24:03 main_strong.py[line:313] INFO     Clipwise mAP: 0.613
+Thu, 20 Jan 2022 13:24:03 main_strong.py[line:314] INFO     Framewise mAP: 0.461
+Thu, 20 Jan 2022 13:24:03 main_strong.py[line:315] INFO     {'error_rate': 0.5579495845655541, 'substitution_rate': 0.1444866920152091, 'deletion_rate': 0.21588508660752007, 'insertion_rate': 0.19757780594282495}
+Thu, 20 Jan 2022 13:24:11 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:24:14 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:24:14 main_strong.py[line:313] INFO     Clipwise mAP: 0.615
+Thu, 20 Jan 2022 13:24:14 main_strong.py[line:314] INFO     Framewise mAP: 0.498
+Thu, 20 Jan 2022 13:24:14 main_strong.py[line:315] INFO     {'error_rate': 0.6493824140882964, 'substitution_rate': 0.15201174024703437, 'deletion_rate': 0.32114467408585057, 'insertion_rate': 0.17622599975541153}
+Thu, 20 Jan 2022 13:24:14 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:24:14 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:24:14 main_strong.py[line:341] INFO Train time: 302.130 s, validate time: 20.277 s
+Thu, 20 Jan 2022 13:29:17 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:29:17 main_strong.py[line:302] INFO Iteration: 18000
+Thu, 20 Jan 2022 13:29:24 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:29:26 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:29:26 main_strong.py[line:313] INFO     Clipwise mAP: 0.615
+Thu, 20 Jan 2022 13:29:26 main_strong.py[line:314] INFO     Framewise mAP: 0.469
+Thu, 20 Jan 2022 13:29:26 main_strong.py[line:315] INFO     {'error_rate': 0.5571046331502605, 'substitution_rate': 0.1304041684269821, 'deletion_rate': 0.2933389663427686, 'insertion_rate': 0.13336149838050979}
+Thu, 20 Jan 2022 13:29:34 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:29:36 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:29:36 main_strong.py[line:313] INFO     Clipwise mAP: 0.596
+Thu, 20 Jan 2022 13:29:36 main_strong.py[line:314] INFO     Framewise mAP: 0.488
+Thu, 20 Jan 2022 13:29:36 main_strong.py[line:315] INFO     {'error_rate': 0.6632016632016632, 'substitution_rate': 0.1370918429741959, 'deletion_rate': 0.3766662590192002, 'insertion_rate': 0.1494435612082671}
+Thu, 20 Jan 2022 13:29:36 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:29:36 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:29:36 main_strong.py[line:341] INFO Train time: 303.116 s, validate time: 19.129 s
+Thu, 20 Jan 2022 13:34:37 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:34:37 main_strong.py[line:302] INFO Iteration: 19000
+Thu, 20 Jan 2022 13:34:44 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:34:46 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:34:46 main_strong.py[line:313] INFO     Clipwise mAP: 0.623
+Thu, 20 Jan 2022 13:34:46 main_strong.py[line:314] INFO     Framewise mAP: 0.469
+Thu, 20 Jan 2022 13:34:46 main_strong.py[line:315] INFO     {'error_rate': 0.5441487114490917, 'substitution_rate': 0.13322067314462752, 'deletion_rate': 0.26587804534572596, 'insertion_rate': 0.14504999295873822}
+Thu, 20 Jan 2022 13:34:54 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:34:56 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:34:56 main_strong.py[line:313] INFO     Clipwise mAP: 0.615
+Thu, 20 Jan 2022 13:34:56 main_strong.py[line:314] INFO     Framewise mAP: 0.503
+Thu, 20 Jan 2022 13:34:56 main_strong.py[line:315] INFO     {'error_rate': 0.642656230891525, 'substitution_rate': 0.12070441482206189, 'deletion_rate': 0.37152990094166566, 'insertion_rate': 0.15042191512779748}
+Thu, 20 Jan 2022 13:34:56 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:34:56 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:34:56 main_strong.py[line:341] INFO Train time: 301.289 s, validate time: 18.990 s
+Thu, 20 Jan 2022 13:39:59 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:39:59 main_strong.py[line:302] INFO Iteration: 20000
+Thu, 20 Jan 2022 13:40:06 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:40:09 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:40:09 main_strong.py[line:313] INFO     Clipwise mAP: 0.638
+Thu, 20 Jan 2022 13:40:09 main_strong.py[line:314] INFO     Framewise mAP: 0.470
+Thu, 20 Jan 2022 13:40:09 main_strong.py[line:315] INFO     {'error_rate': 0.5366849739473314, 'substitution_rate': 0.13589635262639066, 'deletion_rate': 0.2563019293057316, 'insertion_rate': 0.1444866920152091}
+Thu, 20 Jan 2022 13:40:09 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 20000
+Thu, 20 Jan 2022 13:40:17 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:40:19 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:40:19 main_strong.py[line:313] INFO     Clipwise mAP: 0.640
+Thu, 20 Jan 2022 13:40:19 main_strong.py[line:314] INFO     Framewise mAP: 0.506
+Thu, 20 Jan 2022 13:40:19 main_strong.py[line:315] INFO     {'error_rate': 0.6398434633728751, 'substitution_rate': 0.12816436345848112, 'deletion_rate': 0.3569768863886511, 'insertion_rate': 0.15470221352574293}
+Thu, 20 Jan 2022 13:40:19 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:40:19 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:40:19 main_strong.py[line:341] INFO Train time: 303.046 s, validate time: 20.080 s
+Thu, 20 Jan 2022 13:45:22 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:45:22 main_strong.py[line:302] INFO Iteration: 21000
+Thu, 20 Jan 2022 13:45:30 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:45:32 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:45:32 main_strong.py[line:313] INFO     Clipwise mAP: 0.628
+Thu, 20 Jan 2022 13:45:32 main_strong.py[line:314] INFO     Framewise mAP: 0.483
+Thu, 20 Jan 2022 13:45:32 main_strong.py[line:315] INFO     {'error_rate': 0.5504858470637939, 'substitution_rate': 0.14955640050697086, 'deletion_rate': 0.2181382903816364, 'insertion_rate': 0.1827911561751866}
+Thu, 20 Jan 2022 13:45:40 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:45:42 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:45:42 main_strong.py[line:313] INFO     Clipwise mAP: 0.613
+Thu, 20 Jan 2022 13:45:42 main_strong.py[line:314] INFO     Framewise mAP: 0.509
+Thu, 20 Jan 2022 13:45:42 main_strong.py[line:315] INFO     {'error_rate': 0.6284700990583343, 'substitution_rate': 0.13635807753454812, 'deletion_rate': 0.3250580897639721, 'insertion_rate': 0.16705393175981412}
+Thu, 20 Jan 2022 13:45:42 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:45:42 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:45:42 main_strong.py[line:341] INFO Train time: 302.881 s, validate time: 19.939 s
+Thu, 20 Jan 2022 13:50:45 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:50:45 main_strong.py[line:302] INFO Iteration: 22000
+Thu, 20 Jan 2022 13:50:53 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:50:55 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:50:55 main_strong.py[line:313] INFO     Clipwise mAP: 0.619
+Thu, 20 Jan 2022 13:50:55 main_strong.py[line:314] INFO     Framewise mAP: 0.481
+Thu, 20 Jan 2022 13:50:55 main_strong.py[line:315] INFO     {'error_rate': 0.5211941980002817, 'substitution_rate': 0.13772708069286016, 'deletion_rate': 0.2185607660892832, 'insertion_rate': 0.1649063512181383}
+Thu, 20 Jan 2022 13:50:56 main_strong.py[line:334] INFO Model saved to workspace/checkpoints/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/best_logmel_16k.pth for iteration 22000
+Thu, 20 Jan 2022 13:51:04 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:51:06 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:51:06 main_strong.py[line:313] INFO     Clipwise mAP: 0.633
+Thu, 20 Jan 2022 13:51:06 main_strong.py[line:314] INFO     Framewise mAP: 0.505
+Thu, 20 Jan 2022 13:51:06 main_strong.py[line:315] INFO     {'error_rate': 0.6263910969793323, 'substitution_rate': 0.1390485508132567, 'deletion_rate': 0.318454200807142, 'insertion_rate': 0.1688883453589336}
+Thu, 20 Jan 2022 13:51:06 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:51:06 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:51:06 main_strong.py[line:341] INFO Train time: 303.448 s, validate time: 20.491 s
+Thu, 20 Jan 2022 13:56:12 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 13:56:12 main_strong.py[line:302] INFO Iteration: 23000
+Thu, 20 Jan 2022 13:56:19 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:56:21 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 13:56:21 main_strong.py[line:313] INFO     Clipwise mAP: 0.612
+Thu, 20 Jan 2022 13:56:21 main_strong.py[line:314] INFO     Framewise mAP: 0.465
+Thu, 20 Jan 2022 13:56:21 main_strong.py[line:315] INFO     {'error_rate': 0.5251373046049852, 'substitution_rate': 0.14124771158991692, 'deletion_rate': 0.23095338684692296, 'insertion_rate': 0.15293620616814532}
+Thu, 20 Jan 2022 13:56:29 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 13:56:31 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 13:56:31 main_strong.py[line:313] INFO     Clipwise mAP: 0.605
+Thu, 20 Jan 2022 13:56:31 main_strong.py[line:314] INFO     Framewise mAP: 0.482
+Thu, 20 Jan 2022 13:56:31 main_strong.py[line:315] INFO     {'error_rate': 0.6260242142595084, 'substitution_rate': 0.13660266601443072, 'deletion_rate': 0.33141739024091965, 'insertion_rate': 0.158004158004158}
+Thu, 20 Jan 2022 13:56:31 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 13:56:31 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 13:56:31 main_strong.py[line:341] INFO Train time: 305.818 s, validate time: 19.720 s
+Thu, 20 Jan 2022 14:01:33 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 14:01:33 main_strong.py[line:302] INFO Iteration: 24000
+Thu, 20 Jan 2022 14:01:40 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:01:43 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 14:01:43 main_strong.py[line:313] INFO     Clipwise mAP: 0.628
+Thu, 20 Jan 2022 14:01:43 main_strong.py[line:314] INFO     Framewise mAP: 0.479
+Thu, 20 Jan 2022 14:01:43 main_strong.py[line:315] INFO     {'error_rate': 0.5233065765385158, 'substitution_rate': 0.1247711589916913, 'deletion_rate': 0.25376707505985074, 'insertion_rate': 0.14476834248697368}
+Thu, 20 Jan 2022 14:01:50 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:01:53 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 14:01:53 main_strong.py[line:313] INFO     Clipwise mAP: 0.620
+Thu, 20 Jan 2022 14:01:53 main_strong.py[line:314] INFO     Framewise mAP: 0.495
+Thu, 20 Jan 2022 14:01:53 main_strong.py[line:315] INFO     {'error_rate': 0.6222330928213281, 'substitution_rate': 0.1296318943377767, 'deletion_rate': 0.3486608780726428, 'insertion_rate': 0.14394032041090865}
+Thu, 20 Jan 2022 14:01:53 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 14:01:53 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 14:01:53 main_strong.py[line:341] INFO Train time: 301.517 s, validate time: 19.504 s
+Thu, 20 Jan 2022 14:06:53 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 14:06:53 main_strong.py[line:302] INFO Iteration: 25000
+Thu, 20 Jan 2022 14:07:01 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:07:03 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 14:07:03 main_strong.py[line:313] INFO     Clipwise mAP: 0.632
+Thu, 20 Jan 2022 14:07:03 main_strong.py[line:314] INFO     Framewise mAP: 0.478
+Thu, 20 Jan 2022 14:07:03 main_strong.py[line:315] INFO     {'error_rate': 0.5340092944655682, 'substitution_rate': 0.14167018729756373, 'deletion_rate': 0.22475707646810308, 'insertion_rate': 0.16758203069990144}
+Thu, 20 Jan 2022 14:07:11 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:07:13 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 14:07:13 main_strong.py[line:313] INFO     Clipwise mAP: 0.616
+Thu, 20 Jan 2022 14:07:13 main_strong.py[line:314] INFO     Framewise mAP: 0.496
+Thu, 20 Jan 2022 14:07:13 main_strong.py[line:315] INFO     {'error_rate': 0.6257796257796258, 'substitution_rate': 0.13537972361501774, 'deletion_rate': 0.3125840772899596, 'insertion_rate': 0.1778158248746484}
+Thu, 20 Jan 2022 14:07:13 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 14:07:13 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 14:07:13 main_strong.py[line:341] INFO Train time: 300.888 s, validate time: 19.830 s
+Thu, 20 Jan 2022 14:12:16 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 14:12:16 main_strong.py[line:302] INFO Iteration: 26000
+Thu, 20 Jan 2022 14:12:23 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:12:26 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 14:12:26 main_strong.py[line:313] INFO     Clipwise mAP: 0.634
+Thu, 20 Jan 2022 14:12:26 main_strong.py[line:314] INFO     Framewise mAP: 0.476
+Thu, 20 Jan 2022 14:12:26 main_strong.py[line:315] INFO     {'error_rate': 0.5210533727643993, 'substitution_rate': 0.1247711589916913, 'deletion_rate': 0.2641881425151387, 'insertion_rate': 0.13209407125756936}
+Thu, 20 Jan 2022 14:12:33 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:12:36 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 14:12:36 main_strong.py[line:313] INFO     Clipwise mAP: 0.612
+Thu, 20 Jan 2022 14:12:36 main_strong.py[line:314] INFO     Framewise mAP: 0.490
+Thu, 20 Jan 2022 14:12:36 main_strong.py[line:315] INFO     {'error_rate': 0.6284700990583344, 'substitution_rate': 0.1192368839427663, 'deletion_rate': 0.3662712486241898, 'insertion_rate': 0.14296196649137827}
+Thu, 20 Jan 2022 14:12:36 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 14:12:36 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 14:12:36 main_strong.py[line:341] INFO Train time: 302.935 s, validate time: 19.431 s
+Thu, 20 Jan 2022 14:17:39 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 14:17:39 main_strong.py[line:302] INFO Iteration: 27000
+Thu, 20 Jan 2022 14:17:46 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:17:48 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 14:17:48 main_strong.py[line:313] INFO     Clipwise mAP: 0.635
+Thu, 20 Jan 2022 14:17:48 main_strong.py[line:314] INFO     Framewise mAP: 0.472
+Thu, 20 Jan 2022 14:17:48 main_strong.py[line:315] INFO     {'error_rate': 0.5326010421067455, 'substitution_rate': 0.1440642163075623, 'deletion_rate': 0.23334741585692156, 'insertion_rate': 0.15518940994226166}
+Thu, 20 Jan 2022 14:17:56 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:17:58 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 14:17:58 main_strong.py[line:313] INFO     Clipwise mAP: 0.623
+Thu, 20 Jan 2022 14:17:58 main_strong.py[line:314] INFO     Framewise mAP: 0.496
+Thu, 20 Jan 2022 14:17:58 main_strong.py[line:315] INFO     {'error_rate': 0.6371529900941666, 'substitution_rate': 0.13330072153601566, 'deletion_rate': 0.34034486975663447, 'insertion_rate': 0.16350739880151643}
+Thu, 20 Jan 2022 14:17:58 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 14:17:58 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 14:17:58 main_strong.py[line:341] INFO Train time: 303.137 s, validate time: 19.679 s
+Thu, 20 Jan 2022 14:23:01 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 14:23:01 main_strong.py[line:302] INFO Iteration: 28000
+Thu, 20 Jan 2022 14:23:09 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:23:11 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 14:23:11 main_strong.py[line:313] INFO     Clipwise mAP: 0.635
+Thu, 20 Jan 2022 14:23:11 main_strong.py[line:314] INFO     Framewise mAP: 0.470
+Thu, 20 Jan 2022 14:23:11 main_strong.py[line:315] INFO     {'error_rate': 0.5306294888043938, 'substitution_rate': 0.13716377974933108, 'deletion_rate': 0.24010702717927052, 'insertion_rate': 0.15335868187579213}
+Thu, 20 Jan 2022 14:23:18 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:23:21 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 14:23:21 main_strong.py[line:313] INFO     Clipwise mAP: 0.617
+Thu, 20 Jan 2022 14:23:21 main_strong.py[line:314] INFO     Framewise mAP: 0.488
+Thu, 20 Jan 2022 14:23:21 main_strong.py[line:315] INFO     {'error_rate': 0.6437568790509968, 'substitution_rate': 0.13109942521707227, 'deletion_rate': 0.35122905711141006, 'insertion_rate': 0.16142839672251438}
+Thu, 20 Jan 2022 14:23:21 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 14:23:21 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 14:23:21 main_strong.py[line:341] INFO Train time: 302.773 s, validate time: 19.397 s
+Thu, 20 Jan 2022 14:28:21 main_strong.py[line:301] INFO ------------------------------------
+Thu, 20 Jan 2022 14:28:21 main_strong.py[line:302] INFO Iteration: 29000
+Thu, 20 Jan 2022 14:28:28 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:28:30 main_strong.py[line:312] INFO valid statistics:
+Thu, 20 Jan 2022 14:28:30 main_strong.py[line:313] INFO     Clipwise mAP: 0.632
+Thu, 20 Jan 2022 14:28:30 main_strong.py[line:314] INFO     Framewise mAP: 0.472
+Thu, 20 Jan 2022 14:28:30 main_strong.py[line:315] INFO     {'error_rate': 0.5247148288973383, 'substitution_rate': 0.13181242078580482, 'deletion_rate': 0.25968173496690605, 'insertion_rate': 0.13322067314462752}
+Thu, 20 Jan 2022 14:28:38 utilities.py[line:291] INFO     Write submission file to workspace/_tmp_submission/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/_submission_logmel_16k.csv
+Thu, 20 Jan 2022 14:28:40 main_strong.py[line:312] INFO test statistics:
+Thu, 20 Jan 2022 14:28:40 main_strong.py[line:313] INFO     Clipwise mAP: 0.619
+Thu, 20 Jan 2022 14:28:40 main_strong.py[line:314] INFO     Framewise mAP: 0.491
+Thu, 20 Jan 2022 14:28:40 main_strong.py[line:315] INFO     {'error_rate': 0.6399657576128164, 'substitution_rate': 0.13171089641677877, 'deletion_rate': 0.35073988015164487, 'insertion_rate': 0.15751498104439282}
+Thu, 20 Jan 2022 14:28:41 utilities.py[line:359] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k.pickle
+Thu, 20 Jan 2022 14:28:41 utilities.py[line:360] INFO     Dump statistics to workspace/statistics/main_strong/holdout_fold=1/model_type=Cnn_9layers_Gru_FrameAtt/loss_type=clip_bce/augmentation=specaugment_mixup/batch_size=8/statistics_logmel_16k_2022-01-20_11-52-50.pkl
+Thu, 20 Jan 2022 14:28:41 main_strong.py[line:341] INFO Train time: 300.468 s, validate time: 19.448 s

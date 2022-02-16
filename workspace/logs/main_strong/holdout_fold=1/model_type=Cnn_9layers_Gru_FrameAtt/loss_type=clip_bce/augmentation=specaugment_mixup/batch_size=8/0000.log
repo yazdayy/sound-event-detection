@@ -1,0 +1,6 @@
+Thu, 20 Jan 2022 11:36:38 main_strong.py[line:187] INFO Namespace(mode='train', dataset_dir='dataset', workspace='workspace', holdout_fold='1', model_type='Cnn_9layers_Gru_FrameAtt', loss_type='clip_bce', augmentation='specaugment_mixup', learning_rate=0.001, batch_size=8, resume_iteration=0, stop_iteration=30000, feature_type='logmel', cuda=True, audio_8k=False, audio_16k=True, vggish=False, fsd50k=False, mini_data=False, filename='main_strong')
+Thu, 20 Jan 2022 11:36:38 main_strong.py[line:190] INFO Using GPU.
+Thu, 20 Jan 2022 11:36:42 data_generator.py[line:68] INFO Training audio num: 27397
+Thu, 20 Jan 2022 11:36:42 data_generator.py[line:68] INFO Training audio num: 2233
+Thu, 20 Jan 2022 11:36:42 data_generator.py[line:119] INFO Test audio num: 548
+Thu, 20 Jan 2022 11:36:42 data_generator.py[line:119] INFO Test audio num: 538

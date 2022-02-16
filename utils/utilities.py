@@ -308,7 +308,7 @@ def official_evaluate(reference_csv_path, prediction_csv_path):
         fields=['filename','onset','offset','event_label'])
     
     #print('ESTIMATED', estimated_event_list)
-    labels = ['Applause', 'Breathing', 'Chatter', 'Cheering', 'Child_speech_kid_speaking', 'Clapping', 'Conversation', 'Cough', 'Crowd', 'Crying_sobbing', 'Female_speech_woman_speaking', 'Laughter', 'Male_speech_man_speaking', 'Run', 'Screaming', 'Shout', 'Sneeze', 'Walk_footsteps', 'Whispering', 'Air_horn_truck_horn', 'Car_alarm', 'Emergency_vehicle', 'Explosion', 'Gunshot_gunfire', 'Siren']
+    labels = ['Applause', 'Chatter', 'Cheering', 'Child_speech_kid_speaking', 'Clapping', 'Conversation', 'Cough', 'Crowd', 'Crying_sobbing', 'Female_speech_woman_speaking', 'Laughter', 'Male_speech_man_speaking', 'Screaming', 'Shout', 'Whispering', 'Air_horn_truck_horn', 'Car_alarm', 'Emergency_vehicle', 'Explosion', 'Gunshot_gunfire', 'Siren', 'Music']
     evaluated_event_labels = labels#reference_event_list.unique_event_labels
     files={}
     for event in reference_event_list:

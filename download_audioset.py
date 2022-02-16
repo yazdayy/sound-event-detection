@@ -44,7 +44,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Extract AudioSet')
     parser.add_argument('--workspace', type=str, required=True, help='Directory of your workspace.')
-    parser.add_argument('--data_type', type=str, required=True, choices=['training', 'testing'])
+    parser.add_argument('--data_type', type=str, required=True, choices=['training', 'testing', 'music_test'])
     args = parser.parse_args()
 
     main(args)

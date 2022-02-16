@@ -1,0 +1,103 @@
+<AudioDoc name="test.wav">
+	<SoundCaptionList>
+		<SoundSegment stime="0.24" dur="2.5599999999999996" event="Male_speech_man_speaking" text="Apprentice woman races up to a neighbor">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="0.32" dur="0.96" event="Female_speech_woman_speaking" text="a frantic">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="1.04" dur="0.24" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="1.68" dur="1.1199999999999999" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="2.56" dur="0.16000000000000014" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="2.96" dur="5.6000000000000005" event="Male_speech_man_speaking" text="will someone help her out of the darkness this guy appears and">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="4.56" dur="0.8800000000000008" event="Music">Music</SoundSegment>
+		<SoundSegment stime="4.72" dur="0.16000000000000014" event="Clapping">Clapping</SoundSegment>
+		<SoundSegment stime="4.88" dur="0.2400000000000002" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="6.16" dur="0.3200000000000003" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="8.08" dur="0.16000000000000014" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="8.16" dur="0.3200000000000003" event="Laughter">Laughter</SoundSegment>
+		<SoundSegment stime="8.8" dur="0.5599999999999987" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="9.28" dur="2.16" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="9.44" dur="0.5600000000000005" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="10.0" dur="2.880000000000001" event="Male_speech_man_speaking" text="he dragged the woman off the">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="10.32" dur="0.2400000000000002" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="11.2" dur="0.7200000000000006" event="Female_speech_woman_speaking" text="drags">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="11.84" dur="1.8399999999999999" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="12.48" dur="0.2400000000000002" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="12.48" dur="0.2400000000000002" event="Shout">Shout</SoundSegment>
+		<SoundSegment stime="12.48" dur="0.2400000000000002" event="Car_alarm">Car_alarm</SoundSegment>
+		<SoundSegment stime="12.96" dur="0.3199999999999985" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="13.28" dur="2.959999999999999" event="Male_speech_man_speaking" text="Hangout">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="13.84" dur="2.2399999999999984" event="Music">Music</SoundSegment>
+		<SoundSegment stime="14.24" dur="0.40000000000000036" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="14.24" dur="0.5600000000000005" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="16.24" dur="2.8800000000000026" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="16.32" dur="0.3200000000000003" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="16.56" dur="0.40000000000000213" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="16.96" dur="1.0399999999999991" event="Cheering">Cheering</SoundSegment>
+		<SoundSegment stime="17.76" dur="3.599999999999998" event="Male_speech_man_speaking" text="Danzig Idol">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="17.76" dur="2.5599999999999987" event="Music">Music</SoundSegment>
+		<SoundSegment stime="19.44" dur="0.16000000000000014" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="19.6" dur="0.7999999999999972" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="19.92" dur="1.1199999999999974" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="20.08" dur="0.16000000000000014" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="20.48" dur="0.879999999999999" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="21.36" dur="2.0" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="21.6" dur="0.23999999999999844" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="21.92" dur="1.6799999999999997" event="Music">Music</SoundSegment>
+		<SoundSegment stime="22.16" dur="0.23999999999999844" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="22.16" dur="0.3200000000000003" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="22.72" dur="1.9200000000000017" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="23.04" dur="1.7600000000000016" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="23.52" dur="1.3599999999999994" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="23.68" dur="1.6000000000000014" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="25.04" dur="1.120000000000001" event="Female_speech_woman_speaking" text="we looked out the side">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="25.04" dur="1.0399999999999991" event="Male_speech_man_speaking" text="we looked out the thigh">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="25.12" dur="0.23999999999999844" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="25.12" dur="0.23999999999999844" event="Music">Music</SoundSegment>
+		<SoundSegment stime="26.48" dur="1.2800000000000011" event="Female_speech_woman_speaking" text="over here">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="28.16" dur="2.4800000000000004" event="Female_speech_woman_speaking" text="stomping on Hearne">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="28.8" dur="0.4800000000000004" event="Male_speech_man_speaking" text="stop">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="28.88" dur="2.16" event="Music">Music</SoundSegment>
+		<SoundSegment stime="29.6" dur="0.7999999999999972" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="29.84" dur="0.16000000000000014" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="30.96" dur="0.5599999999999987" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="31.28" dur="23.36" event="Male_speech_man_speaking" text="pulling her by her hair was it was awful California around the corner police identified the man as Robert Mendez">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="34.56" dur="2.0" event="Music">Music</SoundSegment>
+		<SoundSegment stime="34.96" dur="2.479999999999997" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="37.28" dur="0.9600000000000009" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="37.36" dur="0.6400000000000006" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="41.2" dur="0.3999999999999986" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="41.52" dur="0.3999999999999986" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="41.92" dur="0.1599999999999966" event="Music">Music</SoundSegment>
+		<SoundSegment stime="43.2" dur="0.3200000000000003" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="45.04" dur="0.3999999999999986" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="46.4" dur="0.3200000000000003" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="48.4" dur="0.6400000000000006" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="48.4" dur="0.480000000000004" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="51.04" dur="0.480000000000004" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="52.56" dur="0.1599999999999966" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="52.8" dur="1.5200000000000031" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="54.8" dur="2.0800000000000054" event="Male_speech_man_speaking" text="boyfriend he was charged with">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="55.84" dur="0.3199999999999932" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="56.48" dur="1.8400000000000034" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="57.12" dur="8.640000000000008" event="Male_speech_man_speaking" text="attempted murder and kidnapping was beating on her looks like we've been stomped on her dragging her she had suffered from">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="58.08" dur="0.6400000000000006" event="Music">Music</SoundSegment>
+		<SoundSegment stime="59.84" dur="5.200000000000003" event="Music">Music</SoundSegment>
+		<SoundSegment stime="65.12" dur="2.239999999999995" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="65.84" dur="0.1599999999999966" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="66.48" dur="1.759999999999991" event="Shout">Shout</SoundSegment>
+		<SoundSegment stime="67.6" dur="0.480000000000004" event="Screaming">Screaming</SoundSegment>
+		<SoundSegment stime="67.84" dur="3.6799999999999926" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="67.92" dur="2.0799999999999983" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="68.8" dur="0.4000000000000057" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="68.96" dur="0.8800000000000097" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="68.96" dur="2.6400000000000006" event="Music">Music</SoundSegment>
+		<SoundSegment stime="69.36" dur="0.4000000000000057" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="70.0" dur="1.5999999999999943" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="70.32" dur="0.2400000000000091" event="Female_speech_woman_speaking" text="UNKNOWN">Female_speech_woman_speaking</SoundSegment>
+		<SoundSegment stime="70.8" dur="0.2400000000000091" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="71.28" dur="0.1599999999999966" event="Conversation">Conversation</SoundSegment>
+		<SoundSegment stime="71.68" dur="0.47999999999998977" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="71.84" dur="6.8799999999999955" event="Music">Music</SoundSegment>
+		<SoundSegment stime="72.0" dur="0.1599999999999966" event="Crowd">Crowd</SoundSegment>
+		<SoundSegment stime="73.04" dur="0.3999999999999915" event="Male_speech_man_speaking" text="UNKNOWN">Male_speech_man_speaking</SoundSegment>
+		<SoundSegment stime="73.12" dur="0.3999999999999915" event="Crowd">Crowd</SoundSegment>
+	</SoundCaptionList>
+</AudioDoc>
